@@ -73,6 +73,7 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
     presence_penalty: presencePenalty,
     stream: true
   })
+  log.debug('Create stream');
  
   const stream = OpenAIStream(response, {
     onCompletion: async (completion: string) => {
@@ -86,6 +87,12 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
     },
     onFinal(completion) {
       log.debug('onFinal', { completion });
+    },
+    onToken(token) {
+      log.debug('onToken', { token });
+    },
+    onStart() {
+      log.debug('onStart');
     },
   })
  
