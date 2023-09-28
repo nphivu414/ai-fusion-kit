@@ -1,3 +1,4 @@
+import { AxiomWebVitals } from 'next-axiom';
 import "./globals.css"
 import { Metadata } from "next"
 
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             {children}
           </ThemeProvider>
           <Toaster />
+          <AxiomWebVitals />
         </body>
       </html>
     </>

@@ -8,6 +8,7 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { getCurrentSession } from '@/lib/session';
 import { createNewMessage, deleteMessagesFrom, getMessageById } from '@/lib/db/message';
 import { pick } from 'lodash';
+import { AxiomRequest, withAxiom } from 'next-axiom';
 
 export const runtime = 'edge'
  
@@ -15,7 +16,11 @@ const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY
 })
  
-export async function POST(req: Request) {
+export const POST = withAxiom(async (req: AxiomRequest) => {
+  const log = req.log.with({
+    route: 'api/chat',
+  });
+  
   const cookies = new RequestCookies(req.headers) as any;
   const supabase = createRouteHandlerClient({ cookies: () => cookies })
   const params = await req.json()
@@ -71,6 +76,7 @@ export async function POST(req: Request) {
  
   const stream = OpenAIStream(response, {
     onCompletion: async (completion: string) => {
+      log.debug('onCompletion', { completion });
       createNewMessage(supabase, {
         chatId,
         content: completion,
@@ -78,7 +84,10 @@ export async function POST(req: Request) {
         role: 'assistant',
       })
     },
+    onFinal(completion) {
+      log.debug('onFinal', { completion });
+    },
   })
  
   return new StreamingTextResponse(stream)
-}
+})

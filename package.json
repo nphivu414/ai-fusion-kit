@@ -47,6 +47,7 @@
     "lodash": "^4.17.21",
     "lucide-react": "0.263.1",
     "next": "13.5.2",
+    "next-axiom": "^1.0.0",
     "next-themes": "^0.2.1",
     "postcss": "8.4.27",
     "react": "18.2.0",
