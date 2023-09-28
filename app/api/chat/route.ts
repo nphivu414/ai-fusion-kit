@@ -73,10 +73,10 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
     presence_penalty: presencePenalty,
     stream: true
   })
-  log.debug('Start create stream');
+  log.debug('Create stream');
  
   const stream = OpenAIStream(response, {
-    async onCompletion(completion) {
+    onFinal: (completion: string) => {
       log.debug('onCompletion', { completion });
       createNewMessage(supabase, {
         chatId,
