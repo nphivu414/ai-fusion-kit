@@ -1,4 +1,5 @@
-import { withAxiom } from 'next-axiom';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { withAxiom } = require('next-axiom');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
