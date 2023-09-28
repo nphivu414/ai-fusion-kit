@@ -73,10 +73,10 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
     presence_penalty: presencePenalty,
     stream: true
   })
-  log.debug('Create stream');
+  log.debug('Start create stream');
  
   const stream = OpenAIStream(response, {
-    onCompletion: async (completion: string) => {
+    async onCompletion(completion) {
       log.debug('onCompletion', { completion });
       createNewMessage(supabase, {
         chatId,
@@ -84,16 +84,7 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
         profileId: session.user.id,
         role: 'assistant',
       })
-    },
-    onFinal(completion) {
-      log.debug('onFinal', { completion });
-    },
-    onToken(token) {
-      log.debug('onToken', { token });
-    },
-    onStart() {
-      log.debug('onStart');
-    },
+    }
   })
  
   return new StreamingTextResponse(stream)
