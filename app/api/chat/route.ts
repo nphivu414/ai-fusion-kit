@@ -10,8 +10,6 @@ import { createNewMessage, deleteMessagesFrom, getMessageById } from '@/lib/db/m
 import { pick } from 'lodash';
 import { AxiomRequest, withAxiom } from 'next-axiom';
 
-export const runtime = 'edge'
- 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY
 })
