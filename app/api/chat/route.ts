@@ -74,7 +74,7 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
   log.debug('Create stream');
  
   const stream = OpenAIStream(response, {
-    onFinal: (completion: string) => {
+    onCompletion: (completion: string) => {
       log.debug('onCompletion', { completion });
       createNewMessage(supabase, {
         chatId,
