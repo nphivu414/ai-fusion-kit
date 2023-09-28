@@ -36,7 +36,7 @@ export function TemperatureSelector() {
           className="hidden w-[260px] text-sm lg:block"
           side="left"
         >
-          Think of it as the AI's "creativity knob." A higher value like 0.8 makes responses more creative and unpredictable, while a lower value like 0.2 makes responses more focused and consistent. Adjust it to control how imaginative or precise the AI's answers are.
+          {`Think of it as the AI's "creativity knob." A higher value like 0.8 makes responses more creative and unpredictable, while a lower value like 0.2 makes responses more focused and consistent. Adjust it to control how imaginative or precise the AI's answers are.`}
         </HoverCardContent>
       </HoverCard>
     </div>

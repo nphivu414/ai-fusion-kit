@@ -76,7 +76,7 @@ export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
           className="w-[260px] text-sm"
           side="left"
         >
-          This is like choosing the AI's brain. Different models have different knowledge and abilities. You pick the model that suits your task. The model determines what the AI can do.
+          {`This is like choosing the AI's brain. Different models have different knowledge and abilities. You pick the model that suits your task. The model determines what the AI can do.`}
         </HoverCardContent>
       </HoverCard>
       <Popover open={open} onOpenChange={setOpen} {...props}>

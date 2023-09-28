@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: "Login to your account",
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function LoginPage() {
   const supabase = createServerComponentClient({ cookies })
   const session = await getCurrentSession(supabase)

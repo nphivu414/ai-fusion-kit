@@ -35,7 +35,7 @@ export function MaxLengthSelector() {
           className="hidden w-[260px] text-sm lg:block"
           side="left"
         >
-          This sets the maximum length of the AI's reply. Use it to limit how long the AI's response should be, helpful to keep responses concise.
+          {`This sets the maximum length of the AI's reply. Use it to limit how long the AI's response should be, helpful to keep responses concise.`}
         </HoverCardContent>
       </HoverCard>
     </div>

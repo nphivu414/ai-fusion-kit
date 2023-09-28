@@ -8,6 +8,8 @@ import { getCurrentSession } from "@/lib/session"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
 
+export const dynamic = 'force-dynamic'
+
 interface AppLayoutProps {
   children: React.ReactNode
 }

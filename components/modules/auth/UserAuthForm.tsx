@@ -103,7 +103,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       <SocialLoginOptions />
       <div className="relative flex justify-center text-xs uppercase">
         <span className="bg-background px-2 text-muted-foreground">
-            Don't have an account yet?
+          {`Don't have an account yet?`}
         </span>
         <Link href="/signup" className="text-primary">
           Sign Up

@@ -4,9 +4,10 @@ import get from 'lodash/get';
 import { FieldValues } from 'react-hook-form';
 
 import { FormFieldProps } from '../types';
+import { TextareaAutosizeProps } from 'react-textarea-autosize';
 
 type TextAreaFieldProps<T extends FieldValues> = FormFieldProps<T> &
-  Omit<TextAreaProps, 'name'>;
+  Omit<TextAreaProps, 'name'> & TextareaAutosizeProps;
 
 export function TextAreaField<T extends FieldValues>(
   props: TextAreaFieldProps<T>

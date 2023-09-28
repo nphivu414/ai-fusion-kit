@@ -20,7 +20,7 @@ export const ControlSidebar = ({ append, setMessages }: ControlSidebarProps) => 
       <SheetHeader>
         <SheetTitle className="text-left">AI Assistant Customization</SheetTitle>
         <SheetDescription className="text-left">
-          Combining these parameters allows you to fine-tune the AI's output to suit different use cases, from creative writing to generating code snippets or answering questions.
+          {`Combining these parameters allows you to fine-tune the AI's output to suit different use cases, from creative writing to generating code snippets or answering questions.`}
         </SheetDescription>
       </SheetHeader>
       <Separator className='my-4'/>

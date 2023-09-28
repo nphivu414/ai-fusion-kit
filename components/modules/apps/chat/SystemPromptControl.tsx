@@ -76,7 +76,7 @@ export const SystemPromptControl = ({ append, setMessages }: SystemPromptControl
           <div className="space-y-2">
             <h4 className="font-medium leading-none">Set system prompt</h4>
             <p className="text-sm text-muted-foreground">
-              Set a custom system prompt to be prepended to the user's input. This is useful for giving the AI some context about the conversation.
+              {`Set a custom system prompt to be prepended to the user's input. This is useful for giving the AI some context about the conversation.`}
             </p>
           </div>
           <div>
