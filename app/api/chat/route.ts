@@ -22,7 +22,6 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
   const cookies = new RequestCookies(req.headers) as any;
   const supabase = createRouteHandlerClient({ cookies: () => cookies })
   const params = await req.json()
-  console.log("🚀 ~ file: route.ts:15 ~ POST ~ params:", params)
   const {
     messages,
     temperature,
