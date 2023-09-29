@@ -22,7 +22,7 @@ export function MaxLengthSelector() {
             label="Length Limit"
             defaultValue={getValues("maxTokens")}
             min={0}
-            max={4000}
+            max={200}
             step={10}
             className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4"
             control={control}

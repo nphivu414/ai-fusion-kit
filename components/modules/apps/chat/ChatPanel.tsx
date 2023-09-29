@@ -27,7 +27,7 @@ const defaultValues: ChatParams = {
   model: 'gpt-3.5-turbo',
   temperature: [1],
   topP: [1],
-  maxTokens: [250],
+  maxTokens: [100],
   frequencyPenalty: [0],
   presencePenalty: [0],
 }
