@@ -1,5 +1,6 @@
 import { Button, ButtonProps } from '@/components/ui/Button'
 import { useToast } from '@/components/ui/use-toast'
+import { getURL } from '@/config/site'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Provider } from '@supabase/supabase-js'
 import { Loader } from 'lucide-react'
@@ -19,7 +20,7 @@ export const SocialLoginButton = ({ provider, children, ...rest }: SocialLoginBu
     const { error } = await supabase.auth.signInWithOAuth({
       provider: provider,
       options: {
-        redirectTo: 'http://localhost:3000/api/auth/callback'
+        redirectTo: `${getURL()}api/auth/callback`
       }
     })
 
