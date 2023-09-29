@@ -78,7 +78,7 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
       await createNewMessage(supabase, {
         chatId,
         content: completion,
-        profileId: session.user.id,
+        profileId,
         role: 'assistant',
       })
     }
