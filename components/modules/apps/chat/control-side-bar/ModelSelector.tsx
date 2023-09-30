@@ -105,16 +105,6 @@ export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
                 <div className="text-sm text-muted-foreground">
                   {peekedModel.description}
                 </div>
-                {peekedModel.maxTokens ? (
-                  <div className="mt-4 grid gap-2">
-                    <h5 className="text-sm font-medium leading-none">
-                      Max Tokens
-                    </h5>
-                    <ul className="text-sm text-muted-foreground">
-                      {peekedModel.maxTokens}
-                    </ul>
-                  </div>
-                ) : null}
               </div>
             </HoverCardContent>
             <Command loop>

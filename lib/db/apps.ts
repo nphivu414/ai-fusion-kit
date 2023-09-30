@@ -1,19 +1,32 @@
 import { SupabaseClient } from "@supabase/auth-helpers-nextjs"
 import { App, Database } from "."
+import { Logger } from "next-axiom";
+import { LogLevel } from "next-axiom/dist/logger";
+
+const log = new Logger({
+  logLevel: LogLevel.debug,
+  args: {
+    route: '[DB] Message',
+  }
+});
 
 export const getApps = async (supabase: SupabaseClient<Database>) => {
+  log.info(`${getApps.name} called`);
   const { data, error, status } = await supabase
     .from('apps')
     .select('*')
 
   if (error && status !== 406) {
+    log.error(getApps.name, { error, status });
     return null
   }
+  log.info(`${getApps.name} fetched successfully`, { data });
 
   return data
 }
 
 export const getAppBySlug = async (supabase: SupabaseClient<Database>, slug: App['slug']) => {
+  log.info(`${getAppBySlug.name} called`, { slug });
   const { data, error, status } = await supabase
     .from('apps')
     .select('*')
@@ -21,8 +34,10 @@ export const getAppBySlug = async (supabase: SupabaseClient<Database>, slug: App
     .single()
 
   if (error && status !== 406) {
+    log.error(getAppBySlug.name, { error, status });
     return null
   }
 
+  log.info(`${getAppBySlug.name} fetched successfully`, { data });
   return data
 }

@@ -1,8 +1,19 @@
 import { SupabaseClient } from "@supabase/auth-helpers-nextjs"
 import { getCurrentSession } from "../session"
 import { Database } from "."
+import { Logger } from "next-axiom";
+import { LogLevel } from "next-axiom/dist/logger";
+
+const log = new Logger({
+  logLevel: LogLevel.debug,
+  args: {
+    route: '[DB] Message',
+  }
+});
 
 export const getCurrentProfile = async (supabase: SupabaseClient<Database>) => {
+  log.info(`${getCurrentProfile.name} called`);
+  
   const session = await getCurrentSession(supabase)
   const user = session?.user
 
@@ -16,8 +27,11 @@ export const getCurrentProfile = async (supabase: SupabaseClient<Database>) => {
 
 
   if (error && status !== 406) {
+    log.error(getCurrentProfile.name, { error, status });
     return null
   }
+
+  log.info(`${getCurrentProfile.name} fetched successfully`, { data });
 
   return data
 }
