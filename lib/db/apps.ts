@@ -6,7 +6,7 @@ import { LogLevel } from "next-axiom/dist/logger";
 const log = new Logger({
   logLevel: LogLevel.debug,
   args: {
-    route: '[DB] Message',
+    route: '[DB] Apps',
   }
 });
 

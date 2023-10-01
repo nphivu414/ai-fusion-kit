@@ -4,12 +4,13 @@ import { ChatPanel } from "@/components/modules/apps/chat/ChatPanel"
 import { Sheet } from "@/components/ui/Sheet"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
-import { createNewChat, getChats } from "@/lib/db/chats"
+import { createNewChat, getChatById, getChats } from "@/lib/db/chats"
 import { getAppBySlug } from "@/lib/db/apps"
 import { getCurrentSession } from "@/lib/session"
 import { redirect } from "next/navigation"
 import { Message } from "ai"
 import { getMessages } from "@/lib/db/message"
+import { ChatParams } from "@/components/modules/apps/chat/types"
 
 export const metadata: Metadata = {
   title: "Playground",
@@ -58,6 +59,9 @@ export default async function ChatPage({ params }: { params: { id: string[] } })
     profileId: currentProfileId,
   })
 
+  const chatDetails = await getChatById(supabase, chatId)
+  const chatParams = chatDetails?.settings as ChatParams | undefined
+
   const initialChatMessages: Message[] = dbMessages?.length ? dbMessages.map((message) => {
     return {
       id: message.id,
@@ -68,7 +72,7 @@ export default async function ChatPage({ params }: { params: { id: string[] } })
   
   return (
     <Sheet>
-      <ChatPanel chatId={chatId} initialMessages={initialChatMessages}/>
+      <ChatPanel chatId={chatId} initialMessages={initialChatMessages} chatParams={chatParams}/>
     </Sheet>
   )
 }

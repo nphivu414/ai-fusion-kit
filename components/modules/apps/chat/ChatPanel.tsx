@@ -35,9 +35,10 @@ const defaultValues: ChatParams = {
 type ChatPanelProps = {
   chatId: Chat['id']
   initialMessages: Message[]
+  chatParams?: ChatParams
 }
 
-export const ChatPanel = ({ chatId, initialMessages }: ChatPanelProps) => {
+export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProps) => {
   const scrollAreaRef = React.useRef<HTMLDivElement>(null)
   const { formRef, onKeyDown } = useEnterSubmit()
 
@@ -48,7 +49,7 @@ export const ChatPanel = ({ chatId, initialMessages }: ChatPanelProps) => {
   })
 
   const formReturn = useForm<ChatParams>({
-    defaultValues,
+    defaultValues: chatParams || defaultValues,
     mode: 'onChange',
     resolver: zodResolver(ChatParamSchema),
   });
@@ -57,8 +58,6 @@ export const ChatPanel = ({ chatId, initialMessages }: ChatPanelProps) => {
     const formValues = formReturn.getValues()
     return buildChatRequestParams(formValues)
   }
-
-
 
   React.useEffect(() => {
     if (error) {
