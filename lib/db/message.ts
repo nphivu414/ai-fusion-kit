@@ -2,6 +2,9 @@ import { SupabaseClient } from "@supabase/auth-helpers-nextjs"
 import { Message, Database } from "."
 import { Logger } from "next-axiom";
 import { LogLevel } from "next-axiom/dist/logger";
+import { cache } from 'react'
+
+export const revalidate = 0
 
 export type CreateNewMessageParams = Pick<Message, 'chatId' | 'content' | 'profileId' | 'role'> & Partial<Pick<Message, 'id'>>
 type GetMessagesParams = Pick<Message, 'chatId' | 'profileId'>
@@ -12,7 +15,7 @@ const log = new Logger({
   }
 });
 
-export const getMessages = async (supabase: SupabaseClient<Database>, params: GetMessagesParams) => {
+export const getMessages = cache(async (supabase: SupabaseClient<Database>, params: GetMessagesParams) => {
   log.info(`${getMessages.name} called`, { params });
   const { data, error, status } = await supabase
     .from('messages')
@@ -28,7 +31,7 @@ export const getMessages = async (supabase: SupabaseClient<Database>, params: Ge
 
   log.info(`${getMessages.name} fetched successfully`, { params, data });
   return data
-}
+})
 
 export const getMessageById = async (supabase: SupabaseClient<Database>, id: Message['id']) => {
   log.info(`${getMessageById.name} called`, { params: { id } });
