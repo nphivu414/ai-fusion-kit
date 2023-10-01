@@ -124,6 +124,10 @@ export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProp
     setInput('')
   }
 
+  const renderControlSidebar = () => {
+    return <ControlSidebar append={append} setMessages={setMessages} messages={messages}/>
+  }
+
   return (
     <FormProvider {...formReturn}>
       <div className='flex flex-1 flex-col'>
@@ -151,11 +155,11 @@ export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProp
           </div>
           <SheetContent className="w-[400px] overflow-y-auto sm:w-[540px]">
             <div className="pt-4">
-              <ControlSidebar append={append} setMessages={setMessages}/>
+              {renderControlSidebar()}
             </div>
           </SheetContent>
           <div className="h-0 w-0 overflow-x-hidden transition-[width] lg:h-auto lg:max-h-[calc(100vh_-_130px)] lg:w-[450px] lg:border-x lg:p-4">
-            <ControlSidebar append={append} setMessages={setMessages}/>
+            {renderControlSidebar()}
           </div>
         </div>
       </div>

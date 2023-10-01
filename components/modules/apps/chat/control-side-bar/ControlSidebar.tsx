@@ -18,9 +18,9 @@ import { Loader } from 'lucide-react'
 import { useChatIdFromPathName } from '@/hooks/useChatIdFromPathName'
 import { toast } from '@/components/ui/use-toast'
 
-type ControlSidebarProps = Pick<UseChatHelpers, 'append' | 'setMessages'>
+type ControlSidebarProps = Pick<UseChatHelpers, 'append' | 'setMessages' | 'messages'>
 
-export const ControlSidebar = ({ append, setMessages }: ControlSidebarProps) => {
+export const ControlSidebar = ({ append, setMessages, messages }: ControlSidebarProps) => {
   const [pendingUpdateSettings, startUpdateSettings] = React.useTransition()
   const currentChatId = useChatIdFromPathName()
   const { getValues } = useFormContext<ChatParams>()
@@ -58,7 +58,7 @@ export const ControlSidebar = ({ append, setMessages }: ControlSidebarProps) => 
       </SheetHeader>
       <Separator className='my-4'/>
       <div>
-        <SystemPromptControl append={append} setMessages={setMessages}/>
+        <SystemPromptControl setMessages={setMessages} messages={messages}/>
         <ModelSelector types={types} models={models} />
         <TemperatureSelector />
         <MaxLengthSelector />

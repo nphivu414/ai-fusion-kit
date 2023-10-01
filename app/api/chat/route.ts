@@ -6,16 +6,15 @@ import {
 } from '@/env.mjs';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { getCurrentSession } from '@/lib/session';
-import { createNewMessage, deleteMessagesFrom, getMessageById } from '@/lib/db/message';
+import { createNewMessage, deleteMessagesFrom, getMessageById, revalidate } from '@/lib/db/message';
 import { pick } from 'lodash';
 import { AxiomRequest, withAxiom } from 'next-axiom';
-import { updateChat } from '@/lib/db/chats';
-import { Update } from '@/lib/db';
+import { revalidatePath } from 'next/cache';
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY
 })
- 
+
 export const POST = withAxiom(async (req: AxiomRequest) => {
   const log = req.log.with({
     route: 'api/chat',
@@ -28,7 +27,6 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
     messages,
     temperature,
     model,
-    description,
     maxTokens,
     topP,
     frequencyPenalty,
@@ -46,20 +44,6 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
 
   const lastMessage = messages[messages.length - 1]
   const profileId = session.user.id
-  const chatSettings: Update<'chats'>['settings'] = {
-    temperature,
-    model,
-    description,
-    maxTokens,
-    topP,
-    frequencyPenalty,
-    presencePenalty,
-  }
-
-  await updateChat(supabase, {
-    id: chatId,
-    settings: chatSettings,
-  })
 
   if (!isRegenerate) {
     await createNewMessage(supabase, {
@@ -97,6 +81,9 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
         profileId,
         role: 'assistant',
       })
+      // setTimeout(() => {
+      //   revalidatePath(`/apps/chat/${chatId}`, 'page')
+      // }, 5000);
     }
   })
  
