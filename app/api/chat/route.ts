@@ -6,10 +6,9 @@ import {
 } from '@/env.mjs';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { getCurrentSession } from '@/lib/session';
-import { createNewMessage, deleteMessagesFrom, getMessageById, revalidate } from '@/lib/db/message';
+import { createNewMessage, deleteMessagesFrom, getMessageById } from '@/lib/db/message';
 import { pick } from 'lodash';
 import { AxiomRequest, withAxiom } from 'next-axiom';
-import { revalidatePath } from 'next/cache';
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY

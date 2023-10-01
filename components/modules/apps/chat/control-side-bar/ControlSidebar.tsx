@@ -18,9 +18,9 @@ import { Loader } from 'lucide-react'
 import { useChatIdFromPathName } from '@/hooks/useChatIdFromPathName'
 import { toast } from '@/components/ui/use-toast'
 
-type ControlSidebarProps = Pick<UseChatHelpers, 'append' | 'setMessages' | 'messages'>
+type ControlSidebarProps = Pick<UseChatHelpers, 'setMessages' | 'messages'>
 
-export const ControlSidebar = ({ append, setMessages, messages }: ControlSidebarProps) => {
+export const ControlSidebar = ({ setMessages, messages }: ControlSidebarProps) => {
   const [pendingUpdateSettings, startUpdateSettings] = React.useTransition()
   const currentChatId = useChatIdFromPathName()
   const { getValues } = useFormContext<ChatParams>()

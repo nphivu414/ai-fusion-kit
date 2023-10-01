@@ -125,7 +125,7 @@ export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProp
   }
 
   const renderControlSidebar = () => {
-    return <ControlSidebar append={append} setMessages={setMessages} messages={messages}/>
+    return <ControlSidebar setMessages={setMessages} messages={messages}/>
   }
 
   return (
