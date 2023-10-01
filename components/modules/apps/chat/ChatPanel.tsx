@@ -128,7 +128,7 @@ export const ChatPanel = ({ chatId, initialMessages }: ChatPanelProps) => {
   return (
     <FormProvider {...formReturn}>
       <div className='flex flex-1 flex-col'>
-        <Header append={append} setMessages={setMessages}/>
+        <Header />
         <Separator/>
         <div className='flex flex-1'>
           <div className='flex w-full flex-col rounded-lg pb-4 lg:mx-4 lg:bg-background'>
