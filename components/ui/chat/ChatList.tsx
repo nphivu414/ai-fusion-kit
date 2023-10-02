@@ -19,6 +19,7 @@ type ChatListProps = {
 export const ChatList = ({ data, isLoading, stop, reload }: ChatListProps) => {
   const supabase = createClientComponentClient()
   const [userProfile, setUserProfile] = React.useState<Profile | null>(null)
+  const hasConversation = data.filter(message => message.role !== "system").length > 0
 
   React.useEffect(() => {
     const fetchProfile = async () => {
@@ -44,11 +45,11 @@ export const ChatList = ({ data, isLoading, stop, reload }: ChatListProps) => {
   return (
     <>
       {
-        data.length ? (
+        hasConversation ? (
           <>
             {
               data.map((m, index) => {
-                if (m.role === 'system' || m.id === 'change-system-prompt') {
+                if (m.role === 'system') {
                   return null
                 }
                 const name = m.role === 'assistant' ? 'AI Assistant' : userProfile?.username || 'You'

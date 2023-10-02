@@ -8,7 +8,7 @@ type GetChatsParams = Pick<Chat, 'appId' | 'profileId'>
 const log = new Logger({
   logLevel: LogLevel.debug,
   args: {
-    route: '[DB] Message',
+    route: '[DB] Chats',
   }
 });
 
@@ -27,6 +27,23 @@ export const getChats = async (supabase: SupabaseClient<Database>, params: GetCh
   }
 
   log.info(`${getChats.name} fetched successfully`, { data });
+  return data
+}
+
+export const getChatById = async (supabase: SupabaseClient<Database>, id: string) => {
+  log.info(`${getChatById.name} called`, { id });
+  const { data, error, status } = await supabase
+    .from('chats')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error && status !== 406) {
+    log.error(getChatById.name, { error, status });
+    return null
+  }
+
+  log.info(`${getChatById.name} fetched successfully`, { data });
   return data
 }
 
@@ -83,5 +100,5 @@ export const updateChat = async (supabase: SupabaseClient<Database>, params: Upd
   }
   
   log.info(`${updateChat.name} updated successfully`, { data });
-  return data
+  return data?.[0]
 }

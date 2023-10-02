@@ -8,7 +8,7 @@ type GetMessagesParams = Pick<Message, 'chatId' | 'profileId'>
 const log = new Logger({
   logLevel: LogLevel.debug,
   args: {
-    route: '[DB] Message',
+    route: '[DB] Messages',
   }
 });
 

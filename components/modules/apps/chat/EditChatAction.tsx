@@ -12,16 +12,7 @@ export const EditChatAction = ({ chat, ...rest }: ChatActionProps) => {
   const [ pendingUpdateChat, startUpdateChat ] = React.useTransition()
   const [inputValue, setInputValue] = React.useState(chat.name || '')
   
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value)
-  }
-
-  const onEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.stopPropagation()
-  }
-
-  const onDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault()
+  const handleDelete = () => {
     startUpdateChat(async () => {
       try {
         await updateChat({
@@ -43,6 +34,26 @@ export const EditChatAction = ({ chat, ...rest }: ChatActionProps) => {
     })
   }
 
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value)
+  }
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleDelete()
+    }
+  }
+
+  const onEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation()
+  }
+
+  const onDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault()
+    handleDelete()
+  }
+
   return (
     <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen} {...rest}>
       <AlertDialogTrigger asChild>
@@ -53,14 +64,13 @@ export const EditChatAction = ({ chat, ...rest }: ChatActionProps) => {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-              Edit your chat title
+            Edit your chat title
           </AlertDialogTitle>
           <AlertDialogDescription>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className='pb-4'>
-          <Input name="name" required value={inputValue} onChange={onInputChange} autoFocus/>
-          <Input name="id" type='hidden' value={chat.id}/>
+          <Input name="name" value={inputValue} onChange={onChange} onKeyDown={onKeyDown} autoFocus/>
         </div>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>

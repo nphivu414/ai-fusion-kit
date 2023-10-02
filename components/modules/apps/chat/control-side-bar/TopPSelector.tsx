@@ -22,7 +22,7 @@ export function TopPSelector() {
             label="Focus"
             defaultValue={getValues("topP")}
             min={0}
-            max={2}
+            max={1}
             step={0.1}
             className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4"
             control={control}

@@ -13,7 +13,7 @@ import { AxiomRequest, withAxiom } from 'next-axiom';
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY
 })
- 
+
 export const POST = withAxiom(async (req: AxiomRequest) => {
   const log = req.log.with({
     route: 'api/chat',
@@ -80,6 +80,9 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
         profileId,
         role: 'assistant',
       })
+      // setTimeout(() => {
+      //   revalidatePath(`/apps/chat/${chatId}`, 'page')
+      // }, 5000);
     }
   })
  
