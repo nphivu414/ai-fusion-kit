@@ -29,7 +29,7 @@ export const ChatList = ({ data, isLoading, stop, reload }: ChatListProps) => {
   }, [isCopied])
 
   return (
-    <>
+    <div className='h-full px-4'>
       {
         hasConversation ? (
           <>
@@ -63,8 +63,8 @@ export const ChatList = ({ data, isLoading, stop, reload }: ChatListProps) => {
           </>
         ) : (
           <div className='flex h-full flex-col items-center justify-center'>
-            <div className='text-center lg:max-w-[60%]'>
-              <Heading5 className='lg:text-2xl'>Unleash Your Creativity</Heading5>
+            <div className='text-center lg:max-w-[65%]'>
+              <Heading5 className='lg:text-3xl'>Unleash Your Creativity</Heading5>
               <p className='mt-2 text-sm text-muted-foreground'>
                   Chat with your AI assistant to generate new ideas and get inspired.
               </p>
@@ -72,6 +72,6 @@ export const ChatList = ({ data, isLoading, stop, reload }: ChatListProps) => {
           </div>
         )
       }
-    </>
+    </div>
   )
 }

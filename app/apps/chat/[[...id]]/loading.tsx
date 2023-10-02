@@ -10,7 +10,7 @@ export default function Page() {
     <div className='flex flex-1 flex-col'>
       <div className="flex flex-col items-start justify-between space-y-2 p-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
         <Heading2 className='pb-0'>GPT AI Assistant</Heading2>
-        <div className="flex">
+        <div className="hidden lg:flex">
           <Skeleton className="mr-2 h-4 w-[50px]" />
           <Skeleton className="h-4 w-[300px]" />
         </div>
