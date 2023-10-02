@@ -21,6 +21,8 @@ import { Separator } from '@/components/ui/Separator';
 import { buildChatRequestParams } from './utils';
 import { Chat, Message as SupabaseMessage } from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
+import { useRouter } from 'next/navigation';
+import { usePrevious } from '@/hooks/usePrevious';
 
 const defaultValues: ChatParams = {
   description: defaultSystemPrompt,
@@ -39,6 +41,7 @@ type ChatPanelProps = {
 }
 
 export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProps) => {
+  const router = useRouter()
   const scrollAreaRef = React.useRef<HTMLDivElement>(null)
   const { formRef, onKeyDown } = useEnterSubmit()
 
@@ -47,6 +50,7 @@ export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProp
     initialMessages,
     sendExtraMessageFields: true
   })
+  const prevIsLoading = usePrevious(isLoading)
 
   const formReturn = useForm<ChatParams>({
     defaultValues: chatParams || defaultValues,
@@ -58,6 +62,12 @@ export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProp
     const formValues = formReturn.getValues()
     return buildChatRequestParams(formValues)
   }
+
+  React.useEffect(() => {
+    if (prevIsLoading === true && isLoading === false) {
+      router.refresh()
+    }
+  }, [isLoading, prevIsLoading, router])
 
   React.useEffect(() => {
     if (error) {
@@ -121,6 +131,8 @@ export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProp
         }
       }
     })
+
+    
     setInput('')
   }
 
