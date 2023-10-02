@@ -18,9 +18,11 @@ import { Loader } from 'lucide-react'
 import { useChatIdFromPathName } from '@/hooks/useChatIdFromPathName'
 import { toast } from '@/components/ui/use-toast'
 
-type ControlSidebarProps = Pick<UseChatHelpers, 'setMessages' | 'messages'>
+type ControlSidebarProps = Pick<UseChatHelpers, 'setMessages' | 'messages'> & {
+  closeSidebarSheet?: () => void
+}
 
-export const ControlSidebar = ({ setMessages, messages }: ControlSidebarProps) => {
+export const ControlSidebar = ({ setMessages, messages, closeSidebarSheet }: ControlSidebarProps) => {
   const [pendingUpdateSettings, startUpdateSettings] = React.useTransition()
   const currentChatId = useChatIdFromPathName()
   const { getValues } = useFormContext<ChatParams>()
@@ -38,6 +40,7 @@ export const ControlSidebar = ({ setMessages, messages }: ControlSidebarProps) =
           title: "Success",
           description: "Your chat settings have been saved.",
         })
+        closeSidebarSheet?.()
       } catch (error) {
         toast({
           title: "Error",
@@ -68,13 +71,9 @@ export const ControlSidebar = ({ setMessages, messages }: ControlSidebarProps) =
       </div>
       <div>
         <Separator className='my-6'/>
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button className='w-full' onClick={onSave}>
-              {pendingUpdateSettings ? <Loader className='animate-spin'/> : 'Save'}
-            </Button>
-          </SheetClose>
-        </SheetFooter>
+        <Button className='w-full' onClick={onSave}>
+          {pendingUpdateSettings ? <Loader className='animate-spin'/> : 'Save'}
+        </Button>
       </div>
     </>
   )

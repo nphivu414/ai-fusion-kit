@@ -1,3 +1,6 @@
+"use client"
+
+import React from 'react';
 import { Button } from '@/components/ui/Button';
 import {
   DropdownMenu,
@@ -8,32 +11,45 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/DropdownMenu';
 import { getCurrentProfile } from '@/lib/db/profile';
-import { getCurrentSession } from '@/lib/session';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { User } from 'lucide-react';
-import { cookies } from 'next/headers';
 import Link from 'next/link';
 import LogoutButton from '../auth/LogoutButton';
 import { UserAvatar } from '@/components/ui/common/UserAvatar';
+import { useProfileStore } from '@/lib/stores/profile';
 
-export const AccountDropdownMenu = async () => {
-  const supabase = await createServerComponentClient({ cookies })
-  const currentProfile = await getCurrentProfile(supabase)
-  const currentSession = await getCurrentSession(supabase)
+type AccountDropdownMenuProps = {
+  userEmail?: string
+}
 
-  if (!currentProfile || !currentSession) {
+export const AccountDropdownMenu = ({ userEmail }: AccountDropdownMenuProps) => {
+  const supabase = createClientComponentClient()
+  const { profile, setProfile } = useProfileStore((state) => state)
+
+  React.useEffect(() => {
+    const fetchProfile = async () => {
+      const profile = await getCurrentProfile(supabase)
+      if (!profile) {
+        return
+      }
+      setProfile(profile)
+    }
+    fetchProfile()
+  }, [supabase])
+
+  if (!profile) {
     return null
   }
 
-  const { username, avatar_url } = currentProfile
-  const nameLabel = username || currentSession.user.email || ''
+  const { username, avatar_url } = profile
+  const nameLabel = username || userEmail || ''
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className='h-14'>
           <div className='flex items-center'>
-            <UserAvatar username={username} avatarUrl={avatar_url} email={currentSession.user.email}/>
+            <UserAvatar username={username} avatarUrl={avatar_url} email={userEmail}/>
             <p className='ml-2 hidden md:block'>{nameLabel}</p>
           </div>
         </Button>

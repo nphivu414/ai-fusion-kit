@@ -79,8 +79,6 @@ export default async function ChatPage({ params }: { params: { id: string[] } })
   }
   
   return (
-    <Sheet>
-      <ChatPanel chatId={chatId} initialMessages={initialChatMessages} chatParams={chatParams}/>
-    </Sheet>
+    <ChatPanel chatId={chatId} initialMessages={initialChatMessages} chatParams={chatParams}/>
   )
 }
