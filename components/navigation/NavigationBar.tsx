@@ -6,8 +6,14 @@ import { cn } from '@/lib/utils';
 import { buttonVariants } from '../ui/Button';
 import { AppLogo } from '../ui/common/AppLogo';
 import { NavigationMainMenu } from './NavigationMainMenu';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { getCurrentSession } from '@/lib/session';
+import { cookies } from 'next/headers';
 
-export const NavigationBar = () => {
+export const NavigationBar = async () => {
+  const supabase = await createServerComponentClient({ cookies })
+  const currentSession = await getCurrentSession(supabase)
+
   return (
     <div className="fixed top-0 z-50 w-full bg-background shadow-md dark:border-b">
       <div className="flex h-16 items-center justify-between px-4">
@@ -29,7 +35,7 @@ export const NavigationBar = () => {
               <ThemeToggle />
             </div>
             <div>
-              <AccountDropdownMenu />
+              <AccountDropdownMenu userEmail={currentSession?.user?.email}/>
             </div>
           </div>
         </div>

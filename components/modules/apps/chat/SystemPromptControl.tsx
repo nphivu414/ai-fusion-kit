@@ -2,23 +2,21 @@ import React from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/Popover';
 import { TextArea } from '@/components/ui/TextArea';
 import { Button } from '@/components/ui/Button';
-import { UseChatHelpers } from 'ai/react';
+import { Message, UseChatHelpers } from 'ai/react';
 import { Label } from '@/components/ui/Label';
 import { Subtle } from '@/components/ui/typography';
 import { useFormContext } from 'react-hook-form';
 import { ChatParams } from './types';
-import { buildChatRequestParams } from './utils';
 
-type SystemPromptControlProps = Pick<UseChatHelpers, 'append' | 'setMessages'>
+type SystemPromptControlProps = Pick<UseChatHelpers, 'setMessages' | 'messages'>
 
-export const SystemPromptControl = ({ append, setMessages }: SystemPromptControlProps) => {
+export const SystemPromptControl = ({ setMessages, messages }: SystemPromptControlProps) => {
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
   const { getValues, setValue } = useFormContext<ChatParams>()
   const formValues = getValues()
   const { description } = formValues
   const [systemPromptInputValue, setSystemPromptInputValue] = React.useState<string | undefined>(description)
 
-  const chatRequestParams = buildChatRequestParams(formValues)
 
   const handlePopoverOpenChange = (isOpen: boolean) => {
     if (isOpen) {
@@ -38,23 +36,19 @@ export const SystemPromptControl = ({ append, setMessages }: SystemPromptControl
     if (!systemPromptInputValue) {
       return
     }
-    setValue('description', systemPromptInputValue)
+
+    const systemMessage: Message = {
+      role: 'system',
+      content: systemPromptInputValue,
+      id: 'system-prompt',
+    }
+
     setMessages([
-      {
-        role: 'system',
-        content: systemPromptInputValue,
-        id: 'system-prompt',
-      }
+      systemMessage,
+      ...messages
     ])
-    append({
-      role: 'user',
-      content: 'Who are you? Please introduce yourself.',
-      id: 'change-system-prompt',
-    }, {
-      options: {
-        body: chatRequestParams
-      }
-    })
+    setValue('description', systemPromptInputValue)
+
     setIsPopoverOpen(false)
   }
 
@@ -82,7 +76,7 @@ export const SystemPromptControl = ({ append, setMessages }: SystemPromptControl
           <div>
             <TextArea minRows={2} placeholder='Your custom prompt' value={systemPromptInputValue} onChange={handleSystemPromptInputChange}/>
             <Button size="sm" className='mt-4 w-full' onClick={handleSave}>
-              Save
+              Done
             </Button>
           </div>
         </div>

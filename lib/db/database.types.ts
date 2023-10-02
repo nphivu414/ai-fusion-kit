@@ -44,33 +44,36 @@ export interface Database {
           id: string
           name: string | null
           profileId: string
+          settings: Json | null
           updatedAt: string | null
         }
         Insert: {
-          appId?: string | null
+          appId: string
           createdAt?: string | null
           id?: string
           name?: string | null
-          profileId?: string | null
+          profileId: string
+          settings?: Json | null
           updatedAt?: string | null
         }
         Update: {
-          appId?: string | null
+          appId?: string
           createdAt?: string | null
           id?: string
           name?: string | null
-          profileId?: string | null
+          profileId?: string
+          settings?: Json | null
           updatedAt?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "chat_appId_fkey"
+            foreignKeyName: "chats_appId_fkey"
             columns: ["appId"]
             referencedRelation: "apps"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "chat_profileId_fkey"
+            foreignKeyName: "chats_profileId_fkey"
             columns: ["profileId"]
             referencedRelation: "profiles"
             referencedColumns: ["id"]
