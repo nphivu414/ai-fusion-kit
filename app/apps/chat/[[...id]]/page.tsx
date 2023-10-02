@@ -1,7 +1,6 @@
 import React from "react"
 import { Metadata } from "next"
 import { ChatPanel } from "@/components/modules/apps/chat/ChatPanel"
-import { Sheet } from "@/components/ui/Sheet"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
 import { createNewChat, getChatById, getChats } from "@/lib/db/chats"

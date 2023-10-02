@@ -35,7 +35,7 @@ export const AccountDropdownMenu = ({ userEmail }: AccountDropdownMenuProps) => 
       setProfile(profile)
     }
     fetchProfile()
-  }, [supabase])
+  }, [setProfile, supabase])
 
   if (!profile) {
     return null
