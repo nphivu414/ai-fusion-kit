@@ -36,7 +36,7 @@ export const deleteChat = async (id: string) => {
 
   try {
     await deleteChatDb(supabase, id)
-    revalidatePath(`/apps`)
+    revalidatePath(`/apps`, 'layout')
   } catch (error) {
     throw new Error('Failed to delete chat')
   }
@@ -54,7 +54,7 @@ export const updateChat = async (params: Update<'chats'>) => {
       id,
       ...rest,
     })
-    revalidatePath(`/apps`)
+    revalidatePath(`/apps`, 'layout')
   } catch (error) {
     throw new Error('Failed to update chat')
   }

@@ -34,9 +34,8 @@ export const NewChatButton = ({ closeDrawer }: NewChatButtonProps) => {
   }
 
   return (
-    <Button variant="outline" size="sm" className='w-full' isLoading={pendingCreateNewChat} onClick={onCreateNewChat}>
-      <Plus size={16} className='mr-2'/>
-      New Chat
+    <Button variant="outline" size="sm"  isLoading={pendingCreateNewChat} onClick={onCreateNewChat}>
+      <Plus size={16} />
     </Button>
   )
 }

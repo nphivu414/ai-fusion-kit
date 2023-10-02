@@ -19,7 +19,7 @@ export const ChatHistory = ({ data, closeDrawer }: ChatHistoryProps) => {
     <aside className="py-4">
       <div className="sticky top-0 flex items-center justify-between bg-background">
         <p className='lg:text-md py-2 text-lg font-bold lg:font-normal lg:text-muted-foreground'>Chat history</p>
-        <div className="lg: w-1/2">
+        <div>
           <NewChatButton closeDrawer={closeDrawer}/>
         </div>
       </div>

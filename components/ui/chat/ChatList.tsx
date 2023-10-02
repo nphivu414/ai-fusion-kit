@@ -5,9 +5,8 @@ import { Heading5 } from '@/components/ui/typography';
 import GPTAvatar from '@/public/chat-gpt.jpeg';
 import { useCopyToClipboard } from '@/hooks/useCopyToClipboard';
 import { toast } from '@/components/ui/use-toast';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { getCurrentProfile } from '@/lib/db/profile';
-import { Profile, Message as SupabaseMessage } from '@/lib/db';
+import { Message as SupabaseMessage } from '@/lib/db';
+import { useProfileStore } from '@/lib/stores/profile';
 
 type ChatListProps = {
   data: Message[];
@@ -17,21 +16,9 @@ type ChatListProps = {
 }
 
 export const ChatList = ({ data, isLoading, stop, reload }: ChatListProps) => {
-  const supabase = createClientComponentClient()
-  const [userProfile, setUserProfile] = React.useState<Profile | null>(null)
-
-  React.useEffect(() => {
-    const fetchProfile = async () => {
-      const profile = await getCurrentProfile(supabase)
-      if (!profile) {
-        return
-      }
-      setUserProfile(profile)
-    }
-    fetchProfile()
-  }, [supabase])
-
+  const profile = useProfileStore(state => state.profile)
   const { isCopied, copyToClipboard } = useCopyToClipboard({})
+  const hasConversation = data.filter(message => message.role !== "system").length > 0
 
   React.useEffect(() => {
     if (isCopied) {
@@ -44,15 +31,15 @@ export const ChatList = ({ data, isLoading, stop, reload }: ChatListProps) => {
   return (
     <>
       {
-        data.length ? (
+        hasConversation ? (
           <>
             {
               data.map((m, index) => {
-                if (m.role === 'system' || m.id === 'change-system-prompt') {
+                if (m.role === 'system') {
                   return null
                 }
-                const name = m.role === 'assistant' ? 'AI Assistant' : userProfile?.username || 'You'
-                const avatar = m.role === 'assistant' ? GPTAvatar.src : userProfile?.avatar_url || ''
+                const name = m.role === 'assistant' ? 'AI Assistant' : profile?.username || 'You'
+                const avatar = m.role === 'assistant' ? GPTAvatar.src : profile?.avatar_url || ''
                 const direction = m.role === 'assistant' ? 'start' : 'end'
                 const isLast = index === data.length - 1
                 return (

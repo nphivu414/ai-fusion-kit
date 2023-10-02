@@ -6,15 +6,51 @@ import { ModelSelector } from './ModelSelector'
 import { TemperatureSelector } from './TemperatureSelector'
 import { TopPSelector } from './TopPSelector'
 import { models, types } from './data/models'
-import { SheetClose, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/Sheet'
+import { SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/Sheet'
 import { SystemPromptControl } from '../SystemPromptControl'
 import { UseChatHelpers } from 'ai/react'
 import { FrequencyPenaltySelector } from './FrequencyPenaltySelector'
 import { PresencePenaltySelector } from './PresencePenaltySelector'
+import { useFormContext } from 'react-hook-form'
+import { ChatParams } from '../types'
+import { updateChatSettings } from './action'
+import { Loader } from 'lucide-react'
+import { useChatIdFromPathName } from '@/hooks/useChatIdFromPathName'
+import { toast } from '@/components/ui/use-toast'
 
-type ControlSidebarProps = Pick<UseChatHelpers, 'append' | 'setMessages'>
+type ControlSidebarProps = Pick<UseChatHelpers, 'setMessages' | 'messages'> & {
+  closeSidebarSheet?: () => void
+}
 
-export const ControlSidebar = ({ append, setMessages }: ControlSidebarProps) => {
+export const ControlSidebar = ({ setMessages, messages, closeSidebarSheet }: ControlSidebarProps) => {
+  const [pendingUpdateSettings, startUpdateSettings] = React.useTransition()
+  const currentChatId = useChatIdFromPathName()
+  const { getValues } = useFormContext<ChatParams>()
+
+  const onSave = () => {
+    if (!currentChatId) {
+      return
+    }
+
+    const formValues = getValues()
+    startUpdateSettings(async () => {
+      try {
+        updateChatSettings(currentChatId, formValues)
+        toast({
+          title: "Success",
+          description: "Your chat settings have been saved.",
+        })
+        closeSidebarSheet?.()
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to save chat settings. Please try again.",
+          variant: "destructive",
+        })
+      }
+    })
+  }
+  
   return (
     <>
       <SheetHeader>
@@ -25,22 +61,19 @@ export const ControlSidebar = ({ append, setMessages }: ControlSidebarProps) => 
       </SheetHeader>
       <Separator className='my-4'/>
       <div>
-        <SystemPromptControl append={append} setMessages={setMessages}/>
+        <SystemPromptControl setMessages={setMessages} messages={messages}/>
         <ModelSelector types={types} models={models} />
         <TemperatureSelector />
         <MaxLengthSelector />
         <TopPSelector />
         <FrequencyPenaltySelector />
         <PresencePenaltySelector />
-        {/* <div className='h-[1000px]'/> */}
       </div>
-      <div className='lg:hidden'>
+      <div>
         <Separator className='my-6'/>
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button className='w-full'>Done</Button>
-          </SheetClose>
-        </SheetFooter>
+        <Button className='w-full' onClick={onSave}>
+          {pendingUpdateSettings ? <Loader className='animate-spin'/> : 'Save'}
+        </Button>
       </div>
     </>
   )
