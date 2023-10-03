@@ -30,7 +30,7 @@ export const ChatHistoryItem = ({ chat, isActive, closeDrawer }: ChatHistoryItem
 
   return (
     <li className='w-full pb-1'>
-      <div className={cn('group flex h-10 flex-row items-center justify-between rounded-lg px-2 hover:bg-muted', isActive ? "bg-muted" : "bg-background")}>
+      <div className={cn('group flex h-10 flex-row items-center justify-between rounded-lg px-2 transition-colors hover:bg-accent', isActive ? "bg-accent" : "bg-background")}>
         <Link className='flex h-full max-w-full flex-1 items-center' href={`/apps/chat/${chat.id}`} onClick={closeDrawer}>
           <MessageCircle size={16}/>
           <div className='flex flex-col px-2'>

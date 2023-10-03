@@ -9,7 +9,7 @@ export const AppSideBarItem = ({ name, slug, description, logoUrl }: AppSideBarI
   return (
     <li className='px-2 py-1 lg:min-w-[319px]'>
       <Link className='h-16 w-full' href={slug || ''}>
-        <div className='flex flex-row items-center rounded-lg p-2 transition-colors hover:bg-background'>
+        <div className='flex flex-row items-center rounded-lg p-2 transition-colors hover:bg-background/30'>
           <div className='flex flex-col'>
             <Avatar>
               {logoUrl ? <AvatarImage src={logoUrl} className='w-12' alt={name} /> : null}
