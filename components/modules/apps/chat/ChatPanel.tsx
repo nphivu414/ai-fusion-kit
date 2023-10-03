@@ -22,7 +22,6 @@ import { buildChatRequestParams } from './utils';
 import { Chat, Message as SupabaseMessage } from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from 'next/navigation';
-import { usePrevious } from '@/hooks/usePrevious';
 
 const defaultValues: ChatParams = {
   description: defaultSystemPrompt,
@@ -49,9 +48,11 @@ export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProp
   const { messages, input, setInput, handleInputChange, isLoading, stop, reload, error, setMessages, append } = useChat({
     api: '/api/chat',
     initialMessages,
-    sendExtraMessageFields: true
+    sendExtraMessageFields: true,
+    onFinish: () => {
+      router.refresh()
+    }
   })
-  const prevIsLoading = usePrevious(isLoading)
 
   const formReturn = useForm<ChatParams>({
     defaultValues: chatParams || defaultValues,
@@ -63,12 +64,6 @@ export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProp
     const formValues = formReturn.getValues()
     return buildChatRequestParams(formValues)
   }
-
-  React.useEffect(() => {
-    if (prevIsLoading === true && isLoading === false) {
-      router.refresh()
-    }
-  }, [isLoading, prevIsLoading, router])
 
   React.useEffect(() => {
     if (error) {
@@ -142,33 +137,34 @@ export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProp
   const renderControlSidebar = () => {
     return <ControlSidebar setMessages={setMessages} messages={messages} closeSidebarSheet={closeSidebarSheet}/>
   }
-
+  
   return (
     <Sheet open={sidebarSheetOpen} onOpenChange={setSidebarSheetOpen}>
-      <FormProvider {...formReturn}>
-        <div className='flex flex-1 flex-col'>
-          <div className='flex flex-1'>
-            <div className='flex w-full flex-col rounded-lg pb-4 lg:bg-background'>
-              <div className='mx-auto flex w-full max-w-screen-2xl flex-1 flex-col'>
-                <div ref={scrollAreaRef} className='flex grow basis-0 flex-col overflow-visible px-0 pb-[110px] lg:overflow-y-auto lg:pb-0'>
-                  <Header />
-                  <Separator/>
-                  <ChatList data={messages} isLoading={isLoading} stop={stop} reload={handleReloadMessages}/>
-                  <ChatScrollAnchor trackVisibility={isLoading} parentElement={scrollAreaRef?.current}/>
-                </div>
-                <div className='fixed bottom-0 left-0 w-full bg-background p-4 lg:relative lg:mt-2 lg:bg-transparent lg:py-0'>
-                  <form onSubmit={onSubmit} className='relative' ref={formRef}>
-                    <ChatInput value={input} onKeyDown={onKeyDown} onChange={handleOnChange} />
-                    <div className='absolute bottom-0 right-0 flex w-1/2 justify-end px-2 pb-2'>
-                      <Button size="sm" type='submit'>
+      <div className='flex flex-1 flex-col'>
+        <div className='flex flex-1'>
+          <div className='flex w-full flex-col rounded-lg pb-4 lg:bg-background'>
+      
+            <div className='mx-auto flex w-full max-w-screen-2xl flex-1 flex-col'>
+              <Header />
+              <Separator/>
+              <div ref={scrollAreaRef} className='flex grow basis-0 flex-col overflow-visible px-0 pb-[110px] lg:overflow-y-auto lg:pb-0'>
+                <ChatList data={messages} isLoading={isLoading} stop={stop} reload={handleReloadMessages}/>
+                <ChatScrollAnchor trackVisibility={isLoading} parentElement={scrollAreaRef?.current}/>
+              </div>
+              <div className='fixed bottom-0 left-0 w-full bg-background p-4 lg:relative lg:mt-2 lg:bg-transparent lg:py-0'>
+                <form onSubmit={onSubmit} className='relative' ref={formRef}>
+                  <ChatInput value={input} onKeyDown={onKeyDown} onChange={handleOnChange} />
+                  <div className='absolute bottom-0 right-0 flex w-1/2 justify-end px-2 pb-2'>
+                    <Button size="sm" type='submit'>
                       Send
-                        <SendHorizonal size={14} className='ml-1'/>
-                      </Button>
-                    </div>
-                  </form>
-                </div>
+                      <SendHorizonal size={14} className='ml-1'/>
+                    </Button>
+                  </div>
+                </form>
               </div>
             </div>
+          </div>
+          <FormProvider {...formReturn}>
             <SheetContent className="w-[400px] overflow-y-auto sm:w-[540px]">
               <div className="pt-4">
                 {renderControlSidebar()}
@@ -177,9 +173,9 @@ export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProp
             <div className="h-0 w-0 overflow-x-hidden transition-[width] lg:h-auto lg:max-h-[calc(100vh_-_65px)] lg:w-[450px] lg:border-x lg:p-4">
               {renderControlSidebar()}
             </div>
-          </div>
+          </FormProvider>
         </div>
-      </FormProvider>
+      </div>
     </Sheet>
   )
 }

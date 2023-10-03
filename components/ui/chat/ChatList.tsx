@@ -29,7 +29,7 @@ export const ChatList = ({ data, isLoading, stop, reload }: ChatListProps) => {
   }, [isCopied])
 
   return (
-    <div className='h-full px-4'>
+    <>
       {
         hasConversation ? (
           <>
@@ -72,6 +72,6 @@ export const ChatList = ({ data, isLoading, stop, reload }: ChatListProps) => {
           </div>
         )
       }
-    </div>
+    </>
   )
 }
