@@ -16,23 +16,27 @@ export interface Database {
           createdAt: string | null
           description: string | null
           id: string
+          logoUrl: string | null
           name: string
           slug: string
-          logoUrl: string | null
           updatedAt: string | null
         }
         Insert: {
           createdAt?: string | null
           description?: string | null
           id?: string
-          name?: string | null
+          logoUrl?: string | null
+          name: string
+          slug: string
           updatedAt?: string | null
         }
         Update: {
           createdAt?: string | null
           description?: string | null
           id?: string
-          name?: string | null
+          logoUrl?: string | null
+          name?: string
+          slug?: string
           updatedAt?: string | null
         }
         Relationships: []
