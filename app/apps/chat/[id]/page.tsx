@@ -16,10 +16,10 @@ export const metadata: Metadata = {
   description: "The OpenAI Playground built using the components.",
 }
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
-export default async function ChatPage({ params }: { params: { id: string[] } }) {
-  const chatId = params.id?.[0]
+export default async function ChatPage({ params }: { params: { id: string } }) {
+  const chatId = params.id
 
   const supabase = createServerComponentClient({ cookies })
   const session = await getCurrentSession(supabase)
