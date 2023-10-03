@@ -21,7 +21,8 @@ import { Separator } from '@/components/ui/Separator';
 import { buildChatRequestParams } from './utils';
 import { Chat, Message as SupabaseMessage } from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
+import { revalidateChatPage } from './action';
 
 const defaultValues: ChatParams = {
   description: defaultSystemPrompt,
@@ -40,7 +41,7 @@ type ChatPanelProps = {
 }
 
 export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProps) => {
-  const router = useRouter()
+  // const router = useRouter()
   const scrollAreaRef = React.useRef<HTMLDivElement>(null)
   const [sidebarSheetOpen, setSidebarSheetOpen] = React.useState(false);
   const { formRef, onKeyDown } = useEnterSubmit()
@@ -50,7 +51,8 @@ export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProp
     initialMessages,
     sendExtraMessageFields: true,
     onFinish: () => {
-      router.refresh()
+      // router.refresh()
+      revalidateChatPage(chatId)
     }
   })
 
