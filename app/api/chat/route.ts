@@ -1,6 +1,5 @@
 import OpenAI from 'openai'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
-import { RequestCookies } from "@edge-runtime/cookies";
 import {
   env
 } from '@/env.mjs';
@@ -9,6 +8,7 @@ import { getCurrentSession } from '@/lib/session';
 import { createNewMessage, deleteMessagesFrom, getMessageById } from '@/lib/db/message';
 import { pick } from 'lodash';
 import { AxiomRequest, withAxiom } from 'next-axiom';
+import { cookies } from 'next/headers';
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY
@@ -19,8 +19,7 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
     route: 'api/chat',
   });
   
-  const cookies = new RequestCookies(req.headers) as any;
-  const supabase = createRouteHandlerClient({ cookies: () => cookies })
+  const supabase = createRouteHandlerClient({ cookies })
   const params = await req.json()
   const {
     messages,
@@ -80,9 +79,6 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
         profileId,
         role: 'assistant',
       })
-      // setTimeout(() => {
-      //   revalidatePath(`/apps/chat/${chatId}`, 'page')
-      // }, 5000);
     }
   })
  
