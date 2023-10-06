@@ -59,3 +59,7 @@ export const updateChat = async (params: Update<'chats'>) => {
     throw new Error('Failed to update chat')
   }
 }
+
+export const revalidateChatLayout = async () => {
+  revalidatePath('/apps', 'layout')
+}

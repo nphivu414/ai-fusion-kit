@@ -21,6 +21,8 @@ import { Separator } from '@/components/ui/Separator';
 import { buildChatRequestParams } from './utils';
 import { Chat, Message as SupabaseMessage } from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
+import { useRouter } from 'next/navigation';
+import { revalidateChatLayout } from './action';
 
 const defaultValues: ChatParams = {
   description: defaultSystemPrompt,
@@ -36,18 +38,26 @@ type ChatPanelProps = {
   chatId: Chat['id']
   initialMessages: Message[]
   chatParams?: ChatParams
+  isNewChat?: boolean
 }
 
-export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProps) => {
+export const ChatPanel = ({ chatId, initialMessages, chatParams, isNewChat }: ChatPanelProps) => {
   const scrollAreaRef = React.useRef<HTMLDivElement>(null)
   const [sidebarSheetOpen, setSidebarSheetOpen] = React.useState(false);
   const { formRef, onKeyDown } = useEnterSubmit()
+  const router = useRouter()
 
   const { messages, input, setInput, handleInputChange, isLoading, stop, reload, error, setMessages, append } = useChat({
     id: chatId,
     api: '/api/chat',
     initialMessages,
     sendExtraMessageFields: true,
+    onFinish: async () => {
+      if (isNewChat) {
+        await revalidateChatLayout()
+        router.replace(`/apps/chat/${chatId}`)
+      }
+    }
   })
 
   const formReturn = useForm<ChatParams>({
@@ -107,7 +117,7 @@ export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProp
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!input) {
+    if (!input || isLoading) {
       return
     }
 
@@ -120,6 +130,7 @@ export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProp
         body: {
           ...getChatRequestParams(),
           chatId,
+          isNewChat
         }
       }
     })
@@ -150,7 +161,7 @@ export const ChatPanel = ({ chatId, initialMessages, chatParams }: ChatPanelProp
                 <form onSubmit={onSubmit} className='relative' ref={formRef}>
                   <ChatInput value={input} onKeyDown={onKeyDown} onChange={handleOnChange} />
                   <div className='absolute bottom-0 right-0 flex w-1/2 justify-end px-2 pb-2'>
-                    <Button size="sm" type='submit'>
+                    <Button size="sm" type='submit' disabled={isLoading}>
                       Send
                       <SendHorizonal size={14} className='ml-1'/>
                     </Button>
