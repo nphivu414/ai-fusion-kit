@@ -1,7 +1,6 @@
 'use server'
 
-import { APP_SLUGS } from "@/lib/contants"
-import { Chat, Database, Update } from "@/lib/db"
+import { Database, Update } from "@/lib/db"
 import { getAppBySlug } from "@/lib/db/apps"
 import { createNewChat as createNewChatDb, deleteChat as deleteChatDb, updateChat as updateChatDb } from "@/lib/db/chats"
 import { getCurrentSession } from "@/lib/session"
@@ -61,6 +60,6 @@ export const updateChat = async (params: Update<'chats'>) => {
   }
 }
 
-export const revalidateChatPage = async (id: Chat['id']) => {
-  revalidatePath(`${APP_SLUGS.CHAT}/${id}`)
+export const revalidateChatLayout = async () => {
+  revalidatePath('/apps', 'layout')
 }
