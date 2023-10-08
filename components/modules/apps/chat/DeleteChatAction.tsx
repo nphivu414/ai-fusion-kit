@@ -25,7 +25,7 @@ export const DeleteChatAction = ({ chat, ...rest }: ChatActionProps) => {
           description: "Your chat has been deleted.",
         })
         if (chatIdFromPathName === chat.id) {
-          replace('/apps/chat')
+          replace('/apps/chat/new')
         }
         setIsAlertOpen(false)
       } catch (error) {

@@ -12,7 +12,7 @@ type NewChatButtonProps = {
 
 export const NewChatButton = ({ closeDrawer }: NewChatButtonProps) => {
   return (
-    <Link href="/apps/chat" className={cn(buttonVariants({
+    <Link href="/apps/chat/new" className={cn(buttonVariants({
       size: 'sm',
       variant: 'outline'
     }))}

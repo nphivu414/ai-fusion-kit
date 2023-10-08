@@ -15,10 +15,10 @@ type ChatHistoryItemProps = {
 export const ChatHistoryItem = ({ chat, isActive, closeDrawer }: ChatHistoryItemProps) => {
   const renderActionButtons = () => {
     return (
-      <div className={cn('hidden lg:block', {
+      <div className={cn('hidden w-20 lg:group-hover:block', {
         'block': isActive
       })}>
-        <div className={cn('grid grid-cols-2 lg:invisible lg:group-hover:visible', {
+        <div className={cn('grid grid-cols-2 ', {
           'lg:visible': isActive
         })}>
           <EditChatAction chat={chat}/>
@@ -30,14 +30,20 @@ export const ChatHistoryItem = ({ chat, isActive, closeDrawer }: ChatHistoryItem
 
   return (
     <li className='w-full pb-1'>
-      <div className={cn('group flex h-10 flex-row items-center justify-between rounded-lg px-2 transition-colors hover:bg-accent', isActive ? "bg-accent" : "bg-background")}>
-        <Link className='flex h-full max-w-full flex-1 items-center' href={`/apps/chat/${chat.id}`} onClick={closeDrawer}>
-          <MessageCircle size={16}/>
-          <div className='flex flex-col px-2'>
-            <p className='truncate text-sm text-muted-foreground'>{chat.name}</p>
+      <div className={cn('group h-10 rounded-lg px-2 transition-colors hover:bg-accent', isActive ? "bg-accent" : "bg-background")}>
+        <div className='flex h-full max-w-full flex-1 items-center' onClick={closeDrawer}>
+          <div className='flex w-full justify-between'>
+            <Link href={`/apps/chat/${chat.id}`} className={cn('flex w-[90%] items-center px-2 lg:group-hover:w-[65%]', {
+              'w-[65%]': isActive
+            })}>
+              <div className='mr-1 w-4'>
+                <MessageCircle size={16}/>
+              </div>
+              <p className='truncate text-sm text-muted-foreground'>{chat.name}</p>
+            </Link>
+            {renderActionButtons()}
           </div>
-        </Link>
-        {renderActionButtons()}
+        </div>
       </div>
     </li>
   )

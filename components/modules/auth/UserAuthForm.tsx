@@ -54,7 +54,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       })
     }
     
-    replace("/apps/chat")
+    replace("/apps/chat/new")
   }
 
   return (

@@ -44,7 +44,7 @@ export const ChatBubble = ({
     'place-items-start grid-cols-[auto_1fr]': direction === 'start',
     'place-items-end grid-cols-[1fr_auto]': direction === 'end',
   })
-  const chatBubbleClass = cn('chat-bubble min-h-fit max-w-full rounded-md px-4 py-2 lg:max-w-[90%]', {
+  const chatBubbleClass = cn('chat-bubble min-h-fit w-auto max-w-full rounded-md px-4 py-2 lg:max-w-[90%]', {
     'bg-secondary text-secondary-foreground': direction === 'start',
     'bg-primary text-primary-foreground': direction === 'end',
   })

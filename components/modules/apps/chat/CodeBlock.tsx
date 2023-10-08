@@ -7,9 +7,10 @@ import { Button } from '@/components/ui/Button'
 import { useCopyToClipboard } from '@/hooks/useCopyToClipboard'
 import { Check, Copy, Download } from 'lucide-react'
 import { useTheme } from 'next-themes'
+import React from 'react'
 import { FC, memo } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { coldarkDark, coldarkCold } from 'react-syntax-highlighter/dist/cjs/styles/prism'
+import { oneDark, oneLight } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 
 interface Props {
   language: string
@@ -57,9 +58,18 @@ export const generateRandomString = (length: number, lowercase = false) => {
 }
 
 const CodeBlock: FC<Props> = memo(({ language, value }) => {
+  const [mounted, setMounted] = React.useState(false)
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 })
   const { theme } = useTheme()
-  const codeBlockStyle = theme === 'dark' ? coldarkDark : coldarkCold
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+  
+  if (!mounted) {
+    return null
+  }
+
+  const codeBlockStyle = theme === 'dark' ? oneDark : oneLight
 
   const downloadAsFile = () => {
     if (typeof window === 'undefined') {

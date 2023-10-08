@@ -12,7 +12,7 @@ import { getMessages } from "@/lib/db/message"
 import { ChatParams } from "@/components/modules/apps/chat/types"
 
 export const metadata: Metadata = {
-  title: "Playground",
+  title: "Chat",
   description: "The OpenAI Playground built using the components.",
 }
 

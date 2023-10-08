@@ -57,7 +57,7 @@ export function UserSignupForm({ className, ...props }: UserSignupFormProps) {
       })
     }
     
-    replace("/apps/chat")
+    replace("/apps/chat/new")
   }
 
   return (
