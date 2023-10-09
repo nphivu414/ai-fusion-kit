@@ -1,9 +1,9 @@
 import OpenAI from 'openai'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import {
   env
 } from '@/env.mjs';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { getCurrentSession } from '@/lib/session';
 import { createNewMessage, deleteMessagesFrom, getMessageById } from '@/lib/db/message';
 import { pick } from 'lodash';
@@ -11,6 +11,8 @@ import { AxiomRequest, withAxiom } from 'next-axiom';
 import { RequestCookies } from "@edge-runtime/cookies";
 import { createNewChat } from '@/lib/db/chats';
 import { getAppBySlug } from '@/lib/db/apps';
+
+export const dynamic = "force-dynamic";
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY
