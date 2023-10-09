@@ -1,19 +1,20 @@
+import { RequestCookies } from "@edge-runtime/cookies";
 import OpenAI from 'openai'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { pick } from 'lodash';
+import { AxiomRequest, withAxiom } from 'next-axiom';
+import { getCurrentSession } from '@/lib/session';
+import { createNewMessage, deleteMessagesFrom, getMessageById } from '@/lib/db/message';
+import { createNewChat } from '@/lib/db/chats';
+import { getAppBySlug } from '@/lib/db/apps';
 import {
   env
 } from '@/env.mjs';
-import { getCurrentSession } from '@/lib/session';
-import { createNewMessage, deleteMessagesFrom, getMessageById } from '@/lib/db/message';
-import { pick } from 'lodash';
-import { AxiomRequest, withAxiom } from 'next-axiom';
-import { RequestCookies } from "@edge-runtime/cookies";
-import { createNewChat } from '@/lib/db/chats';
-import { getAppBySlug } from '@/lib/db/apps';
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 10
+export const runtime = "edge"
+export const preferredRegion = "home"
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY
