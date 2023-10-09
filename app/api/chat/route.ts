@@ -8,7 +8,7 @@ import { getCurrentSession } from '@/lib/session';
 import { createNewMessage, deleteMessagesFrom, getMessageById } from '@/lib/db/message';
 import { pick } from 'lodash';
 import { AxiomRequest, withAxiom } from 'next-axiom';
-import { cookies } from 'next/headers';
+import { RequestCookies } from "@edge-runtime/cookies";
 import { createNewChat } from '@/lib/db/chats';
 import { getAppBySlug } from '@/lib/db/apps';
 
@@ -21,7 +21,8 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
     route: 'api/chat',
   });
   
-  const supabase = createRouteHandlerClient({ cookies })
+  const cookies = new RequestCookies(req.headers) as any;
+  const supabase = createRouteHandlerClient({ cookies: () => cookies })
   const params = await req.json()
   const {
     messages,
