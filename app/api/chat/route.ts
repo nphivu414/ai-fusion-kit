@@ -13,6 +13,7 @@ import { createNewChat } from '@/lib/db/chats';
 import { getAppBySlug } from '@/lib/db/apps';
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 15
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY

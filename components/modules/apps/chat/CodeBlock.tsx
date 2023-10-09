@@ -58,16 +58,16 @@ export const generateRandomString = (length: number, lowercase = false) => {
 }
 
 const CodeBlock: FC<Props> = memo(({ language, value }) => {
-  // const [mounted, setMounted] = React.useState(false)
+  const [mounted, setMounted] = React.useState(false)
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 })
   const { theme } = useTheme()
-  // React.useEffect(() => {
-  //   setMounted(true)
-  // }, [])
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
   
-  // if (!mounted) {
-  //   return null
-  // }
+  if (!mounted) {
+    return null
+  }
 
   const codeBlockStyle = theme === 'dark' ? oneDark : oneLight
 
