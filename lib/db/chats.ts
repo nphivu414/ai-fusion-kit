@@ -6,6 +6,8 @@ import { LogLevel } from "next-axiom/dist/logger";
 
 type GetChatsParams = Pick<Chat, 'appId' | 'profileId'>
 
+export const revalidate = 3600
+
 const log = new Logger({
   logLevel: LogLevel.debug,
   args: {

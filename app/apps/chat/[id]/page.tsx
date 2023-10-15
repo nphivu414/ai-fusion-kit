@@ -10,7 +10,7 @@ import { Message } from "ai"
 import { getMessages } from "@/lib/db/message"
 import { ChatParams } from "@/components/modules/apps/chat/types"
 
-export const runtime = 'edge';
+export const runtime = "edge"
 
 export const metadata: Metadata = {
   title: "Chat",
