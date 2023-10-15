@@ -6,10 +6,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { ChatScrollAnchor } from '@/components/ui/common/ChatScrollAnchor'
 import { Button } from '@/components/ui/Button'
-import { SendHorizonal } from 'lucide-react'
+import { SendHorizonal, Settings } from 'lucide-react'
 import { useEnterSubmit } from '@/hooks/useEnterSubmit'
 import { toast } from '@/components/ui/use-toast'
-import { Sheet, SheetContent } from "@/components/ui/Sheet"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/Sheet"
 import { ControlSidebar } from './control-side-bar'
 import { FormProvider, useForm } from 'react-hook-form';
 import { ChatInput, ChatList } from '@/components/ui/chat'
@@ -23,6 +23,7 @@ import { Chat, Message as SupabaseMessage } from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from 'next/navigation';
 import { revalidateChatLayout } from './action';
+import { ChatHistoryDrawer } from './ChatHistoryDrawer';
 
 const defaultValues: ChatParams = {
   description: defaultSystemPrompt,
@@ -37,11 +38,12 @@ const defaultValues: ChatParams = {
 type ChatPanelProps = {
   chatId: Chat['id']
   initialMessages: Message[]
+  chats: Chat[] | null
   chatParams?: ChatParams
   isNewChat?: boolean
 }
 
-export const ChatPanel = ({ chatId, initialMessages, chatParams, isNewChat }: ChatPanelProps) => {
+export const ChatPanel = ({ chatId, chats, initialMessages, chatParams, isNewChat }: ChatPanelProps) => {
   const scrollAreaRef = React.useRef<HTMLDivElement>(null)
   const [sidebarSheetOpen, setSidebarSheetOpen] = React.useState(false);
   const { formRef, onKeyDown } = useEnterSubmit()
@@ -142,7 +144,7 @@ export const ChatPanel = ({ chatId, initialMessages, chatParams, isNewChat }: Ch
   }
 
   const renderControlSidebar = () => {
-    return <ControlSidebar setMessages={setMessages} messages={messages} closeSidebarSheet={closeSidebarSheet}/>
+    return <ControlSidebar setMessages={setMessages} messages={messages} closeSidebarSheet={closeSidebarSheet} isNewChat={isNewChat}/>
   }
   
   return (
@@ -160,6 +162,16 @@ export const ChatPanel = ({ chatId, initialMessages, chatParams, isNewChat }: Ch
               <div className='fixed bottom-0 left-0 w-full bg-background p-4 lg:relative lg:mt-2 lg:bg-transparent lg:py-0'>
                 <form onSubmit={onSubmit} className='relative' ref={formRef}>
                   <ChatInput value={input} onKeyDown={onKeyDown} onChange={handleOnChange} />
+                  <div className='absolute bottom-0 left-0 flex w-1/2 px-2 pb-2 lg:hidden'>
+                    <ChatHistoryDrawer data={chats}/>
+                  </div>
+                  <div className='absolute bottom-0 left-12 flex w-1/2 justify-start px-2 pb-2 lg:hidden'>
+                    <SheetTrigger asChild>
+                      <Button size="sm" variant="ghost">
+                        <Settings />
+                      </Button>
+                    </SheetTrigger>
+                  </div>
                   <div className='absolute bottom-0 right-0 flex w-1/2 justify-end px-2 pb-2'>
                     <Button size="sm" type='submit' disabled={isLoading}>
                       Send
@@ -176,7 +188,7 @@ export const ChatPanel = ({ chatId, initialMessages, chatParams, isNewChat }: Ch
                 {renderControlSidebar()}
               </div>
             </SheetContent>
-            <div className="h-0 w-0 overflow-x-hidden transition-[width] lg:h-auto lg:max-h-[calc(100vh_-_65px)] lg:w-[450px] lg:border-x lg:p-4">
+            <div className="h-0 w-0 overflow-x-hidden transition-[width] lg:h-auto lg:max-h-[calc(100vh_-_65px)] lg:w-[450px] lg:border-x">
               {renderControlSidebar()}
             </div>
           </FormProvider>

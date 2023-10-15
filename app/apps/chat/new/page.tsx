@@ -6,6 +6,7 @@ import { cookies } from "next/headers"
 import { getAppBySlug } from "@/lib/db/apps"
 import { getCurrentSession } from "@/lib/session"
 import { v4 as uuidv4 } from 'uuid';
+import { getChats } from "@/lib/db/chats"
 
 export const metadata: Metadata = {
   title: "New Chat",
@@ -25,7 +26,13 @@ export default async function NewChatPage() {
     )
   }
 
+  const currentProfileId = session.user.id
+  const chats = await getChats(supabase, {
+    appId: currentApp.id,
+    profileId: currentProfileId,
+  })
+
   return (
-    <ChatPanel chatId={chatId} initialMessages={[]} isNewChat/>
+    <ChatPanel chatId={chatId} initialMessages={[]} chats={chats} isNewChat/>
   )
 }

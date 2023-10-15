@@ -3,13 +3,14 @@ import { Metadata } from "next"
 import { ChatPanel } from "@/components/modules/apps/chat/ChatPanel"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
-import { createNewChat, getChatById, getChats } from "@/lib/db/chats"
+import { getChatById, getChats } from "@/lib/db/chats"
 import { getAppBySlug } from "@/lib/db/apps"
 import { getCurrentSession } from "@/lib/session"
-import { redirect } from "next/navigation"
 import { Message } from "ai"
 import { getMessages } from "@/lib/db/message"
 import { ChatParams } from "@/components/modules/apps/chat/types"
+
+export const runtime = 'edge';
 
 export const metadata: Metadata = {
   title: "Chat",
@@ -30,26 +31,10 @@ export default async function ChatPage({ params }: { params: { id: string } }) {
   }
 
   const currentProfileId = session.user.id
-
-  if(!chatId) {
-    const chats = await getChats(supabase, {
-      appId: currentApp.id,
-      profileId: currentProfileId,
-    })
-
-    if (chats?.length) {
-      return redirect(`/apps/chat/${chats[0].id}`)
-    }
-
-    const newChats = await createNewChat(supabase, {
-      appId: currentApp.id,
-      name: '(New Chat)',
-      profileId: currentProfileId,
-    })
-    if (newChats) {
-      return redirect(`/apps/chat/${newChats[0].id}`)
-    }
-  }
+  const chats = await getChats(supabase, {
+    appId: currentApp.id,
+    profileId: currentProfileId,
+  })
 
   const dbMessages = await getMessages(supabase, {
     chatId,
@@ -76,6 +61,6 @@ export default async function ChatPage({ params }: { params: { id: string } }) {
   }
   
   return (
-    <ChatPanel chatId={chatId} initialMessages={initialChatMessages} chatParams={chatParams}/>
+    <ChatPanel chatId={chatId} chats={chats} initialMessages={initialChatMessages} chatParams={chatParams}/>
   )
 }

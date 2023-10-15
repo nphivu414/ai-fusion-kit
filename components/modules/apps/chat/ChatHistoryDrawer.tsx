@@ -25,7 +25,7 @@ export const ChatHistoryDrawer = ({ data }: ChatHistoryDrawerProps) => {
 
   return (
     <Drawer.Root open={drawerOpen} onOpenChange={setDrawerOpen}>
-      <Button variant="ghost" size="sm" className='absolute right-4 top-4 block lg:hidden' onClick={onHistoryButtonClick}>
+      <Button variant="ghost" size="sm" onClick={onHistoryButtonClick}>
         <History/>
       </Button>
       <Drawer.Portal>

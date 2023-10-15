@@ -20,9 +20,10 @@ import { toast } from '@/components/ui/use-toast'
 
 type ControlSidebarProps = Pick<UseChatHelpers, 'setMessages' | 'messages'> & {
   closeSidebarSheet?: () => void
+  isNewChat?: boolean
 }
 
-export const ControlSidebar = ({ setMessages, messages, closeSidebarSheet }: ControlSidebarProps) => {
+export const ControlSidebar = ({ setMessages, messages, closeSidebarSheet, isNewChat }: ControlSidebarProps) => {
   const [pendingUpdateSettings, startUpdateSettings] = React.useTransition()
   const currentChatId = useChatIdFromPathName()
   const { getValues } = useFormContext<ChatParams>()
@@ -53,14 +54,14 @@ export const ControlSidebar = ({ setMessages, messages, closeSidebarSheet }: Con
   
   return (
     <>
-      <SheetHeader>
+      <SheetHeader className='lg:px-4'>
         <SheetTitle className="text-left">Settings</SheetTitle>
         <SheetDescription className="text-left">
           {`Combining these parameters allows you to fine-tune the AI's output to suit different use cases, from creative writing to generating code snippets or answering questions.`}
         </SheetDescription>
       </SheetHeader>
       <Separator className='my-4'/>
-      <div>
+      <div className='pb-4 lg:px-4'>
         <SystemPromptControl setMessages={setMessages} messages={messages}/>
         <ModelSelector types={types} models={models} />
         <TemperatureSelector />
@@ -69,12 +70,15 @@ export const ControlSidebar = ({ setMessages, messages, closeSidebarSheet }: Con
         <FrequencyPenaltySelector />
         <PresencePenaltySelector />
       </div>
-      <div>
-        <Separator className='my-6'/>
-        <Button className='w-full' onClick={onSave}>
-          {pendingUpdateSettings ? <Loader className='animate-spin'/> : 'Save'}
-        </Button>
-      </div>
+      {
+        !isNewChat && (
+          <div className='w-full lg:sticky lg:bottom-0 lg:bg-transparent lg:p-4 lg:backdrop-blur-sm'>
+            <Button className='w-full' onClick={onSave}>
+              {pendingUpdateSettings ? <Loader className='animate-spin'/> : 'Save'}
+            </Button>
+          </div>
+        )
+      }
     </>
   )
 }
