@@ -44,6 +44,7 @@
     "daisyui": "^3.5.1",
     "eslint": "8.46.0",
     "eslint-config-next": "13.5.4",
+    "framer-motion": "^10.16.4",
     "lodash": "^4.17.21",
     "lucide-react": "0.263.1",
     "next": "13.5.4",
