@@ -8,6 +8,7 @@ import { getCurrentSession } from "@/lib/session"
 import { v4 as uuidv4 } from 'uuid';
 import { getChats } from "@/lib/db/chats"
 import { unstable_cache } from "next/cache"
+import { CACHE_KEYS } from "@/lib/cache"
 
 export const metadata: Metadata = {
   title: "New Chat",
@@ -36,7 +37,7 @@ export default async function NewChatPage() {
       })
       return data
     },
-    ['chats'],
+    CACHE_KEYS.CHATS,
     {
       revalidate: false,
     }

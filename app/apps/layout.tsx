@@ -7,6 +7,7 @@ import { getChats } from "@/lib/db/chats"
 import { getCurrentSession } from "@/lib/session"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
+import { CACHE_KEYS } from '@/lib/cache'
 
 export const dynamic = 'force-dynamic'
 
@@ -35,13 +36,11 @@ export default async function AppLayout({ children }: AppLayoutProps) {
       })
       return data
     },
-    ['chats'],
+    CACHE_KEYS.CHATS,
     {
       revalidate: false,
     }
   )()
-
-
 
   return (
     <MainLayout>

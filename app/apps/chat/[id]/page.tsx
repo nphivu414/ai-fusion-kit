@@ -10,6 +10,7 @@ import { Message } from "ai"
 import { getMessages } from "@/lib/db/message"
 import { ChatParams } from "@/components/modules/apps/chat/types"
 import { unstable_cache } from "next/cache"
+import { CACHE_KEYS } from "@/lib/cache"
 
 export const metadata: Metadata = {
   title: "Chat",
@@ -38,7 +39,7 @@ export default async function ChatPage({ params }: { params: { id: string } }) {
       })
       return data
     },
-    ['chats'],
+    CACHE_KEYS.CHATS,
     {
       revalidate: false,
     }
