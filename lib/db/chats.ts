@@ -34,7 +34,6 @@ export const getChats = unstable_cache(async (supabase: SupabaseClient<Database>
   log.info(`${getChats.name} fetched successfully`, { data });
   return data
 }, ['chats'], {
-  revalidate: 10,
   tags: ['chats'],
 })
 
