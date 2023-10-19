@@ -1,4 +1,3 @@
-import { cache } from 'react'
 import { SupabaseClient } from "@supabase/auth-helpers-nextjs"
 import { Chat, Database, Insert, Update } from "."
 import { Logger } from "next-axiom";
@@ -13,7 +12,7 @@ const log = new Logger({
   }
 });
 
-export const getChats = cache(async (supabase: SupabaseClient<Database>, params: GetChatsParams) => {
+export const getChats = async (supabase: SupabaseClient<Database>, params: GetChatsParams) => {
   log.info(`${getChats.name} called`, params);
   const { data, error, status } = await supabase
     .from('chats')
@@ -27,11 +26,11 @@ export const getChats = cache(async (supabase: SupabaseClient<Database>, params:
     return null
   }
 
-  await new Promise(r => setTimeout(r, 5000));
+  await new Promise(r => setTimeout(r, 3000));
 
   log.info(`${getChats.name} fetched successfully`, { data });
   return data
-})
+}
 
 export const getChatById = async (supabase: SupabaseClient<Database>, id: string) => {
   log.info(`${getChatById.name} called`, { id });

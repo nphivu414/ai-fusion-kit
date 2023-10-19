@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache'
 import { AppSideBar } from "@/components/modules/apps/app-side-bar"
 import { ChatHistory } from "@/components/modules/apps/chat/ChatHistory"
 import { MainLayout } from "@/components/ui/common/MainLayout"
@@ -26,10 +27,21 @@ export default async function AppLayout({ children }: AppLayoutProps) {
 
   const currentProfileId = session.user.id
   
-  const chats = await getChats(supabase, {
-    appId: currentApp.id,
-    profileId: currentProfileId,
-  })
+  const chats = await unstable_cache(
+    async () => {
+      const data = await getChats(supabase, {
+        appId: currentApp.id,
+        profileId: currentProfileId,
+      })
+      return data
+    },
+    ['chats'],
+    {
+      revalidate: false,
+    }
+  )()
+
+
 
   return (
     <MainLayout>

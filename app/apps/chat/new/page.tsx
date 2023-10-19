@@ -7,6 +7,7 @@ import { getAppBySlug } from "@/lib/db/apps"
 import { getCurrentSession } from "@/lib/session"
 import { v4 as uuidv4 } from 'uuid';
 import { getChats } from "@/lib/db/chats"
+import { unstable_cache } from "next/cache"
 
 export const metadata: Metadata = {
   title: "New Chat",
@@ -27,10 +28,19 @@ export default async function NewChatPage() {
   }
 
   const currentProfileId = session.user.id
-  const chats = await getChats(supabase, {
-    appId: currentApp.id,
-    profileId: currentProfileId,
-  })
+  const chats = await unstable_cache(
+    async () => {
+      const data = await getChats(supabase, {
+        appId: currentApp.id,
+        profileId: currentProfileId,
+      })
+      return data
+    },
+    ['chats'],
+    {
+      revalidate: false,
+    }
+  )()
 
   return (
     <ChatPanel chatId={chatId} initialMessages={[]} chats={chats} isNewChat/>
