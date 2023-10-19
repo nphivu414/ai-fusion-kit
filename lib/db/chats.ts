@@ -29,6 +29,8 @@ export const getChats = cache(async (supabase: SupabaseClient<Database>, params:
     return null
   }
 
+  await new Promise(r => setTimeout(r, 10000));
+
   log.info(`${getChats.name} fetched successfully`, { data });
   return data
 })
