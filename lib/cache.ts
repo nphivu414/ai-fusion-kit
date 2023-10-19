@@ -1,3 +1,3 @@
 export const CACHE_KEYS = {
-  CHATS: ['chats'],
+  CHATS: 'chats',
 }

@@ -152,10 +152,10 @@ export const ChatPanel = ({ chatId, chats, initialMessages, chatParams, isNewCha
       <div className='flex flex-1 flex-col'>
         <div className='flex flex-1'>
           <div className='flex w-full flex-col rounded-lg pb-4 lg:bg-background'>
-            <div className='mx-auto flex w-full max-w-screen-2xl flex-1 flex-col'>
+            <div className='mx-auto flex w-full flex-1 flex-col'>
               <Header />
               <Separator/>
-              <div ref={scrollAreaRef} className='flex grow basis-0 flex-col overflow-visible px-4 pb-[110px] lg:overflow-y-auto lg:pb-0'>
+              <div ref={scrollAreaRef} className='mx-auto flex w-full max-w-screen-2xl grow basis-0 flex-col overflow-visible px-4 pb-[110px] lg:overflow-y-auto lg:pb-0'>
                 <ChatList data={messages} isLoading={isLoading} stop={stop} reload={handleReloadMessages}/>
                 <ChatScrollAnchor trackVisibility={isLoading} parentElement={scrollAreaRef?.current}/>
               </div>

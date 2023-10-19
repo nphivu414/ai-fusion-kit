@@ -39,7 +39,7 @@ export default async function ChatPage({ params }: { params: { id: string } }) {
       })
       return data
     },
-    CACHE_KEYS.CHATS,
+    [CACHE_KEYS.CHATS, currentApp.id, currentProfileId],
     {
       revalidate: false,
     }

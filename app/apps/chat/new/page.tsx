@@ -37,7 +37,7 @@ export default async function NewChatPage() {
       })
       return data
     },
-    CACHE_KEYS.CHATS,
+    [CACHE_KEYS.CHATS, currentApp.id, currentProfileId],
     {
       revalidate: false,
     }

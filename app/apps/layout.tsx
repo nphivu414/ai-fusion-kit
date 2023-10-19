@@ -36,7 +36,7 @@ export default async function AppLayout({ children }: AppLayoutProps) {
       })
       return data
     },
-    CACHE_KEYS.CHATS,
+    [CACHE_KEYS.CHATS, currentApp.id, currentProfileId],
     {
       revalidate: false,
     }
