@@ -52,11 +52,6 @@ export const Sidebar = () => {
         </li>
         <li>
           <Link href="#" className="group flex items-center rounded-lg p-2 text-lg">
-          Pricing
-          </Link>
-        </li>
-        <li>
-          <Link href="#" className="group flex items-center rounded-lg p-2 text-lg">
           Changelog
           </Link>
         </li>
