@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react';
-import { Button } from '@/components/ui/Button';
+import { Button, buttonVariants } from '@/components/ui/Button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +17,7 @@ import Link from 'next/link';
 import LogoutButton from '../auth/LogoutButton';
 import { UserAvatar } from '@/components/ui/common/UserAvatar';
 import { useProfileStore } from '@/lib/stores/profile';
+import { cn } from '@/lib/utils';
 
 type AccountDropdownMenuProps = {
   userEmail?: string
@@ -38,7 +39,11 @@ export const AccountDropdownMenu = ({ userEmail }: AccountDropdownMenuProps) => 
   }, [setProfile, supabase])
 
   if (!profile) {
-    return null
+    return <Link href="/signin" className={cn(buttonVariants({
+      variant: 'outline',
+    }), 'ml-2')}>
+      Signin
+    </Link>
   }
 
   const { username, avatar_url } = profile
