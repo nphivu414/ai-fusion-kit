@@ -1,3 +1,4 @@
+import { ChatAppFeatures } from "@/components/modules/home/ChatAppFeatures";
 import { DescriptionHeadingText } from "@/components/modules/home/DescriptionHeadingText";
 import { FeatureItems } from "@/components/modules/home/FeatureItems";
 import { HeroBannerImage } from "@/components/modules/home/HeroBannerImage";
@@ -31,8 +32,8 @@ export default async function Home() {
         className="container space-y-6 bg-slate-50 py-8 dark:bg-transparent md:py-12 lg:py-24"
       >
         <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
-          <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
-            Features
+          <h2 className="font-heading text-3xl leading-[1.1] sm:text-4xl">
+            Next-Gen Web Tools for Chatbot App
           </h2>
           <p className="leading-normal text-muted-foreground sm:text-lg sm:leading-7">
             Revolutionize the way you build chatbot applications with the power of Next.js, Server Components, and Supabase. This template provides you with a solid foundation to create cutting-edge chatbot apps that are feature-rich and responsive, all while taking advantage of the latest Next.js technology.
@@ -40,6 +41,7 @@ export default async function Home() {
         </div>
         <FeatureItems/>
       </section>
+      <ChatAppFeatures/>
     </>
   )
 }
