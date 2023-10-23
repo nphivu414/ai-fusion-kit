@@ -22,7 +22,7 @@ type FormData = z.infer<typeof credentialAuthSchema>
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const supabase = createClientComponentClient<Database>()
-  const { replace } = useRouter()
+  const { push } = useRouter()
   const {
     register,
     formState,
@@ -54,7 +54,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       })
     }
     
-    replace("/apps/chat/new")
+    push("/apps/chat")
   }
 
   return (

@@ -92,7 +92,7 @@ export const FeatureItems = () => {
           <div className="space-y-2">
             <h3 className="font-bold">Authentication</h3>
             <p className="text-sm text-muted-foreground">
-            Authentication using NextAuth.js and middlewares.
+              Authentication using Supabase Auth and middlewares.
             </p>
           </div>
         </div>

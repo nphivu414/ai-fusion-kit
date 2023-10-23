@@ -12,11 +12,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       <div className="drawer-content">
         <div className="relative flex min-h-screen flex-col">
           <NavigationBar/>
-          <div className="flex h-screen flex-1 flex-row pt-16">
-            <div className="flex flex-1 flex-row">
-              {children}
-            </div>
-          </div>
+          {children}
         </div>
       </div> 
       <div className="drawer-side z-50 overflow-y-hidden">

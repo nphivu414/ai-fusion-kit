@@ -11,8 +11,12 @@ export async function middleware(req: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!user && req.nextUrl.pathname !== '/') {
+  if (!user && req.nextUrl.pathname.indexOf('/apps') !== -1) {
     return NextResponse.redirect(new URL('/signin', req.url))
+  }
+
+  if (req.nextUrl.pathname === '/apps/chat') {
+    return NextResponse.redirect(new URL('/apps/chat/new', req.url))
   }
 
   return res
