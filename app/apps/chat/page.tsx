@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
 
 export default async function NewChatPage() {
-  return redirect(`/apps/chat/new`)
+  return redirect(`/apps/chat`)
 }

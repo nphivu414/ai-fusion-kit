@@ -5,6 +5,7 @@ import { Metadata } from "next"
 import { siteConfig } from "@/config/site"
 import { ThemeProvider } from "@/components/theme/ThemeProvider"
 import { Toaster } from "@/components/ui/Toaster";
+import { MainLayout } from '@/components/ui/common/MainLayout';
 
 export const metadata: Metadata = {
   title: {
@@ -35,7 +36,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <head />
         <body className="min-h-screen bg-background font-sans antialiased">
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {children}
+            <MainLayout>
+              {children}
+            </MainLayout>
           </ThemeProvider>
           <Toaster />
           <AxiomWebVitals />

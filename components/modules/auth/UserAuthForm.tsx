@@ -1,7 +1,6 @@
 "use client"
 
 import React from "react"
-import { useRouter } from "next/navigation"
 import * as z from "zod"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/Button"
@@ -22,7 +21,6 @@ type FormData = z.infer<typeof credentialAuthSchema>
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const supabase = createClientComponentClient<Database>()
-  const { replace } = useRouter()
   const {
     register,
     formState,
@@ -54,7 +52,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       })
     }
     
-    replace("/apps/chat/new")
+    window.location.href = '/apps/chat'
   }
 
   return (

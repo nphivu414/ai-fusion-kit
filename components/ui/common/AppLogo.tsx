@@ -7,11 +7,11 @@ export const AppLogo = () => {
     <Link href="/">
       <div className='flex items-center'>
         <Image
-          className="rounded-full lg:h-10 lg:w-10"
+          className="rounded-full"
           width={32}
           height={32}
-          src="https://avatars.githubusercontent.com/u/69411780?s=200&v=4"
-          alt="CV Creator"
+          src="/logo.png"
+          alt="AI Fusion Kit Logo"
         />
         <p className='text ml-3 font-bold'>AI Fusion Kit</p>
       </div>

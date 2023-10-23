@@ -15,49 +15,12 @@ export const Sidebar = () => {
       <ul className="menu py-0 pl-12">
         <li>
           <Link href="#" className="group flex items-center rounded-lg p-2 text-lg">
-          Explore
+            Explore
           </Link>
-        </li>
-        <li>
-          <Link href="#" className="group flex items-center rounded-lg p-2 text-lg">
-          Apps
-          </Link>
-          <ul className="menu m-0 p-0">
-            <li>
-              <Link href="">
-                Chat GPT
-              </Link>
-            </li>
-            <li>
-              <Link href="">
-                AnimateDiff
-              </Link>
-            </li>
-            <li>
-              <Link href="">
-                Stable Diffusion
-              </Link>
-            </li>
-            <li>
-              <Link href="">
-                React Flow GPT
-              </Link>
-            </li>
-          </ul>
         </li>
         <li>
           <Link href="#" className="group flex items-center rounded-lg p-2 text-lg">
           Docs
-          </Link>
-        </li>
-        <li>
-          <Link href="#" className="group flex items-center rounded-lg p-2 text-lg">
-          Pricing
-          </Link>
-        </li>
-        <li>
-          <Link href="#" className="group flex items-center rounded-lg p-2 text-lg">
-          Changelog
           </Link>
         </li>
       </ul>

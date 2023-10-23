@@ -14,7 +14,7 @@ import {
 
 export const dynamic = "force-dynamic";
 export const runtime = "edge"
-export const preferredRegion = "home"
+export const preferredRegion = "sfo1"
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY

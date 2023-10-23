@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react';
-import { Button } from '@/components/ui/Button';
+import { Button, buttonVariants } from '@/components/ui/Button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,11 +12,12 @@ import {
 } from '@/components/ui/DropdownMenu';
 import { getCurrentProfile } from '@/lib/db/profile';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { User } from 'lucide-react';
+import { Loader, User } from 'lucide-react';
 import Link from 'next/link';
 import LogoutButton from '../auth/LogoutButton';
 import { UserAvatar } from '@/components/ui/common/UserAvatar';
 import { useProfileStore } from '@/lib/stores/profile';
+import { cn } from '@/lib/utils';
 
 type AccountDropdownMenuProps = {
   userEmail?: string
@@ -24,11 +25,20 @@ type AccountDropdownMenuProps = {
 
 export const AccountDropdownMenu = ({ userEmail }: AccountDropdownMenuProps) => {
   const supabase = createClientComponentClient()
+  const [ isLoading, setIsLoading ] = React.useState<boolean>()
+  const [isMounted, setIsMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
   const { profile, setProfile } = useProfileStore((state) => state)
 
   React.useEffect(() => {
     const fetchProfile = async () => {
+      setIsLoading(true)
       const profile = await getCurrentProfile(supabase)
+      setIsLoading(false)
       if (!profile) {
         return
       }
@@ -37,8 +47,22 @@ export const AccountDropdownMenu = ({ userEmail }: AccountDropdownMenuProps) => 
     fetchProfile()
   }, [setProfile, supabase])
 
-  if (!profile) {
+  if (!isMounted) {
     return null
+  }
+
+  if (isLoading) {
+    return <Button variant="ghost" className='h-14'>
+      <Loader className='animate-spin' size={24} />
+    </Button>
+  }
+
+  if (!profile) {
+    return <Link href="/signin" className={cn(buttonVariants({
+      variant: 'outline',
+    }), 'ml-2')}>
+      Signin
+    </Link>
   }
 
   const { username, avatar_url } = profile

@@ -27,8 +27,8 @@ export const NavigationBar = async () => {
           <div className="shrink-0 md:mr-6">
             <AppLogo />
           </div>
+          <NavigationMainMenu/>
         </div>
-        <NavigationMainMenu/>
         <div>
           <div className="flex items-center">
             <div className='hidden lg:block'>
