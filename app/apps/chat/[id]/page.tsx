@@ -17,7 +17,7 @@ export const preferredRegion = "home"
 
 export const metadata: Metadata = {
   title: "Chat",
-  description: "The OpenAI Playground built using the components.",
+  description: "Chat with your AI assistant to generate new ideas and get inspired.",
 }
 
 export default async function ChatPage({ params }: { params: { id: string } }) {

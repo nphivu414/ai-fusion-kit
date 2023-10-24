@@ -4,10 +4,16 @@ import { HeroBannerImage } from "@/components/modules/home/HeroBannerImage";
 import { Button, buttonVariants } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import { Play } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
 
 export const runtime = "edge"
 export const preferredRegion = "home"
+
+export const metadata: Metadata = {
+  title: "AI Fusion Kit",
+  description: "A feature-rich, highly customizable AI Chatbot Template, empowered by Next.js.",
+}
 
 export default async function Home() {
   return (

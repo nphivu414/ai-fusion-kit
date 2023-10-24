@@ -11,14 +11,16 @@ import { unstable_cache } from "next/cache"
 import { CACHE_KEYS } from "@/lib/cache"
 
 export const metadata: Metadata = {
-  title: "New Chat",
-  description: "The OpenAI Playground built using the components.",
+  title: "Create a New Chat",
 }
 
 export default async function NewChatPage() {
   const chatId = uuidv4()
 
-  const supabase = createServerComponentClient({ cookies })
+  const cookieStore = cookies()
+  const supabase = createServerComponentClient({
+    cookies: () => cookieStore,
+  })
   const session = await getCurrentSession(supabase)
   const currentApp = await getAppBySlug(supabase, '/apps/chat')
 

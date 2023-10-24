@@ -7,9 +7,14 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
 export const dynamic = 'force-dynamic'
+export const runtime = "edge"
+export const preferredRegion = "home"
 
 export default async function Profile() {
-  const supabase = createServerComponentClient({ cookies })
+  const cookieStore = cookies()
+  const supabase = createServerComponentClient({
+    cookies: () => cookieStore,
+  })
   const profile = await getCurrentProfile(supabase)
   const session = await getCurrentSession(supabase)
 

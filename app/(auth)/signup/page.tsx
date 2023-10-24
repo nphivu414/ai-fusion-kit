@@ -7,14 +7,17 @@ import { cookies } from "next/headers"
 import { Heading3 } from "@/components/ui/typography"
 
 export const metadata: Metadata = {
-  title: "Login",
-  description: "Login to your account",
+  title: "Signup",
+  description: "Signup a new account",
 }
 
 export const dynamic = 'force-dynamic'
 
 export default async function LoginPage() {
-  const supabase = createServerComponentClient({ cookies })
+  const cookieStore = cookies()
+  const supabase = createServerComponentClient({
+    cookies: () => cookieStore,
+  })
   const session = await getCurrentSession(supabase)
 
   if (session) {
