@@ -12,9 +12,6 @@ import { ChatParams } from "@/components/modules/apps/chat/types"
 import { unstable_cache } from "next/cache"
 import { CACHE_KEYS } from "@/lib/cache"
 
-export const runtime = "edge"
-export const preferredRegion = "home"
-
 export const metadata: Metadata = {
   title: "Chat",
   description: "Chat with your AI assistant to generate new ideas and get inspired.",
@@ -23,10 +20,7 @@ export const metadata: Metadata = {
 export default async function ChatPage({ params }: { params: { id: string } }) {
   const chatId = params.id
 
-  const cookieStore = cookies()
-  const supabase = createServerComponentClient({
-    cookies: () => cookieStore,
-  })
+  const supabase = createServerComponentClient({ cookies })
   const session = await getCurrentSession(supabase)
   const currentApp = await getAppBySlug(supabase, '/apps/chat')
 
