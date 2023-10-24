@@ -23,7 +23,10 @@ export const metadata: Metadata = {
 export default async function ChatPage({ params }: { params: { id: string } }) {
   const chatId = params.id
 
-  const supabase = createServerComponentClient({ cookies })
+  const cookieStore = cookies()
+  const supabase = createServerComponentClient({
+    cookies: () => cookieStore,
+  })
   const session = await getCurrentSession(supabase)
   const currentApp = await getAppBySlug(supabase, '/apps/chat')
 
