@@ -1,8 +1,8 @@
 import React from "react"
+import { cookies } from "next/headers"
 import { Metadata } from "next"
 import { ChatPanel } from "@/components/modules/apps/chat/ChatPanel"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
-import { cookies } from "next/headers"
 import { getChatById, getChats } from "@/lib/db/chats"
 import { getAppBySlug } from "@/lib/db/apps"
 import { getCurrentSession } from "@/lib/session"
@@ -11,6 +11,9 @@ import { getMessages } from "@/lib/db/message"
 import { ChatParams } from "@/components/modules/apps/chat/types"
 import { unstable_cache } from "next/cache"
 import { CACHE_KEYS } from "@/lib/cache"
+
+export const runtime = "edge"
+export const preferredRegion = "home"
 
 export const metadata: Metadata = {
   title: "Chat",

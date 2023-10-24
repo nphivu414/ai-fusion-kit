@@ -6,12 +6,15 @@ import { cn } from "@/lib/utils";
 import { Play } from "lucide-react";
 import Link from "next/link";
 
+export const runtime = "edge"
+export const preferredRegion = "home"
+
 export default async function Home() {
   return (
-    <div className="pt-16">
+    <div className="px-4 pt-16">
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-20">
         <div className="container flex max-w-[64rem] flex-col items-center gap-6 text-center">
-          <h1 className="font-heading bg-gradient-to-r from-gray-400 to-gray-700 bg-clip-text text-3xl font-bold leading-[1.1] tracking-tighter text-transparent dark:from-white dark:to-gray-500 sm:text-5xl md:text-6xl">
+          <h1 className="font-heading bg-gradient-to-r from-gray-900 to-gray-500 bg-clip-text text-3xl font-bold leading-[1.1] tracking-tighter text-transparent dark:from-white dark:to-gray-500 sm:text-5xl md:text-6xl">
            AI Fusion Kit
           </h1>
           <DescriptionHeadingText/>
@@ -29,7 +32,7 @@ export default async function Home() {
         className="container space-y-6 bg-slate-50 py-8 dark:bg-transparent md:py-12 lg:py-24"
       >
         <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
-          <h2 className="font-heading bg-gradient-to-r from-gray-400 to-gray-700 bg-clip-text text-3xl font-bold leading-[1.1] tracking-tighter text-transparent dark:from-white dark:to-gray-500 sm:text-4xl">
+          <h2 className="font-heading bg-gradient-to-r from-gray-900 to-gray-500 bg-clip-text text-3xl font-bold leading-[1.1] tracking-tighter text-transparent dark:from-white dark:to-gray-500 sm:text-4xl">
             Modern Web Tools for Chatbot App
           </h2>
           <p className="leading-normal text-muted-foreground sm:text-lg sm:leading-7">

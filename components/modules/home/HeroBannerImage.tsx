@@ -17,7 +17,7 @@ export const HeroBannerImage = () => {
     <div className='h-[673px]'/>
   )
 
-  const imageSrc = theme === 'dark' ? '/featured-dark.png' : '/featured.png'
+  const imageSrc = theme === 'dark' ? '/featured-dark.jpg' : '/featured.jpg'
   return (
     <motion.section 
       className="flex justify-center px-4 "

@@ -15,10 +15,6 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/signin', req.url))
   }
 
-  if (req.nextUrl.pathname === '/apps/chat') {
-    return NextResponse.redirect(new URL('/apps/chat/new', req.url))
-  }
-
   return res
 }
 

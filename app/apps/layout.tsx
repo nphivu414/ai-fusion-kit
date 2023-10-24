@@ -1,5 +1,4 @@
 import { unstable_cache } from 'next/cache'
-import { AppSideBar } from "@/components/modules/apps/app-side-bar"
 import { ChatHistory } from "@/components/modules/apps/chat/ChatHistory"
 import { getAppBySlug } from "@/lib/db/apps"
 import { getChats } from "@/lib/db/chats"
@@ -44,7 +43,6 @@ export default async function AppLayout({ children }: AppLayoutProps) {
   return (
     <div className="flex h-screen flex-1 flex-row pt-16">
       <div className="flex flex-1 flex-row">
-        <AppSideBar/>
         <div className="flex flex-1 flex-col overflow-y-auto">
           <div className="relative flex flex-1 bg-background">
             <div className="flex h-0 w-0 flex-col justify-between overflow-x-hidden transition-[width] lg:h-auto lg:max-h-[calc(100vh_-_65px)] lg:w-[300px] lg:border-r">
