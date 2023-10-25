@@ -14,14 +14,12 @@ import { Database } from "@/lib/db"
 import Link from "next/link"
 import { credentialAuthSchema } from "./schema"
 import { SocialLoginOptions } from "./SocialLoginOptions"
-import { useRouter } from "next/navigation"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>
 
 type FormData = z.infer<typeof credentialAuthSchema>
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const { push } = useRouter()
   const supabase = createClientComponentClient<Database>()
   const {
     register,
@@ -44,6 +42,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       password: data.password,
     })
 
+
     if (signInResult?.error) {
       setIsLoading(false)
       return toast({
@@ -53,7 +52,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       })
     }
     
-    push('/apps/chat')
+    window.location.href = '/apps/chat'
   }
 
   return (
