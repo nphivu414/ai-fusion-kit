@@ -6,6 +6,7 @@ import { getCurrentSession } from "@/lib/session"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
 import { CACHE_KEYS } from '@/lib/cache'
+import { MainLayout } from '@/components/ui/common/MainLayout'
 
 export const dynamic = 'force-dynamic'
 
@@ -41,17 +42,19 @@ export default async function AppLayout({ children }: AppLayoutProps) {
   )()
 
   return (
-    <div className="flex h-screen flex-1 flex-row pt-16">
-      <div className="flex flex-1 flex-row">
-        <div className="flex flex-1 flex-col overflow-y-auto">
-          <div className="relative flex flex-1 bg-background">
-            <div className="flex h-0 w-0 flex-col justify-between overflow-x-hidden transition-[width] lg:h-auto lg:max-h-[calc(100vh_-_65px)] lg:w-[300px] lg:border-r">
-              <ChatHistory data={chats} />
+    <MainLayout>
+      <div className="flex h-screen flex-1 flex-row pt-16">
+        <div className="flex flex-1 flex-row">
+          <div className="flex flex-1 flex-col overflow-y-auto">
+            <div className="relative flex flex-1 bg-background">
+              <div className="flex h-0 w-0 flex-col justify-between overflow-x-hidden transition-[width] lg:h-auto lg:max-h-[calc(100vh_-_65px)] lg:w-[300px] lg:border-r">
+                <ChatHistory data={chats} />
+              </div>
+              {children}
             </div>
-            {children}
           </div>
         </div>
       </div>
-    </div>
+    </MainLayout>
   )
 }
