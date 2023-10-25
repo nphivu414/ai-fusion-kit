@@ -1,18 +1,21 @@
 'use client'
 
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from '../ui/NavigationMenu';
-import Link from 'next/link';
+import { Github } from 'lucide-react';
+import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from '../ui/NavigationMenu';
+import { buttonVariants } from '../ui/Button';
 
 export const NavigationMainMenu = () => {
   return (
-    <NavigationMenu className='hidden lg:block'>
+    <NavigationMenu className='pl-4 md:pl-0'>
       <NavigationMenuList>
-        <NavigationMenuItem>
-          <Link href="/docs" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Documentation
-            </NavigationMenuLink>
-          </Link>
+        <NavigationMenuItem asChild>
+          <NavigationMenuLink href='https://github.com/nphivu414/ai-fusion-kit' target='_blank' className={buttonVariants({
+            variant: 'outline',
+            size: 'sm',
+          })}>
+            <Github size={16} className='mr-0 md:mr-2'/>
+            <span className='hidden md:inline-block'>Github</span>
+          </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
