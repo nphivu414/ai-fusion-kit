@@ -2,12 +2,13 @@
 
 A feature-rich, highly customizable AI Web App Template, empowered by Next.js.
 
-<p align="center">
-  <a href="https://ai-fusion-kit.vercel.app/">
-    <img src="https://ai-fusion-kit.vercel.app/_next/image?url=%2Ffeatured-dark.jpg&w=1920&q=75"
-         alt="AI Fusion Kit">
-  </a>
-</p>
+### Screenshots
+  | Desktop | Mobile |
+| :-------- | :------- |
+| ![Desktop Screenshot](https://ai-fusion-kit.vercel.app/_next/image?url=%2Ffeatured-dark.jpg&w=1920&q=75) | ![Mobile Screenshot](https://ai-fusion-kit.vercel.app/_next/image?url=%2Ffeatured-mobile.png&w=1920&q=75) |
+
+## Demo
+- [AI Fusion Kit](https://ai-fusion-kit.vercel.app/)
 
 ## Authors
 
