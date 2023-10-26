@@ -1,7 +1,7 @@
 import { DescriptionHeadingText } from "@/components/modules/home/DescriptionHeadingText";
 import { FeatureItems } from "@/components/modules/home/FeatureItems";
 import { HeroBannerImage } from "@/components/modules/home/HeroBannerImage";
-import { Button, buttonVariants } from "@/components/ui/Button";
+import { buttonVariants } from "@/components/ui/Button";
 import { MainLayout } from "@/components/ui/common/MainLayout";
 import { cn } from "@/lib/utils";
 import { Play } from "lucide-react";
@@ -24,7 +24,15 @@ export default async function Home() {
             </h1>
             <DescriptionHeadingText/>
             <div className="flex items-center space-x-4">
-              <Button variant="outline"><Play className="mr-2" size={16}/> Demo</Button>
+              <Link
+                href="https://www.youtube.com/watch?v=GWalKzuC0Rg"
+                target="_blank"
+                className={cn(buttonVariants({
+                  variant: 'outline'
+                }))}
+              >
+                <Play className="mr-2" size={16}/> Demo
+              </Link>
               <Link href="/apps/chat" className={cn(buttonVariants())}>
               Get Started
               </Link>
