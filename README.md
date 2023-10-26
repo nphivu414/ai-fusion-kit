@@ -3,7 +3,7 @@
 A feature-rich, highly customizable AI Web App Template, empowered by Next.js.
 
 ### Screenshots
-  | Desktop | Mobile |
+|           |          |
 | :-------- | :------- |
 | ![Desktop Screenshot](https://ai-fusion-kit.vercel.app/_next/image?url=%2Ffeatured-dark.jpg&w=1920&q=75) | ![Mobile Screenshot](https://ai-fusion-kit.vercel.app/_next/image?url=%2Ffeatured-mobile.png&w=1920&q=75) |
 
@@ -13,6 +13,7 @@ A feature-rich, highly customizable AI Web App Template, empowered by Next.js.
 ## Authors
 
 - [@nphivu414](https://github.com/nphivu414)
+- [@toproad1407](https://github.com/toproad1407)
 
 ## Main stacks
  - [Typescript](https://www.typescriptlang.org/)
@@ -29,7 +30,7 @@ A feature-rich, highly customizable AI Web App Template, empowered by Next.js.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/nphivu414/ai-fusion-kit
+   git clone https://github.com/toproad1407/ai-fusion-kit
    ```
 2. Install dependencies
    ```sh
