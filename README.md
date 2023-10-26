@@ -24,6 +24,7 @@ A feature-rich, highly customizable AI Web App Template, empowered by Next.js.
  - [Vercel AI SDK](https://github.com/vercel/ai)
  - [TailwindCSS](https://tailwindcss.com/)
  - [Shadcn UI](https://ui.shadcn.com/)
+ - [Next.js AI Chatbot](https://github.com/vercel-labs/ai-chatbot)
 
   
 ## Installation
