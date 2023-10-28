@@ -1499,6 +1499,13 @@
     "@typescript-eslint/types" "6.3.0"
     eslint-visitor-keys "^3.4.1"
 
+"@vercel/analytics@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-1.1.1.tgz#2a712378a95014a548b4f9d2ae1ea0721433908d"
+  integrity sha512-+NqgNmSabg3IFfxYhrWCfB/H+RCUOCR5ExRudNG2+pcRehq628DJB5e1u1xqwpLtn4pAYii4D98w7kofORAGQA==
+  dependencies:
+    server-only "^0.0.1"
+
 abort-controller@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/abort-controller/-/abort-controller-3.0.0.tgz#eaf54d53b62bae4138e809ca225c8439a6efb392"

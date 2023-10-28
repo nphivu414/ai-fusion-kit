@@ -2,6 +2,8 @@ import { SupabaseClient } from "@supabase/auth-helpers-nextjs"
 import { App, Database } from "."
 import { Logger } from "next-axiom";
 import { LogLevel } from "next-axiom/dist/logger";
+import { unstable_cache } from "next/cache";
+import { CACHE_KEYS } from "../cache";
 
 const log = new Logger({
   logLevel: LogLevel.debug,
@@ -25,7 +27,7 @@ export const getApps = async (supabase: SupabaseClient<Database>) => {
   return data
 }
 
-export const getAppBySlug = async (supabase: SupabaseClient<Database>, slug: App['slug']) => {
+export const getAppBySlug = unstable_cache(async (supabase: SupabaseClient<Database>, slug: App['slug']) => {
   log.info(`${getAppBySlug.name} called`, { slug });
   const { data, error, status } = await supabase
     .from('apps')
@@ -40,4 +42,8 @@ export const getAppBySlug = async (supabase: SupabaseClient<Database>, slug: App
 
   log.info(`${getAppBySlug.name} fetched successfully`, { data });
   return data
-}
+},
+[CACHE_KEYS.APPS],
+{
+  revalidate: false,
+})

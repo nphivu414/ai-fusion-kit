@@ -2,7 +2,7 @@ import { AxiomWebVitals } from 'next-axiom';
 import "./globals.css"
 import { Metadata, Viewport } from "next"
 import { GeistMono, GeistSans } from 'geist/font'
-
+import { Analytics } from '@vercel/analytics/react';
 import { siteConfig } from "@/config/site"
 import { ThemeProvider } from "@/components/theme/ThemeProvider"
 import { Toaster } from "@/components/ui/Toaster";
@@ -43,6 +43,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           </ThemeProvider>
           <Toaster />
           <AxiomWebVitals />
+          <Analytics />
         </body>
       </html>
     </>
