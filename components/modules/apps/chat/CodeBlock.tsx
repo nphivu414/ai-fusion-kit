@@ -4,9 +4,9 @@
 'use client'
 
 import { Button } from '@/components/ui/Button'
+import { useActiveThemeColor } from '@/hooks/useActiveTheme'
 import { useCopyToClipboard } from '@/hooks/useCopyToClipboard'
 import { Check, Copy, Download } from 'lucide-react'
-import { useTheme } from 'next-themes'
 import React from 'react'
 import { FC, memo } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -60,7 +60,7 @@ export const generateRandomString = (length: number, lowercase = false) => {
 const CodeBlock: FC<Props> = memo(({ language, value }) => {
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 })
   const [codeBlockStyle, setCodeBlockStyle] = React.useState(oneLight)
-  const { theme } = useTheme()
+  const theme = useActiveThemeColor()
 
   React.useEffect(() => {
     setCodeBlockStyle(theme === 'dark' ? oneDark : oneLight)

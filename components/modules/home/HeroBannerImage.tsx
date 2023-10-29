@@ -3,12 +3,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Image from "next/image"
-import { useTheme } from 'next-themes';
+import { useActiveThemeColor } from '@/hooks/useActiveTheme';
 
 
 export const HeroBannerImage = () => {
-  const { theme } = useTheme()
   const [isMounted, setIsMounted] = React.useState(false)
+  const theme = useActiveThemeColor()
   React.useEffect(() => {
     setIsMounted(true)
   }, [])
@@ -17,7 +17,13 @@ export const HeroBannerImage = () => {
     <div className='h-[673px]'/>
   )
 
-  const imageSrc = theme === 'dark' ? '/featured-dark.jpg' : '/featured.jpg'
+  const getImageSrc = () => {
+    if (theme === "dark") {
+      return "/featured-dark.jpg"
+    }
+    return "/featured.jpg"
+  }
+
   return (
     <motion.section 
       className="flex justify-center px-4 "
@@ -26,7 +32,7 @@ export const HeroBannerImage = () => {
       transition={{ duration: 0.5 }}
       viewport={{ once: true }}
     >
-      <Image src={imageSrc} height={673} width={1280} alt="Resume GPT" className='rounded-lg border-8'/>
+      <Image src={getImageSrc()} height={673} width={1280} alt="Resume GPT" className='rounded-lg border-8'/>
     </motion.section>
   )
 }

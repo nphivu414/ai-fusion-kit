@@ -1,5 +1,5 @@
 import React from 'react';
-import { Github, Twitter } from 'lucide-react';
+import { Github } from 'lucide-react';
 import { CustomIcon } from '@/components/ui/CustomIcon';
 import { SocialLoginButton } from './SocialLoginButton';
 
@@ -11,7 +11,7 @@ export const SocialLoginOptions = () => {
         <CustomIcon.google />
       </SocialLoginButton>
       <SocialLoginButton provider="twitter">
-        <Twitter />
+        <CustomIcon.x/>
       </SocialLoginButton>
       <SocialLoginButton provider="github">
         <Github />
