@@ -6,8 +6,6 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
 import { MainLayout } from '@/components/ui/common/MainLayout'
 
-export const dynamic = 'force-dynamic'
-
 interface AppLayoutProps {
   children: React.ReactNode
 }
