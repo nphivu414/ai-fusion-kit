@@ -1,5 +1,5 @@
 <a href="https://ai-fusion-kit.vercel.app/">
-  <img alt="AI Fusion Kit" src="https://ai-fusion-kit.vercel.app/_next/image?url=%2Ffeatured-dark.jpg&w=1920&q=75">
+  <img alt="AI Fusion Kit" src="https://ai-fusion-kit.vercel.app/_next/image?url=%2Fscreenshot.png&w=1920&q=75">
   <h1 align="center">AI Fusion Kit</h1>
 </a>
 
