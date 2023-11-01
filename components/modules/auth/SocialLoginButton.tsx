@@ -1,7 +1,7 @@
 import { Button, ButtonProps } from '@/components/ui/Button'
 import { useToast } from '@/components/ui/use-toast'
 import { getURL } from '@/config/site'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@/lib/supabase/client'
 import { Provider } from '@supabase/supabase-js'
 import { Loader } from 'lucide-react'
 import React from 'react'
@@ -11,7 +11,7 @@ type SocialLoginButtonProps = ButtonProps & {
 }
 
 export const SocialLoginButton = ({ provider, children, ...rest }: SocialLoginButtonProps) => {
-  const supabase = createClientComponentClient()
+  const supabase = createClient()
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const { toast } = useToast()
 

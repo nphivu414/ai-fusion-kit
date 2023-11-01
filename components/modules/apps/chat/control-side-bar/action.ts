@@ -1,14 +1,15 @@
 'use server'
 
-import { Chat, Database, Update } from "@/lib/db"
+import { Chat, Update } from "@/lib/db"
 import { getAppBySlug } from "@/lib/db/apps"
 import { updateChat } from "@/lib/db/chats"
 import { getCurrentSession } from "@/lib/session"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createClient } from "@/lib/supabase/server"
 import { cookies } from "next/headers"
 
 export const updateChatSettings = async (id: Chat['id'], params: Update<'chats'>['settings']) => {
-  const supabase = createServerComponentClient<Database>({ cookies })
+  const cookieStore = cookies()
+  const supabase = createClient(cookieStore)
   const session = await getCurrentSession(supabase)
   const currentApp = await getAppBySlug(supabase, '/apps/chat')
 

@@ -9,18 +9,17 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useToast } from "@/components/ui/use-toast"
 import { InputField } from "@/components/ui/form/form-fields"
 import { Loader } from "lucide-react"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { Database } from "@/lib/db"
 import Link from "next/link"
 import { credentialAuthSchema } from "./schema"
 import { SocialLoginOptions } from "./SocialLoginOptions"
+import { createClient } from "@/lib/supabase/client"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>
 
 type FormData = z.infer<typeof credentialAuthSchema>
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const supabase = createClientComponentClient<Database>()
+  const supabase = createClient()
   const {
     register,
     formState,

@@ -6,12 +6,13 @@ import { cn } from '@/lib/utils';
 import { buttonVariants } from '../ui/Button';
 import { AppLogo } from '../ui/common/AppLogo';
 import { NavigationMainMenu } from './NavigationMainMenu';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@/lib/supabase/server';
 import { getCurrentSession } from '@/lib/session';
 import { cookies } from 'next/headers';
 
 export const NavigationBar = async () => {
-  const supabase = await createServerComponentClient({ cookies })
+  const cookieStore = cookies()
+  const supabase = await createClient(cookieStore)
   const currentSession = await getCurrentSession(supabase)
 
   return (

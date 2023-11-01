@@ -30,7 +30,7 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-toast": "^1.1.4",
     "@radix-ui/react-tooltip": "^1.0.6",
-    "@supabase/auth-helpers-nextjs": "^0.8.1",
+    "@supabase/ssr": "^0.0.5",
     "@supabase/supabase-js": "^2.37.0",
     "@t3-oss/env-nextjs": "^0.6.1",
     "@types/node": "20.4.9",

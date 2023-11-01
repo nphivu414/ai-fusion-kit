@@ -2,7 +2,7 @@ import React from "react"
 import { cookies } from "next/headers"
 import { Metadata } from "next"
 import { ChatPanel } from "@/components/modules/apps/chat/ChatPanel"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createClient } from "@/lib/supabase/server"
 import { getChatById, getChats } from "@/lib/db/chats"
 import { getAppBySlug } from "@/lib/db/apps"
 import { getCurrentSession } from "@/lib/session"
@@ -18,7 +18,8 @@ export const metadata: Metadata = {
 export default async function ChatPage({ params }: { params: { id: string } }) {
   const chatId = params.id
 
-  const supabase = createServerComponentClient({ cookies })
+  const cookieStore = cookies()
+  const supabase = createClient(cookieStore)
   const session = await getCurrentSession(supabase)
   const currentApp = await getAppBySlug(supabase, '/apps/chat')
 

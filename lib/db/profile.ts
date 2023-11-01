@@ -1,4 +1,4 @@
-import { SupabaseClient } from "@supabase/auth-helpers-nextjs"
+import { SupabaseClient } from "@supabase/supabase-js"
 import { getCurrentSession } from "../session"
 import { Database } from "."
 import { Logger } from "next-axiom";

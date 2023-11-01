@@ -3,13 +3,14 @@ import { ProfileForm } from "@/components/modules/profile/ProfileForm";
 import { ProfileFormValues } from "@/components/modules/profile/type";
 import { getCurrentProfile } from "@/lib/db/profile";
 import { getCurrentSession } from "@/lib/session";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 
 export const dynamic = 'force-dynamic'
 
 export default async function Profile() {
-  const supabase = createServerComponentClient({ cookies })
+  const cookieStore = cookies()
+  const supabase = createClient(cookieStore)
   const profile = await getCurrentProfile(supabase)
   const session = await getCurrentSession(supabase)
 

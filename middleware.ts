@@ -1,11 +1,10 @@
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import { NextResponse } from 'next/server'
 
 import type { NextRequest } from 'next/server'
+import { createClient } from './lib/supabase/middleware'
 
 export async function middleware(req: NextRequest) {
-  const res = NextResponse.next()
-  const supabase = createMiddlewareClient({ req, res })
+  const { supabase, response } = createClient(req)
 
   const {
     data: { user },
@@ -15,7 +14,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/signin', req.url))
   }
 
-  return res
+  return response
 }
 
 export const config = {

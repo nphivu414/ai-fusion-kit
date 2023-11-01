@@ -1,16 +1,17 @@
 'use server'
 
-import { Database, Update } from "@/lib/db"
+import { Update } from "@/lib/db"
 import { getAppBySlug } from "@/lib/db/apps"
 import { createNewChat as createNewChatDb, deleteChat as deleteChatDb, updateChat as updateChatDb } from "@/lib/db/chats"
 import { getCurrentSession } from "@/lib/session"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
 export const createNewChat = async () => {
-  const supabase = createServerComponentClient<Database>({ cookies })
+  const cookieStore = cookies()
+  const supabase = createClient(cookieStore)
   const session = await getCurrentSession(supabase)
   const currentApp = await getAppBySlug(supabase, '/apps/chat')
 
@@ -32,7 +33,8 @@ export const createNewChat = async () => {
 }
 
 export const deleteChat = async (id: string) => {
-  const supabase = createServerComponentClient<Database>({ cookies })
+  const cookieStore = cookies()
+  const supabase = createClient(cookieStore)
 
   try {
     await deleteChatDb(supabase, id)
@@ -43,7 +45,8 @@ export const deleteChat = async (id: string) => {
 }
 
 export const updateChat = async (params: Update<'chats'>) => {
-  const supabase = createServerComponentClient<Database>({ cookies })
+  const cookieStore = cookies()
+  const supabase = createClient(cookieStore)
   const { id, ...rest } = params
   if (!id) {
     throw new Error('Missing ID')

@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { UserSignupForm } from "@/components/modules/auth/UserSignupForm"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createClient } from "@/lib/supabase/server"
 import { getCurrentSession } from "@/lib/session"
 import { cookies } from "next/headers"
 import { Heading3 } from "@/components/ui/typography"
@@ -16,9 +16,7 @@ export const dynamic = 'force-dynamic'
 
 export default async function LoginPage() {
   const cookieStore = cookies()
-  const supabase = createServerComponentClient({
-    cookies: () => cookieStore,
-  })
+  const supabase = createClient(cookieStore)
   const session = await getCurrentSession(supabase)
 
   if (session) {
