@@ -3,6 +3,8 @@ import { AppLogo } from '../ui/common/AppLogo';
 import { Separator } from '../ui/Separator';
 import Link from 'next/link';
 import { ThemeToggle } from '../theme';
+import { siteConfig } from '@/config/site';
+import { CustomIcon } from '../ui/CustomIcon';
 
 export const Sidebar = () => {
   return (
@@ -19,9 +21,15 @@ export const Sidebar = () => {
           </Link>
         </li>
         <li>
-          <Link href="#" className="group flex items-center rounded-lg p-2 text-lg">
-          Docs
-          </Link>
+          <a href={siteConfig.links.github} className="group flex items-center rounded-lg p-2 text-lg">
+            Github
+          </a>
+        </li>
+        <li>
+          <a href={siteConfig.links.x} className="group flex items-center rounded-lg p-2 text-lg">
+            Follow on
+            <CustomIcon.x width={16} height={16}/>
+          </a>
         </li>
       </ul>
     </div>

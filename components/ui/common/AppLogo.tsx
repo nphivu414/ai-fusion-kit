@@ -1,3 +1,4 @@
+import { siteConfig } from '@/config/site';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -11,9 +12,9 @@ export const AppLogo = () => {
           width={32}
           height={32}
           src="/logo.png"
-          alt="AI Fusion Kit Logo"
+          alt={`${siteConfig.name} logo`}
         />
-        <p className='text ml-3 font-bold'>AI Fusion Kit</p>
+        <p className='text ml-3 font-bold'>{siteConfig.name}</p>
       </div>
     </Link>
   )

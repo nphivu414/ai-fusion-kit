@@ -9,8 +9,6 @@ import { getCurrentSession } from "@/lib/session"
 import { Message } from "ai"
 import { getMessages } from "@/lib/db/message"
 import { ChatParams } from "@/components/modules/apps/chat/types"
-import { unstable_cache } from "next/cache"
-import { CACHE_KEYS } from "@/lib/cache"
 
 export const metadata: Metadata = {
   title: "Chat",
@@ -31,19 +29,10 @@ export default async function ChatPage({ params }: { params: { id: string } }) {
   }
 
   const currentProfileId = session.user.id
-  const chats = await unstable_cache(
-    async () => {
-      const data = await getChats(supabase, {
-        appId: currentApp.id,
-        profileId: currentProfileId,
-      })
-      return data
-    },
-    [CACHE_KEYS.CHATS, currentApp.id, currentProfileId],
-    {
-      revalidate: false,
-    }
-  )()
+  const chats = await getChats(supabase, {
+    appId: currentApp.id,
+    profileId: currentProfileId,
+  })
 
   const dbMessages = await getMessages(supabase, {
     chatId,

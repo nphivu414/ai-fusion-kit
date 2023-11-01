@@ -4,12 +4,10 @@ export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
   name: "AI Fusion Kit",
-  description:
-    "",
-  mainNav: [],
+  description: "A feature-rich, highly customizable AI Chatbot Template, empowered by Next.js.",
   links: {
-    twitter: "",
-    github: "",
+    x: "https://twitter.com/nphivu414",
+    github: "https://github.com/nphivu414/ai-fusion-kit",
     docs: "",
   },
 }

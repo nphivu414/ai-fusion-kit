@@ -1,14 +1,10 @@
-import { unstable_cache } from 'next/cache'
 import { ChatHistory } from "@/components/modules/apps/chat/ChatHistory"
 import { getAppBySlug } from "@/lib/db/apps"
 import { getChats } from "@/lib/db/chats"
 import { getCurrentSession } from "@/lib/session"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
-import { CACHE_KEYS } from '@/lib/cache'
 import { MainLayout } from '@/components/ui/common/MainLayout'
-
-export const dynamic = 'force-dynamic'
 
 interface AppLayoutProps {
   children: React.ReactNode
@@ -27,19 +23,10 @@ export default async function AppLayout({ children }: AppLayoutProps) {
 
   const currentProfileId = session.user.id
   
-  const chats = await unstable_cache(
-    async () => {
-      const data = await getChats(supabase, {
-        appId: currentApp.id,
-        profileId: currentProfileId,
-      })
-      return data
-    },
-    [CACHE_KEYS.CHATS, currentApp.id, currentProfileId],
-    {
-      revalidate: false,
-    }
-  )()
+  const chats = await getChats(supabase, {
+    appId: currentApp.id,
+    profileId: currentProfileId,
+  })
 
   return (
     <MainLayout>

@@ -5,6 +5,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { getCurrentSession } from "@/lib/session"
 import { cookies } from "next/headers"
 import { Heading3 } from "@/components/ui/typography"
+import { siteConfig } from "@/config/site"
 
 export const metadata: Metadata = {
   title: "Signup",
@@ -27,7 +28,7 @@ export default async function LoginPage() {
   return (
     <>
       <div className="flex flex-col space-y-2 text-center">
-        <Heading3>AI Fusion Kit</Heading3>
+        <Heading3>{siteConfig.name}</Heading3>
         <p className="text-sm text-muted-foreground">
           Empowering Your Imagination with AI Services
         </p>
