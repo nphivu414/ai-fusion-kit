@@ -1,7 +1,7 @@
 import React from "react"
 import { Metadata } from "next"
 import { ChatPanel } from "@/components/modules/apps/chat/ChatPanel"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createClient } from "@/lib/supabase/server"
 import { cookies } from "next/headers"
 import { getAppBySlug } from "@/lib/db/apps"
 import { getCurrentSession } from "@/lib/session"
@@ -16,9 +16,7 @@ export default async function NewChatPage() {
   const chatId = uuidv4()
 
   const cookieStore = cookies()
-  const supabase = createServerComponentClient({
-    cookies: () => cookieStore,
-  })
+  const supabase = createClient(cookieStore)
   const session = await getCurrentSession(supabase)
   const currentApp = await getAppBySlug(supabase, '/apps/chat')
 

@@ -1,9 +1,8 @@
 'use server'
 
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createClient } from "@/lib/supabase/server"
 import { ProfileFormValues } from "./type"
 import { cookies } from "next/headers"
-import { Database } from "@/lib/db"
 import { getCurrentSession } from "@/lib/session"
 import { revalidatePath } from "next/cache"
 
@@ -12,7 +11,8 @@ export async function updateProfile({
   username,
   website
 }: ProfileFormValues) {
-  const supabase = createServerComponentClient<Database>({ cookies })
+  const cookieStore = cookies()
+  const supabase = createClient(cookieStore)
   const session = await getCurrentSession(supabase)
 
   if (!session) {

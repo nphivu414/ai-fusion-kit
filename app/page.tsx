@@ -14,6 +14,8 @@ export const metadata: Metadata = {
   description: siteConfig.description,
 }
 
+export const runtime = "edge"
+
 export default async function Home() {
   return (
     <MainLayout>

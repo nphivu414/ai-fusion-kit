@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/DropdownMenu';
 import { getCurrentProfile } from '@/lib/db/profile';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@/lib/supabase/client'
 import { Loader, User } from 'lucide-react';
 import Link from 'next/link';
 import LogoutButton from '../auth/LogoutButton';
@@ -24,7 +24,7 @@ type AccountDropdownMenuProps = {
 }
 
 export const AccountDropdownMenu = ({ userEmail }: AccountDropdownMenuProps) => {
-  const supabase = createClientComponentClient()
+  const supabase = createClient()
   const [ isLoading, setIsLoading ] = React.useState<boolean>()
   const [isMounted, setIsMounted] = React.useState(false)
 

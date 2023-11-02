@@ -1,4 +1,4 @@
-import { SupabaseClient } from "@supabase/auth-helpers-nextjs"
+import { SupabaseClient } from "@supabase/supabase-js"
 import { Chat, Database, Insert, Update } from "."
 import { Logger } from "next-axiom";
 import { LogLevel } from "next-axiom/dist/logger";
@@ -14,29 +14,27 @@ const log = new Logger({
   }
 });
 
-export const getChats = (supabase: SupabaseClient<Database>, params: GetChatsParams) => {
-  return unstable_cache(async (supabase: SupabaseClient<Database>, params: GetChatsParams) => {
-    log.info(`${getChats.name} called`, params);
-    const { data, error, status } = await supabase
-      .from('chats')
-      .select('*')
-      .eq('appId', params.appId)
-      .eq('profileId', params.profileId)
-      .order('createdAt', { ascending: false })
-  
-    if (error && status !== 406) {
-      log.error(getChats.name, { error, status });
-      return null
-    }
-  
-    log.info(`${getChats.name} fetched successfully`, { data });
-    return data
-  },
-  [CACHE_KEYS.CHATS, params.appId, params.profileId],
-  {
-    revalidate: CACHE_TTL,
-  })(supabase, params)
-}
+export const getChats = unstable_cache(async (supabase: SupabaseClient<Database>, params: GetChatsParams) => {
+  log.info(`${getChats.name} called`, params);
+  const { data, error, status } = await supabase
+    .from('chats')
+    .select('*')
+    .eq('appId', params.appId)
+    .eq('profileId', params.profileId)
+    .order('createdAt', { ascending: false })
+
+  if (error && status !== 406) {
+    log.error(getChats.name, { error, status });
+    return null
+  }
+
+  log.info(`${getChats.name} fetched successfully`, { data });
+  return data
+},
+[CACHE_KEYS.CHATS],
+{
+  revalidate: CACHE_TTL,
+})
 
 export const getChatById = async (supabase: SupabaseClient<Database>, id: string) => {
   log.info(`${getChatById.name} called`, { id });

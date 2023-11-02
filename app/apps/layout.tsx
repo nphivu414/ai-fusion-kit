@@ -2,7 +2,7 @@ import { ChatHistory } from "@/components/modules/apps/chat/ChatHistory"
 import { getAppBySlug } from "@/lib/db/apps"
 import { getChats } from "@/lib/db/chats"
 import { getCurrentSession } from "@/lib/session"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createClient } from "@/lib/supabase/server"
 import { cookies } from "next/headers"
 import { MainLayout } from '@/components/ui/common/MainLayout'
 
@@ -11,7 +11,8 @@ interface AppLayoutProps {
 }
 
 export default async function AppLayout({ children }: AppLayoutProps) {
-  const supabase = createServerComponentClient({ cookies })
+  const cookieStore = cookies()
+  const supabase = createClient(cookieStore)
   const session = await getCurrentSession(supabase)
   const currentApp = await getAppBySlug(supabase, '/apps/chat')
   

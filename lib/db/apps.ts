@@ -1,4 +1,4 @@
-import { SupabaseClient } from "@supabase/auth-helpers-nextjs"
+import { SupabaseClient } from "@supabase/supabase-js"
 import { App, Database } from "."
 import { Logger } from "next-axiom";
 import { LogLevel } from "next-axiom/dist/logger";
@@ -27,25 +27,23 @@ export const getApps = async (supabase: SupabaseClient<Database>) => {
   return data
 }
 
-export const getAppBySlug = (supabase: SupabaseClient<Database>, slug: App['slug']) => {
-  return unstable_cache(async (supabase: SupabaseClient<Database>, slug: App['slug']) => {
-    log.info(`${getAppBySlug.name} called`, { slug });
-    const { data, error, status } = await supabase
-      .from('apps')
-      .select('*')
-      .eq('slug', slug)
-      .single()
-  
-    if (error && status !== 406) {
-      log.error(getAppBySlug.name, { error, status });
-      return null
-    }
-  
-    log.info(`${getAppBySlug.name} fetched successfully`, { data });
-    return data
-  },
-  [CACHE_KEYS.APPS, slug],
-  {
-    revalidate: CACHE_TTL,
-  })(supabase, slug)
-}
+export const getAppBySlug = unstable_cache(async (supabase: SupabaseClient<Database>, slug: App['slug']) => {
+  log.info(`${getAppBySlug.name} called`, { slug });
+  const { data, error, status } = await supabase
+    .from('apps')
+    .select('*')
+    .eq('slug', slug)
+    .single()
+
+  if (error && status !== 406) {
+    log.error(getAppBySlug.name, { error, status });
+    return null
+  }
+
+  log.info(`${getAppBySlug.name} fetched successfully`, { data });
+  return data
+},
+[CACHE_KEYS.APP_BY_SLUG],
+{
+  revalidate: CACHE_TTL,
+})

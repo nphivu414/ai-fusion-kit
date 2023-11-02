@@ -10,17 +10,16 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useToast } from "@/components/ui/use-toast"
 import { InputField } from "@/components/ui/form/form-fields"
 import { Loader } from "lucide-react"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { Database } from "@/lib/db"
 import { registerProfileSchema } from "./schema"
 import Link from "next/link"
+import { createClient } from "@/lib/supabase/client"
 
 type UserSignupFormProps = React.HTMLAttributes<HTMLDivElement>
 
 type FormData = z.infer<typeof registerProfileSchema>
 
 export function UserSignupForm({ className, ...props }: UserSignupFormProps) {
-  const supabase = createClientComponentClient<Database>()
+  const supabase = createClient()
   const { replace } = useRouter()
   const {
     register,

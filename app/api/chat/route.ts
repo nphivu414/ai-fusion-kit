@@ -1,13 +1,13 @@
-import { RequestCookies } from "@edge-runtime/cookies";
 import OpenAI from 'openai'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { pick } from 'lodash';
 import { AxiomRequest, withAxiom } from 'next-axiom';
 import { getCurrentSession } from '@/lib/session';
 import { createNewMessage, deleteMessagesFrom, getMessageById } from '@/lib/db/message';
 import { createNewChat } from '@/lib/db/chats';
 import { getAppBySlug } from '@/lib/db/apps';
+import { createClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
 import {
   env
 } from '@/env.mjs';
@@ -25,8 +25,8 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
     route: 'api/chat',
   });
   
-  const cookies = new RequestCookies(req.headers) as any;
-  const supabase = createRouteHandlerClient({ cookies: () => cookies })
+  const cookieStore = cookies()
+  const supabase = createClient(cookieStore)
   const params = await req.json()
   const {
     messages,

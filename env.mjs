@@ -9,6 +9,8 @@ export const env = createEnv({
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.string().min(1),
+    NEXT_PUBLIC_SUPABASE_URL: z.string().min(1),
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
   },
   runtimeEnv: {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
