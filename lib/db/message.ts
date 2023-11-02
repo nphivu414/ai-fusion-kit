@@ -2,6 +2,8 @@ import { SupabaseClient } from "@supabase/supabase-js"
 import { Message, Database } from "."
 import { Logger } from "next-axiom";
 import { LogLevel } from "next-axiom/dist/logger";
+import { unstable_cache } from "next/cache";
+import { CACHE_KEYS, CACHE_TTL } from "../cache";
 
 export type CreateNewMessageParams = Pick<Message, 'chatId' | 'content' | 'profileId' | 'role'> & Partial<Pick<Message, 'id'>>
 type GetMessagesParams = Pick<Message, 'chatId' | 'profileId'>
@@ -12,7 +14,7 @@ const log = new Logger({
   }
 });
 
-export const getMessages = async (supabase: SupabaseClient<Database>, params: GetMessagesParams) => {
+export const getMessages = unstable_cache(async (supabase: SupabaseClient<Database>, params: GetMessagesParams) => {
   log.info(`${getMessages.name} called`, { params });
   const { data, error, status } = await supabase
     .from('messages')
@@ -28,7 +30,11 @@ export const getMessages = async (supabase: SupabaseClient<Database>, params: Ge
 
   log.info(`${getMessages.name} fetched successfully`, { params, data });
   return data
-}
+},
+[CACHE_KEYS.MESSAGES],
+{
+  revalidate: CACHE_TTL
+})
 
 export const getMessageById = async (supabase: SupabaseClient<Database>, id: Message['id']) => {
   log.info(`${getMessageById.name} called`, { params: { id } });
