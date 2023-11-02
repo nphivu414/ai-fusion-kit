@@ -7,6 +7,7 @@ import { cookies } from "next/headers"
 import { Heading3 } from "@/components/ui/typography"
 import { siteConfig } from "@/config/site"
 
+export const runtime = "edge"
 export const metadata: Metadata = {
   title: "Signup",
   description: "Signup a new account",
