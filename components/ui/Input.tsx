@@ -1,14 +1,16 @@
-import { cn } from '@/lib/utils';
-import { cva, VariantProps } from 'class-variance-authority';
-import React from 'react';
-import { Label } from './Label';
+import React from "react";
+import { VariantProps, cva } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
+
+import { Label } from "./Label";
 
 const inputVariants = cva(
   `flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50`,
   {
     variants: {
       isError: {
-        true: 'border-red-500 dark:border-red-500',
+        true: "border-red-500 dark:border-red-500",
       },
     },
   }
@@ -44,10 +46,7 @@ const Input = React.forwardRef<
         />
         {helperText ? (
           <p
-            className={cn(
-              'text-xs text-stone-500',
-              isError && 'text-red-500'
-            )}
+            className={cn("text-xs text-stone-500", isError && "text-red-500")}
           >
             {helperText}
           </p>
@@ -57,6 +56,6 @@ const Input = React.forwardRef<
   }
 );
 
-Input.displayName = 'Input';
+Input.displayName = "Input";
 
 export { Input };

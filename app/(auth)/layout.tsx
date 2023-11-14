@@ -1,9 +1,9 @@
-import { AppLogo } from "@/components/ui/common/AppLogo"
+import { AppLogo } from "@/components/ui/common/AppLogo";
 
 type AuthLayoutProps = {
-    children: React.ReactNode
-  }
-  
+  children: React.ReactNode;
+};
+
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <div className="min-h-screen">
@@ -13,11 +13,11 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
             className="absolute inset-0 bg-ring bg-right-bottom brightness-50 lg:bg-center lg:brightness-100"
             style={{
               backgroundImage:
-                  "url(https://images.unsplash.com/photo-1627645835237-0743e52b991f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80)",
+                "url(https://images.unsplash.com/photo-1627645835237-0743e52b991f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80)",
             }}
           />
           <div className="relative z-20 flex items-center text-lg font-medium">
-            <AppLogo/>
+            <AppLogo />
           </div>
         </div>
         <div className="z-10 w-screen px-4 lg:w-full lg:p-8">
@@ -27,5 +27,5 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,37 +1,37 @@
-import { SupabaseClient } from "@supabase/supabase-js"
-import { getCurrentSession } from "../session"
-import { Database } from "."
+import { SupabaseClient } from "@supabase/supabase-js";
 import { Logger } from "next-axiom";
 import { LogLevel } from "next-axiom/dist/logger";
+
+import { Database } from ".";
+import { getCurrentSession } from "../session";
 
 const log = new Logger({
   logLevel: LogLevel.debug,
   args: {
-    route: '[DB] Profile',
-  }
+    route: "[DB] Profile",
+  },
 });
 
 export const getCurrentProfile = async (supabase: SupabaseClient<Database>) => {
   log.info(`${getCurrentProfile.name} called`);
-  
-  const session = await getCurrentSession(supabase)
-  const user = session?.user
 
-  if (!user) return null
+  const session = await getCurrentSession(supabase);
+  const user = session?.user;
+
+  if (!user) return null;
 
   const { data, error, status } = await supabase
-    .from('profiles')
+    .from("profiles")
     .select(`*`)
-    .eq('id', user.id)
-    .single()
-
+    .eq("id", user.id)
+    .single();
 
   if (error && status !== 406) {
     log.error(getCurrentProfile.name, { error, status });
-    return null
+    return null;
   }
 
   log.info(`${getCurrentProfile.name} fetched successfully`, { data });
 
-  return data
-}
+  return data;
+};

@@ -1,33 +1,32 @@
-import { ChatHistory } from "@/components/modules/apps/chat/ChatHistory"
-import { getAppBySlug } from "@/lib/db/apps"
-import { getChats } from "@/lib/db/chats"
-import { getCurrentSession } from "@/lib/session"
-import { createClient } from "@/lib/supabase/server"
-import { cookies } from "next/headers"
-import { MainLayout } from '@/components/ui/common/MainLayout'
+import { cookies } from "next/headers";
+
+import { getAppBySlug } from "@/lib/db/apps";
+import { getChats } from "@/lib/db/chats";
+import { getCurrentSession } from "@/lib/session";
+import { createClient } from "@/lib/supabase/server";
+import { MainLayout } from "@/components/ui/common/MainLayout";
+import { ChatHistory } from "@/components/modules/apps/chat/ChatHistory";
 
 interface AppLayoutProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export default async function AppLayout({ children }: AppLayoutProps) {
-  const cookieStore = cookies()
-  const supabase = createClient(cookieStore)
-  const session = await getCurrentSession(supabase)
-  const currentApp = await getAppBySlug(supabase, '/apps/chat')
-  
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+  const session = await getCurrentSession(supabase);
+  const currentApp = await getAppBySlug(supabase, "/apps/chat");
+
   if (!currentApp || !session) {
-    return (
-      <div className="pt-4">No app found</div>
-    )
+    return <div className="pt-4">No app found</div>;
   }
 
-  const currentProfileId = session.user.id
-  
+  const currentProfileId = session.user.id;
+
   const chats = await getChats(supabase, {
     appId: currentApp.id,
     profileId: currentProfileId,
-  })
+  });
 
   return (
     <MainLayout>
@@ -44,5 +43,5 @@ export default async function AppLayout({ children }: AppLayoutProps) {
         </div>
       </div>
     </MainLayout>
-  )
+  );
 }

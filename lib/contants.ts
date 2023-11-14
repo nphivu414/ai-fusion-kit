@@ -1,3 +1,3 @@
 export const APP_SLUGS = {
-  CHAT: '/apps/chat',
-}
+  CHAT: "/apps/chat",
+};

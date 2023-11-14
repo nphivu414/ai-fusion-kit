@@ -1,9 +1,7 @@
-import { Heading1 } from "@/components/ui/typography"
+import { Heading1 } from "@/components/ui/typography";
 
-export const runtime = "edge"
+export const runtime = "edge";
 
 export default function Apps() {
-  return (
-    <Heading1>Apps</Heading1>
-  )
+  return <Heading1>Apps</Heading1>;
 }

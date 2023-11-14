@@ -9,7 +9,7 @@
 
 <p align="center">
   <a href="#tech-stacks"><strong>Tech stacks</strong></a> ·
-  <a href="#nstallation"><strong>Installation</strong></a> ·
+  <a href="#installation"><strong>Installation</strong></a> ·
   <a href="#run-locally"><strong>Run Locally</strong></a> ·
   <a href="#authors"><strong>Authors</strong></a>
 </p>

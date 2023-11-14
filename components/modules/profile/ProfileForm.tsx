@@ -1,60 +1,61 @@
-"use client"
+"use client";
 
-import React from "react"
-import * as z from "zod"
-import { cn } from "@/lib/utils"
-import { Button, buttonVariants } from "@/components/ui/Button"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useToast } from "@/components/ui/use-toast"
-import { InputField } from "@/components/ui/form/form-fields"
-import { Loader } from "lucide-react"
-import { profileSchema } from "./schema"
-import { updateProfile } from "./action"
-import { ProfileFormValues } from "./type"
-import Link from "next/link"
+import React from "react";
+import Link from "next/link";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader } from "lucide-react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+import { cn } from "@/lib/utils";
+import { Button, buttonVariants } from "@/components/ui/Button";
+import { InputField } from "@/components/ui/form/form-fields";
+import { useToast } from "@/components/ui/use-toast";
+
+import { updateProfile } from "./action";
+import { profileSchema } from "./schema";
+import { ProfileFormValues } from "./type";
 
 type ProfileFormProps = {
-  formValues: ProfileFormValues
-} & React.HTMLAttributes<HTMLDivElement>
+  formValues: ProfileFormValues;
+} & React.HTMLAttributes<HTMLDivElement>;
 
-type FormData = z.infer<typeof profileSchema>
+type FormData = z.infer<typeof profileSchema>;
 
-export function ProfileForm({ className, formValues, ...props }: ProfileFormProps) {
-  const [isPendingUpdate, startUpdate] = React.useTransition()
-  const {
-    register,
-    formState,
-    handleSubmit,
-    reset
-  } = useForm<FormData>({
+export function ProfileForm({
+  className,
+  formValues,
+  ...props
+}: ProfileFormProps) {
+  const [isPendingUpdate, startUpdate] = React.useTransition();
+  const { register, formState, handleSubmit, reset } = useForm<FormData>({
     mode: "onChange",
     resolver: zodResolver(profileSchema),
-  })
-  const { toast } = useToast()
+  });
+  const { toast } = useToast();
 
   const fieldProps = { register, formState };
 
   React.useEffect(() => {
-    reset(formValues)
-  }, [formValues, reset])
+    reset(formValues);
+  }, [formValues, reset]);
 
   async function onSubmit(data: FormData) {
     startUpdate(async () => {
       try {
-        await updateProfile(data)
+        await updateProfile(data);
         toast({
           title: "Success",
           description: "Your profile has been updated.",
-        })
+        });
       } catch (error) {
         toast({
           title: "Error",
           description: "Failed to update profile. Please try again.",
           variant: "destructive",
-        })
+        });
       }
-    })
+    });
   }
 
   return (
@@ -108,9 +109,9 @@ export function ProfileForm({ className, formValues, ...props }: ProfileFormProp
               <Loader className="mr-2 h-4 w-4 animate-spin" />
             )}
             Save
-          </Button>          
+          </Button>
         </div>
       </form>
     </div>
-  )
+  );
 }

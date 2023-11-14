@@ -1,9 +1,12 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
-import { cva, VariantProps } from 'class-variance-authority';
-import TextareaAutoResize, { TextareaAutosizeProps } from 'react-textarea-autosize'
+import React from "react";
+import { VariantProps, cva } from "class-variance-authority";
+import TextareaAutoResize, {
+  TextareaAutosizeProps,
+} from "react-textarea-autosize";
 
-import { Label } from './Label';
+import { cn } from "@/lib/utils";
+
+import { Label } from "./Label";
 
 export interface TextAreaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -17,7 +20,7 @@ const textAreaVariants = cva(
   {
     variants: {
       isError: {
-        true: 'border-red-500 dark:border-red-500',
+        true: "border-red-500 dark:border-red-500",
       },
     },
   }
@@ -49,6 +52,6 @@ const TextArea = React.forwardRef<
   }
 );
 
-TextArea.displayName = 'TextArea';
+TextArea.displayName = "TextArea";
 
 export { TextArea };
