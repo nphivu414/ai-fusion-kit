@@ -1,12 +1,13 @@
-import { Input, InputProps } from '@/components/ui/Input';
-import { cn } from '@/lib/utils';
-import get from 'lodash/get';
-import { FieldValues } from 'react-hook-form';
+import get from "lodash/get";
+import { FieldValues } from "react-hook-form";
 
-import { FormFieldProps } from '../types';
+import { cn } from "@/lib/utils";
+import { Input, InputProps } from "@/components/ui/Input";
+
+import { FormFieldProps } from "../types";
 
 type InputFieldProps<T extends FieldValues> = FormFieldProps<T> &
-  Omit<InputProps, 'name'> & {
+  Omit<InputProps, "name"> & {
     onValueChange?: (value: string) => void;
   };
 
@@ -17,7 +18,7 @@ export function InputField<T extends FieldValues>(props: InputFieldProps<T>) {
   const errorText = error?.message;
 
   const renderHelperText = () => {
-    if (errorText && typeof errorText === 'string') {
+    if (errorText && typeof errorText === "string") {
       return errorText;
     }
   };
@@ -29,11 +30,11 @@ export function InputField<T extends FieldValues>(props: InputFieldProps<T>) {
   return (
     <Input
       id={id || name}
-      containerClassName={cn('mb-2', containerClassName)}
+      containerClassName={cn("mb-2", containerClassName)}
       isError={!!error}
       helperText={renderHelperText()}
       {...register(name, {
-        onChange: handleOnChange
+        onChange: handleOnChange,
       })}
       {...rest}
     />

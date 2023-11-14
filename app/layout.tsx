@@ -1,11 +1,13 @@
-import { AxiomWebVitals } from 'next-axiom';
-import "./globals.css"
-import { Metadata, Viewport } from "next"
-import { GeistMono, GeistSans } from 'geist/font'
-import { Analytics } from '@vercel/analytics/react';
-import { siteConfig } from "@/config/site"
-import { ThemeProvider } from "@/components/theme/ThemeProvider"
+import { AxiomWebVitals } from "next-axiom";
+
+import "./globals.css";
+import { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/react";
+import { GeistMono, GeistSans } from "geist/font";
+
+import { siteConfig } from "@/config/site";
 import { Toaster } from "@/components/ui/Toaster";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -18,24 +20,31 @@ export const metadata: Metadata = {
     shortcut: "/favicon-16x16.png",
     apple: "/apple-touch-icon.png",
   },
-}
+};
 
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
-}
+};
 
 interface RootLayoutProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <>
-      <html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable}`}>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      <html
+        lang="en"
+        suppressHydrationWarning
+        className={`${GeistSans.variable} ${GeistMono.variable}`}
+      >
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
         <head />
         <body className="min-h-screen bg-background font-sans antialiased">
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -47,5 +56,5 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </body>
       </html>
     </>
-  )
+  );
 }

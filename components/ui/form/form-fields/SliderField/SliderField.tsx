@@ -1,10 +1,12 @@
-import { Slider, SliderProps } from '@/components/ui/Slider';
-import get from 'lodash/get';
-import { Controller, FieldValues } from 'react-hook-form';
+import get from "lodash/get";
+import { Controller, FieldValues } from "react-hook-form";
 
-import { ControlledFormFieldProps } from '../types';
+import { Slider, SliderProps } from "@/components/ui/Slider";
 
-type SliderFieldProps<T extends FieldValues> = ControlledFormFieldProps<T> & Omit<SliderProps, 'name'>;
+import { ControlledFormFieldProps } from "../types";
+
+type SliderFieldProps<T extends FieldValues> = ControlledFormFieldProps<T> &
+  Omit<SliderProps, "name">;
 
 export function SliderField<T extends FieldValues>(props: SliderFieldProps<T>) {
   const { name, id, formState, min, max, control, ...rest } = props;
@@ -13,7 +15,7 @@ export function SliderField<T extends FieldValues>(props: SliderFieldProps<T>) {
   const errorText = error?.message;
 
   const renderHelperText = () => {
-    if (errorText && typeof errorText === 'string') {
+    if (errorText && typeof errorText === "string") {
       return errorText;
     }
   };
@@ -22,9 +24,7 @@ export function SliderField<T extends FieldValues>(props: SliderFieldProps<T>) {
     <Controller
       name={name}
       control={control}
-      render={({
-        field: { onChange, name, ...fields },
-      }) => (
+      render={({ field: { onChange, name, ...fields } }) => (
         <Slider
           id={id || name}
           min={min}
@@ -37,6 +37,5 @@ export function SliderField<T extends FieldValues>(props: SliderFieldProps<T>) {
         />
       )}
     />
-
   );
 }

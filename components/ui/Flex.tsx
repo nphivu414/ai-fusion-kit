@@ -1,34 +1,35 @@
-'use client';
+"use client";
 
-import { cn } from '@/lib/utils';
-import { cva, VariantProps } from 'class-variance-authority';
-import React from 'react';
+import React from "react";
+import { VariantProps, cva } from "class-variance-authority";
 
-const flexVariants = cva('flex', {
+import { cn } from "@/lib/utils";
+
+const flexVariants = cva("flex", {
   variants: {
     direction: {
-      row: 'flex-row',
-      column: 'flex-col',
+      row: "flex-row",
+      column: "flex-col",
     },
     justify: {
-      start: 'justify-start',
-      end: 'justify-end',
-      center: 'justify-center',
-      between: 'justify-between',
-      around: 'justify-around',
-      evenly: 'justify-evenly',
+      start: "justify-start",
+      end: "justify-end",
+      center: "justify-center",
+      between: "justify-between",
+      around: "justify-around",
+      evenly: "justify-evenly",
     },
     align: {
-      start: 'items-start',
-      end: 'items-end',
-      center: 'items-center',
-      baseline: 'items-baseline',
-      stretch: 'items-stretch',
+      start: "items-start",
+      end: "items-end",
+      center: "items-center",
+      baseline: "items-baseline",
+      stretch: "items-stretch",
     },
     wrap: {
-      wrap: 'flex-wrap',
-      nowrap: 'flex-nowrap',
-      wrapReverse: 'flex-wrap-reverse',
+      wrap: "flex-wrap",
+      nowrap: "flex-nowrap",
+      wrapReverse: "flex-wrap-reverse",
     },
   },
 });

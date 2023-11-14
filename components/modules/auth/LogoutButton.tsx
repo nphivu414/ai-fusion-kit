@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/Button';
-import { LogOut } from 'lucide-react';
-import React from 'react';
+import React from "react";
+import { LogOut } from "lucide-react";
+
+import { Button } from "@/components/ui/Button";
 
 export default function LogoutButton() {
   return (
@@ -12,5 +13,5 @@ export default function LogoutButton() {
         <span>Log out</span>
       </Button>
     </form>
-  )
+  );
 }

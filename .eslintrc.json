@@ -3,19 +3,19 @@
   "root": true,
   "extends": [
     "next/core-web-vitals",
-    "prettier",
     "plugin:tailwindcss/recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
   ],
-  "plugins": ["tailwindcss"],
+  "plugins": ["tailwindcss", "prettier"],
   "rules": {
     "@next/next/no-html-link-for-pages": "off",
     "react/jsx-key": "off",
     "tailwindcss/no-custom-classname": "off",
-    "indent": ["error", 2],
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/ban-ts-comment": "off",
-    "@typescript-eslint/no-empty-function": "off"
+    "@typescript-eslint/no-empty-function": "off",
+    "prettier/prettier": "error"
   },
   "settings": {
     "tailwindcss": {

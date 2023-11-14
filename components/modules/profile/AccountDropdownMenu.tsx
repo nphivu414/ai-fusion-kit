@@ -1,7 +1,14 @@
-"use client"
+"use client";
 
-import React from 'react';
-import { Button, buttonVariants } from '@/components/ui/Button';
+import React from "react";
+import Link from "next/link";
+import { Loader, User } from "lucide-react";
+
+import { getCurrentProfile } from "@/lib/db/profile";
+import { useProfileStore } from "@/lib/stores/profile";
+import { createClient } from "@/lib/supabase/client";
+import { cn } from "@/lib/utils";
+import { Button, buttonVariants } from "@/components/ui/Button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,72 +16,83 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/DropdownMenu';
-import { getCurrentProfile } from '@/lib/db/profile';
-import { createClient } from '@/lib/supabase/client'
-import { Loader, User } from 'lucide-react';
-import Link from 'next/link';
-import LogoutButton from '../auth/LogoutButton';
-import { UserAvatar } from '@/components/ui/common/UserAvatar';
-import { useProfileStore } from '@/lib/stores/profile';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/DropdownMenu";
+import { UserAvatar } from "@/components/ui/common/UserAvatar";
+
+import LogoutButton from "../auth/LogoutButton";
 
 type AccountDropdownMenuProps = {
-  userEmail?: string
-}
+  userEmail?: string;
+};
 
-export const AccountDropdownMenu = ({ userEmail }: AccountDropdownMenuProps) => {
-  const supabase = createClient()
-  const [ isLoading, setIsLoading ] = React.useState<boolean>()
-  const [isMounted, setIsMounted] = React.useState(false)
+export const AccountDropdownMenu = ({
+  userEmail,
+}: AccountDropdownMenuProps) => {
+  const supabase = createClient();
+  const [isLoading, setIsLoading] = React.useState<boolean>();
+  const [isMounted, setIsMounted] = React.useState(false);
 
   React.useEffect(() => {
-    setIsMounted(true)
-  }, [])
+    setIsMounted(true);
+  }, []);
 
-  const { profile, setProfile } = useProfileStore((state) => state)
+  const { profile, setProfile } = useProfileStore((state) => state);
 
   React.useEffect(() => {
     const fetchProfile = async () => {
-      setIsLoading(true)
-      const profile = await getCurrentProfile(supabase)
-      setIsLoading(false)
+      setIsLoading(true);
+      const profile = await getCurrentProfile(supabase);
+      setIsLoading(false);
       if (!profile) {
-        return
+        return;
       }
-      setProfile(profile)
-    }
-    fetchProfile()
-  }, [setProfile, supabase])
+      setProfile(profile);
+    };
+    fetchProfile();
+  }, [setProfile, supabase]);
 
   if (!isMounted) {
-    return null
+    return null;
   }
 
   if (isLoading) {
-    return <Button variant="ghost" className='h-14'>
-      <Loader className='animate-spin' size={24} />
-    </Button>
+    return (
+      <Button variant="ghost" className="h-14">
+        <Loader className="animate-spin" size={24} />
+      </Button>
+    );
   }
 
   if (!profile) {
-    return <Link href="/signin" className={cn(buttonVariants({
-      variant: 'outline',
-    }), 'ml-2')}>
-      Signin
-    </Link>
+    return (
+      <Link
+        href="/signin"
+        className={cn(
+          buttonVariants({
+            variant: "outline",
+          }),
+          "ml-2"
+        )}
+      >
+        Signin
+      </Link>
+    );
   }
 
-  const { username, avatar_url } = profile
-  const nameLabel = username || userEmail || ''
+  const { username, avatar_url } = profile;
+  const nameLabel = username || userEmail || "";
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className='h-14'>
-          <div className='flex items-center'>
-            <UserAvatar username={username} avatarUrl={avatar_url} email={userEmail}/>
-            <p className='ml-2 hidden md:block'>{nameLabel}</p>
+        <Button variant="ghost" className="h-14">
+          <div className="flex items-center">
+            <UserAvatar
+              username={username}
+              avatarUrl={avatar_url}
+              email={userEmail}
+            />
+            <p className="ml-2 hidden md:block">{nameLabel}</p>
           </div>
         </Button>
       </DropdownMenuTrigger>
@@ -87,10 +105,10 @@ export const AccountDropdownMenu = ({ userEmail }: AccountDropdownMenuProps) => 
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator/>
+        <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <LogoutButton/>
+            <LogoutButton />
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
