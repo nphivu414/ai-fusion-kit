@@ -1,11 +1,13 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
-import { PopoverProps } from "@radix-ui/react-popover"
+import * as React from "react";
+import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import { PopoverProps } from "@radix-ui/react-popover";
+import { useFormContext } from "react-hook-form";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/Button"
+import { cn } from "@/lib/utils";
+import { useMutationObserver } from "@/hooks/useMutationObserver";
+import { Button } from "@/components/ui/Button";
 import {
   Command,
   CommandEmpty,
@@ -13,63 +15,63 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/Command"
+} from "@/components/ui/Command";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/HoverCard"
-import { Label } from "@/components/ui/Label"
+} from "@/components/ui/HoverCard";
+import { Label } from "@/components/ui/Label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/Popover"
+} from "@/components/ui/Popover";
 
-import { Model, ModelType } from "./data/models"
-import { useMutationObserver } from "@/hooks/useMutationObserver"
-import { useFormContext } from "react-hook-form"
-import { ChatParams } from "../types"
+import { ChatParams } from "../types";
+import { Model, ModelType } from "./data/models";
 
 interface ModelSelectorProps extends PopoverProps {
-  types: readonly ModelType[]
-  models: Model[]
+  types: readonly ModelType[];
+  models: Model[];
 }
 
 export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
-  const [open, setOpen] = React.useState(false)
-  const [selectedModel, setSelectedModel] = React.useState<Model>(models[0])
-  const [peekedModel, setPeekedModel] = React.useState<Model>(models[0])
+  const [open, setOpen] = React.useState(false);
+  const [selectedModel, setSelectedModel] = React.useState<Model>(models[0]);
+  const [peekedModel, setPeekedModel] = React.useState<Model>(models[0]);
 
-  const { getValues, setValue } = useFormContext<ChatParams>()
-  const modelValue= getValues('model')
+  const { getValues, setValue } = useFormContext<ChatParams>();
+  const modelValue = getValues("model");
 
   React.useEffect(() => {
     if (modelValue) {
-      const model = models.find((model) => model.name === modelValue)
+      const model = models.find((model) => model.name === modelValue);
       if (model) {
-        setSelectedModel(model)
+        setSelectedModel(model);
       }
     }
-  }, [modelValue, models])
+  }, [modelValue, models]);
 
   const onModelSelect = (model: Model) => {
     return () => {
-      setSelectedModel(model)
-      setValue('model', model.name)
-      setOpen(false)
-    }
-  }
+      setSelectedModel(model);
+      setValue("model", model.name);
+      setOpen(false);
+    };
+  };
 
   const onModelPeek = (model: Model) => {
-    setPeekedModel(model)
-  }
+    setPeekedModel(model);
+  };
 
   return (
     <div className="grid gap-2">
       <HoverCard openDelay={200}>
         <HoverCardTrigger asChild>
-          <Label className="text-left" htmlFor="model">Model</Label>
+          <Label className="text-left" htmlFor="model">
+            Model
+          </Label>
         </HoverCardTrigger>
         <HoverCardContent
           align="start"
@@ -133,29 +135,32 @@ export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
         </PopoverContent>
       </Popover>
     </div>
-  )
+  );
 }
 
 interface ModelItemProps {
-  model: Model
-  isSelected: boolean
-  onSelect: () => void
-  onPeek: (model: Model) => void
+  model: Model;
+  isSelected: boolean;
+  onSelect: () => void;
+  onPeek: (model: Model) => void;
 }
 
 function ModelItem({ model, isSelected, onSelect, onPeek }: ModelItemProps) {
-  const ref = React.useRef<HTMLDivElement>(null)
+  const ref = React.useRef<HTMLDivElement>(null);
 
   useMutationObserver(ref, (mutations) => {
     for (const mutation of mutations) {
       if (mutation.type === "attributes") {
         const target = mutation.target;
-        if (target instanceof HTMLElement && target.getAttribute('aria-selected') === "true") {
-          onPeek(model)
+        if (
+          target instanceof HTMLElement &&
+          target.getAttribute("aria-selected") === "true"
+        ) {
+          onPeek(model);
         }
       }
     }
-  })
+  });
 
   return (
     <CommandItem
@@ -172,5 +177,5 @@ function ModelItem({ model, isSelected, onSelect, onPeek }: ModelItemProps) {
         )}
       />
     </CommandItem>
-  )
+  );
 }

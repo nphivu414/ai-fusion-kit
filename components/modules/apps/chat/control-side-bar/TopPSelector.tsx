@@ -1,17 +1,19 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
+import { useFormContext } from "react-hook-form";
+
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/HoverCard"
-import { SliderField } from "@/components/ui/form/form-fields"
-import { useFormContext } from "react-hook-form"
-import { ChatParams } from "../types"
+} from "@/components/ui/HoverCard";
+import { SliderField } from "@/components/ui/form/form-fields";
+
+import { ChatParams } from "../types";
 
 export function TopPSelector() {
-  const { control, formState, getValues } = useFormContext<ChatParams>()
+  const { control, formState, getValues } = useFormContext<ChatParams>();
 
   return (
     <div className="grid gap-2 pt-4">
@@ -36,7 +38,9 @@ export function TopPSelector() {
           side="left"
         >
           <p>
-            It determines the randomness in AI responses. Higher values like 0.8 mean more randomness, while lower values like 0.2 make responses more focused on a single idea or word.
+            It determines the randomness in AI responses. Higher values like 0.8
+            mean more randomness, while lower values like 0.2 make responses
+            more focused on a single idea or word.
           </p>
           <p>
             We generally recommend altering this or Creativity but not both.
@@ -44,5 +48,5 @@ export function TopPSelector() {
         </HoverCardContent>
       </HoverCard>
     </div>
-  )
+  );
 }

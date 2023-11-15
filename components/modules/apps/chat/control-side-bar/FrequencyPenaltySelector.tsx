@@ -1,17 +1,19 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
+import { useFormContext } from "react-hook-form";
+
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/HoverCard"
-import { SliderField } from "@/components/ui/form/form-fields"
-import { useFormContext } from "react-hook-form"
-import { ChatParams } from "../types"
+} from "@/components/ui/HoverCard";
+import { SliderField } from "@/components/ui/form/form-fields";
+
+import { ChatParams } from "../types";
 
 export function FrequencyPenaltySelector() {
-  const { control, formState, getValues } = useFormContext<ChatParams>()
+  const { control, formState, getValues } = useFormContext<ChatParams>();
 
   return (
     <div className="grid gap-2 pt-4">
@@ -36,10 +38,12 @@ export function FrequencyPenaltySelector() {
           side="left"
         >
           <p>
-            Adjust this to encourage the AI to use less common words. A higher value like 1.2 makes it prefer unique words, while a lower value like 0.8 lets it use common words more often.
+            Adjust this to encourage the AI to use less common words. A higher
+            value like 1.2 makes it prefer unique words, while a lower value
+            like 0.8 lets it use common words more often.
           </p>
         </HoverCardContent>
       </HoverCard>
     </div>
-  )
+  );
 }

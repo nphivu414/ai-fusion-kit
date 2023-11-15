@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 // create schema based on CompletionCreateParams from openai
 export const ChatParamSchema = z

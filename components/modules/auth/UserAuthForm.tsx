@@ -1,61 +1,64 @@
-"use client"
+"use client";
 
-import React from "react"
-import * as z from "zod"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/Button"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useToast } from "@/components/ui/use-toast"
-import { InputField } from "@/components/ui/form/form-fields"
-import { Loader } from "lucide-react"
-import Link from "next/link"
-import { credentialAuthSchema } from "./schema"
-import { SocialLoginOptions } from "./SocialLoginOptions"
-import { createClient } from "@/lib/supabase/client"
+import React from "react";
+import Link from "next/link";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader } from "lucide-react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>
+import { createClient } from "@/lib/supabase/client";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
+import { InputField } from "@/components/ui/form/form-fields";
+import { useToast } from "@/components/ui/use-toast";
 
-type FormData = z.infer<typeof credentialAuthSchema>
+import { SocialLoginOptions } from "./SocialLoginOptions";
+import { credentialAuthSchema } from "./schema";
+
+type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>;
+
+type FormData = z.infer<typeof credentialAuthSchema>;
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const supabase = createClient()
-  const {
-    register,
-    formState,
-    handleSubmit,
-  } = useForm<FormData>({
+  const supabase = createClient();
+  const { register, formState, handleSubmit } = useForm<FormData>({
     mode: "onChange",
     resolver: zodResolver(credentialAuthSchema),
-  })
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const { toast } = useToast()
+  });
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const { toast } = useToast();
 
   const fieldProps = { register, formState };
 
   async function onSubmit(data: FormData) {
-    setIsLoading(true)
+    setIsLoading(true);
 
     const signInResult = await supabase.auth.signInWithPassword({
       email: data.email,
       password: data.password,
-    })
-
+    });
 
     if (signInResult?.error) {
-      setIsLoading(false)
+      setIsLoading(false);
       return toast({
         title: "Error",
         description: "Your email or password is incorrect. Please try again.",
         variant: "destructive",
-      })
+      });
     }
-    
-    window.location.href = '/apps/chat'
+
+    window.location.href = "/apps/chat";
   }
 
   return (
-    <div className={cn("grid gap-6 rounded-lg p-4 backdrop-blur-3xl lg:rounded-none lg:p-0 lg:backdrop-blur-none", className)} {...props}>
+    <div
+      className={cn(
+        "grid gap-6 rounded-lg p-4 backdrop-blur-3xl lg:rounded-none lg:p-0 lg:backdrop-blur-none",
+        className
+      )}
+      {...props}
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-1">
           <InputField
@@ -80,9 +83,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             {...fieldProps}
           />
           <Button disabled={isLoading} className="mt-2">
-            {isLoading && (
-              <Loader className="mr-2 h-4 w-4 animate-spin" />
-            )}
+            {isLoading && <Loader className="mr-2 h-4 w-4 animate-spin" />}
             Sign In
           </Button>
         </div>
@@ -107,5 +108,5 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         </Link>
       </div>
     </div>
-  )
+  );
 }

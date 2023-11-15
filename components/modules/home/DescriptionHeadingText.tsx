@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import { motion } from "framer-motion";
 import React from "react";
+import { motion } from "framer-motion";
 
 export function DescriptionHeadingText() {
-  const text = "A feature-rich, highly customizable AI Chatbot Template, empowered by Next.js.";
+  const text =
+    "A feature-rich, highly customizable AI Chatbot Template, empowered by Next.js.";
   const [displayedText, setDisplayedText] = React.useState("");
   const [i, setI] = React.useState(0);
 
@@ -31,7 +32,9 @@ export function DescriptionHeadingText() {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 2 }}
       >
-        {displayedText ? displayedText : "A feature-rich, highly customizable AI Chatbot Template, empowered by Next.js."}
+        {displayedText
+          ? displayedText
+          : "A feature-rich, highly customizable AI Chatbot Template, empowered by Next.js."}
       </motion.span>
       <motion.span
         className="ml-1 inline-flex h-[22px] w-[2px] animate-blink rounded-full bg-current align-sub opacity-75 delay-1000"

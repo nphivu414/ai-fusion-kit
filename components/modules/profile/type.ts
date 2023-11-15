@@ -1,4 +1,5 @@
-import { z } from 'zod';
-import { profileSchema } from './schema';
+import { z } from "zod";
 
-export type ProfileFormValues = z.infer<typeof profileSchema>
+import { profileSchema } from "./schema";
+
+export type ProfileFormValues = z.infer<typeof profileSchema>;

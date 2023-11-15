@@ -1,41 +1,39 @@
-"use client"
+"use client";
 
-import React from "react"
-import { useRouter } from 'next/navigation'
-import * as z from "zod"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/Button"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useToast } from "@/components/ui/use-toast"
-import { InputField } from "@/components/ui/form/form-fields"
-import { Loader } from "lucide-react"
-import { registerProfileSchema } from "./schema"
-import Link from "next/link"
-import { createClient } from "@/lib/supabase/client"
+import React from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader } from "lucide-react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-type UserSignupFormProps = React.HTMLAttributes<HTMLDivElement>
+import { createClient } from "@/lib/supabase/client";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
+import { InputField } from "@/components/ui/form/form-fields";
+import { useToast } from "@/components/ui/use-toast";
 
-type FormData = z.infer<typeof registerProfileSchema>
+import { registerProfileSchema } from "./schema";
+
+type UserSignupFormProps = React.HTMLAttributes<HTMLDivElement>;
+
+type FormData = z.infer<typeof registerProfileSchema>;
 
 export function UserSignupForm({ className, ...props }: UserSignupFormProps) {
-  const supabase = createClient()
-  const { replace } = useRouter()
-  const {
-    register,
-    formState,
-    handleSubmit,
-  } = useForm<FormData>({
+  const supabase = createClient();
+  const { replace } = useRouter();
+  const { register, formState, handleSubmit } = useForm<FormData>({
     mode: "onChange",
     resolver: zodResolver(registerProfileSchema),
-  })
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const { toast } = useToast()
+  });
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const { toast } = useToast();
 
   const fieldProps = { register, formState };
 
   async function onSubmit(data: FormData) {
-    setIsLoading(true)
+    setIsLoading(true);
 
     const signUpResult = await supabase.auth.signUp({
       email: data.email,
@@ -43,24 +41,30 @@ export function UserSignupForm({ className, ...props }: UserSignupFormProps) {
       options: {
         data: {
           full_name: data.fullName,
-        }
-      }
-    })
+        },
+      },
+    });
 
     if (signUpResult?.error) {
-      setIsLoading(false)
+      setIsLoading(false);
       return toast({
         title: "Error",
         description: "There was an error signing up. Please try again.",
         variant: "destructive",
-      })
+      });
     }
-    
-    replace("/apps/chat")
+
+    replace("/apps/chat");
   }
 
   return (
-    <div className={cn("grid gap-6 rounded-lg p-4 backdrop-blur-3xl lg:rounded-none lg:p-0 lg:backdrop-blur-none", className)} {...props}>
+    <div
+      className={cn(
+        "grid gap-6 rounded-lg p-4 backdrop-blur-3xl lg:rounded-none lg:p-0 lg:backdrop-blur-none",
+        className
+      )}
+      {...props}
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-2">
           <div className="grid gap-1">
@@ -112,21 +116,19 @@ export function UserSignupForm({ className, ...props }: UserSignupFormProps) {
             />
           </div>
           <Button disabled={isLoading}>
-            {isLoading && (
-              <Loader className="mr-2 h-4 w-4 animate-spin" />
-            )}
+            {isLoading && <Loader className="mr-2 h-4 w-4 animate-spin" />}
             Sign up
           </Button>
         </div>
       </form>
       <div className="relative flex justify-center text-xs uppercase">
         <span className="px-2 text-muted-foreground">
-            Already have an account?
+          Already have an account?
         </span>
         <Link href="/signin" className="text-primary">
           Sign in
         </Link>
       </div>
     </div>
-  )
+  );
 }

@@ -1,13 +1,15 @@
-import { TextArea, TextAreaProps } from '@/components/ui/TextArea';
-import { cn } from '@/lib/utils';
-import get from 'lodash/get';
-import { FieldValues } from 'react-hook-form';
+import get from "lodash/get";
+import { FieldValues } from "react-hook-form";
+import { TextareaAutosizeProps } from "react-textarea-autosize";
 
-import { FormFieldProps } from '../types';
-import { TextareaAutosizeProps } from 'react-textarea-autosize';
+import { cn } from "@/lib/utils";
+import { TextArea, TextAreaProps } from "@/components/ui/TextArea";
+
+import { FormFieldProps } from "../types";
 
 type TextAreaFieldProps<T extends FieldValues> = FormFieldProps<T> &
-  Omit<TextAreaProps, 'name'> & TextareaAutosizeProps;
+  Omit<TextAreaProps, "name"> &
+  TextareaAutosizeProps;
 
 export function TextAreaField<T extends FieldValues>(
   props: TextAreaFieldProps<T>
@@ -18,7 +20,7 @@ export function TextAreaField<T extends FieldValues>(
   const errorText = error?.message;
 
   const renderHelperText = () => {
-    if (errorText && typeof errorText === 'string') {
+    if (errorText && typeof errorText === "string") {
       return errorText;
     }
   };
@@ -26,7 +28,7 @@ export function TextAreaField<T extends FieldValues>(
   return (
     <TextArea
       id={id || name}
-      containerClassName={cn('my-4', containerClassName)}
+      containerClassName={cn("my-4", containerClassName)}
       isError={!!error}
       helperText={renderHelperText()}
       {...register(name)}

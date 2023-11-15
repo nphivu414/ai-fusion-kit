@@ -1,17 +1,19 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
+import { useFormContext } from "react-hook-form";
+
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/HoverCard"
-import { useFormContext } from "react-hook-form"
-import { ChatParams } from "../types"
-import { SliderField } from "@/components/ui/form/form-fields"
+} from "@/components/ui/HoverCard";
+import { SliderField } from "@/components/ui/form/form-fields";
+
+import { ChatParams } from "../types";
 
 export function MaxLengthSelector() {
-  const { control, formState, getValues } = useFormContext<ChatParams>()
+  const { control, formState, getValues } = useFormContext<ChatParams>();
 
   return (
     <div className="grid gap-2 pt-4">
@@ -39,5 +41,5 @@ export function MaxLengthSelector() {
         </HoverCardContent>
       </HoverCard>
     </div>
-  )
+  );
 }

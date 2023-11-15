@@ -4,7 +4,7 @@ import {
   FieldValues,
   FormState,
   UseFormRegister,
-} from 'react-hook-form';
+} from "react-hook-form";
 
 export type FormFieldProps<T extends FieldValues = FieldValues> = {
   register: UseFormRegister<T>;
