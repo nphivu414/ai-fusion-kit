@@ -1,6 +1,6 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 
-import { Database } from "./db";
+import { Database } from "./db/database.types";
 
 export const getCurrentSession = async (supabase: SupabaseClient<Database>) => {
   const {

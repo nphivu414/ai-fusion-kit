@@ -3,15 +3,19 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { Logger } from "next-axiom";
 import { LogLevel } from "next-axiom/dist/logger";
 
-import { Database, Message } from ".";
+import { Message, UpdateMessage } from ".";
 import { CACHE_KEYS, CACHE_TTL } from "../cache";
+import { RecursiveNonNullable } from "../types";
+import { Database } from "./database.types";
 
 export type CreateNewMessageParams = Pick<
   Message,
   "chatId" | "content" | "profileId" | "role"
 > &
   Partial<Pick<Message, "id">>;
-type GetMessagesParams = Pick<Message, "chatId" | "profileId">;
+type GetMessagesParams = RecursiveNonNullable<
+  Pick<Message, "chatId" | "profileId">
+>;
 const log = new Logger({
   logLevel: LogLevel.debug,
   args: {
@@ -84,8 +88,8 @@ export const createNewMessage = async (
 
 export const deleteMessagesFrom = async (
   supabase: SupabaseClient<Database>,
-  chatId: Message["chatId"],
-  profileId: Message["profileId"],
+  chatId: NonNullable<UpdateMessage["chatId"]>,
+  profileId: NonNullable<UpdateMessage["profileId"]>,
   from: string
 ) => {
   log.info(`${deleteMessagesFrom.name} called`, {
