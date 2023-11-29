@@ -16,13 +16,21 @@ export type DbResultOk<T> = T extends PromiseLike<{ data: infer U }>
   : never;
 export type DbResultErr = PostgrestError;
 
+// Select
 export type Profile = Tables<"profiles">;
 export type App = Tables<"apps">;
 export type Chat = Tables<"chats">;
 export type Message = Tables<"messages">;
-
-export type UpdateMessage = Update<"messages">;
+export type TokenUsage = Tables<"token_usage">;
+export type SubscriptionPlan = Tables<"subscription_plans">;
 export type Product = Tables<"products">;
 export type Price = Tables<"prices">;
 export type Subscription = Tables<"subscriptions">;
+
+//Insert
 export type NewSubscription = Insert<"subscriptions">;
+export type NewTokenUsage = Insert<"token_usage">;
+
+//Update
+export type UpdateMessage = Update<"messages">;
+export type UpdateTokenUsage = Update<"token_usage">;

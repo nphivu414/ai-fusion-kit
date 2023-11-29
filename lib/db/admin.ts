@@ -1,6 +1,13 @@
 import Stripe from "stripe";
 
-import { NewSubscription, Price, Product } from ".";
+import {
+  NewSubscription,
+  NewTokenUsage,
+  Price,
+  Product,
+  TokenUsage,
+  UpdateTokenUsage,
+} from ".";
 import { stripe } from "../stripe/server";
 import { supabaseAdmin } from "../supabase/admin";
 
@@ -104,7 +111,8 @@ const copyBillingDetailsToCustomer = async (
 const manageSubscriptionStatusChange = async (
   subscriptionId: string,
   customerId: string,
-  createAction = false
+  createAction = false,
+  renewalAction = false
 ) => {
   // Get customer's UUID from mapping table.
   const { data: customerData, error: noCustomerError } = await supabaseAdmin
@@ -154,10 +162,15 @@ const manageSubscriptionStatusChange = async (
       : null,
   };
 
-  const { error } = await supabaseAdmin
+  const { data: userSubscription, error } = await supabaseAdmin
     .from("subscriptions")
-    .upsert([subscriptionData]);
+    .upsert([subscriptionData])
+    .select()
+    .single();
   if (error) throw error;
+  if (!userSubscription) {
+    throw new Error("Failed to create new subscription record.");
+  }
   console.log(
     `Inserted/updated subscription [${subscription.id}] for user [${uuid}]`
   );
@@ -170,6 +183,80 @@ const manageSubscriptionStatusChange = async (
       uuid,
       subscription.default_payment_method as Stripe.PaymentMethod
     );
+
+  if (createAction || renewalAction) {
+    const priceId = subscription.items.data[0].price.id;
+    const productId = subscription.items.data[0].price.product as string;
+    const subscriptionPlan = await getSubscriptionPlan(productId, priceId);
+    await updateTokenUsage(userSubscription.user_id, {
+      remaining_tokens: subscriptionPlan.token_quota,
+    });
+  }
+};
+
+const freeTokenUsage: NewTokenUsage = {
+  remaining_tokens: 10000,
+  tokens_used: 0,
+};
+
+const createFreeTokenUsage = async (
+  userId: NonNullable<NewTokenUsage["user_id"]>
+) => {
+  const { data: newRecord, error } = await supabaseAdmin
+    .from("token_usage")
+    .insert([{ ...freeTokenUsage, user_id: userId }])
+    .select()
+    .single();
+  if (error) throw error;
+  if (!newRecord) throw new Error("Failed to create new token usage record.");
+
+  return newRecord;
+};
+
+const updateTokenUsage = async (
+  userId: string,
+  updateData: Omit<UpdateTokenUsage, "id" | "user_id">
+) => {
+  const { data, error } = await supabaseAdmin
+    .from("token_usage")
+    .update(updateData)
+    .eq("user_id", userId)
+    .select();
+  if (error) throw error;
+  if (!data) throw new Error("Failed to update token usage record.");
+};
+
+const reduceTokenUsage = async (
+  tokenUsageRecord: TokenUsage,
+  tokensUsed: number
+) => {
+  if (tokenUsageRecord.remaining_tokens < tokensUsed) {
+    throw new Error("Not enough tokens available.");
+  }
+
+  const { data, error } = await supabaseAdmin
+    .from("token_usage")
+    .update({
+      remaining_tokens: tokenUsageRecord.remaining_tokens - tokensUsed,
+      tokens_used: tokenUsageRecord.tokens_used + tokensUsed,
+    })
+    .eq("id", tokenUsageRecord.id)
+    .select();
+  if (error) throw error;
+  if (!data) throw new Error("Failed to update token usage record.");
+};
+
+const getSubscriptionPlan = async (productId: string, priceId: string) => {
+  const { data: subscriptionPlan } = await supabaseAdmin
+    .from("subscription_plans")
+    .select("*")
+    .eq("product_id", productId)
+    .eq("price_id", priceId)
+    .single()
+    .throwOnError();
+  if (!subscriptionPlan) throw new Error("Subscription plan not found.");
+
+  return subscriptionPlan;
 };
 
 export {
@@ -177,4 +264,6 @@ export {
   upsertPriceRecord,
   createOrRetrieveCustomer,
   manageSubscriptionStatusChange,
+  createFreeTokenUsage,
+  reduceTokenUsage,
 };

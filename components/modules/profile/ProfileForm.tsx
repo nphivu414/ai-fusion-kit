@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -33,6 +34,9 @@ export function ProfileForm({
     resolver: zodResolver(profileSchema),
   });
   const { toast } = useToast();
+  const [isRedirectingToCustomerPortal, setIsRedirectingToCustomerPortal] =
+    React.useState(false);
+  const router = useRouter();
 
   const fieldProps = { register, formState };
 
@@ -57,6 +61,26 @@ export function ProfileForm({
       }
     });
   }
+
+  const redirectToCustomerPortal = async () => {
+    setIsRedirectingToCustomerPortal(true);
+    try {
+      const res = await fetch("/api/payment/portal-link", {
+        method: "POST",
+        credentials: "same-origin",
+      });
+      const { url } = (await res.json()) as { url: string };
+      router.push(url);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to open customer portal. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsRedirectingToCustomerPortal(false);
+    }
+  };
 
   return (
     <div className={cn("grid gap-2 p-4", className)} {...props}>
@@ -94,6 +118,17 @@ export function ProfileForm({
             />
           </div>
         </div>
+        <Button
+          type="button"
+          className="w-full lg:w-auto"
+          disabled={isRedirectingToCustomerPortal}
+          onClick={redirectToCustomerPortal}
+        >
+          {isRedirectingToCustomerPortal && (
+            <Loader className="mr-2 h-4 w-4 animate-spin" />
+          )}
+          Open customer portal
+        </Button>
         <div className="mt-4 grid grid-cols-1 gap-4 lg:flex lg:justify-end">
           <Link
             href="/"

@@ -5,6 +5,7 @@ import { pick } from "lodash";
 import { AxiomRequest, withAxiom } from "next-axiom";
 import OpenAI from "openai";
 
+import { createFreeTokenUsage, reduceTokenUsage } from "@/lib/db/admin";
 import { getAppBySlug } from "@/lib/db/apps";
 import { createNewChat } from "@/lib/db/chats";
 import {
@@ -12,6 +13,7 @@ import {
   deleteMessagesFrom,
   getMessageById,
 } from "@/lib/db/message";
+import { getTokenUsage } from "@/lib/db/token-usage";
 import { getCurrentSession } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 
@@ -22,6 +24,8 @@ export const preferredRegion = "home";
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY,
 });
+
+const tokenThreshold = 100;
 
 export const POST = withAxiom(async (req: AxiomRequest) => {
   const log = req.log.with({
@@ -52,43 +56,64 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
     return new Response("Unauthorized", { status: 401 });
   }
 
+  let tokenUsage = await getTokenUsage(supabase);
+  if (!tokenUsage) {
+    tokenUsage = await createFreeTokenUsage(session.user.id);
+  }
+
+  const limitToken = Math.min(tokenUsage.remaining_tokens, maxTokens);
+  if (limitToken < tokenThreshold) {
+    return new Response(
+      JSON.stringify({
+        error: "Token limit reached",
+        tokenUsage,
+      }),
+      { status: 402 }
+    );
+  }
+
   const lastMessage = messages[messages.length - 1];
   const profileId = session.user.id;
 
-  if (!isRegenerate) {
-    if (isNewChat && currentApp) {
-      await createNewChat(supabase, {
-        id: chatId,
-        appId: currentApp.id,
-        profileId,
-        name: lastMessage.content,
-      });
-    }
-    await createNewMessage(supabase, {
-      chatId,
-      content: lastMessage.content,
-      profileId,
-      role: "user",
-      id: lastMessage.id,
-    });
-  } else if (regenerateMessageId) {
-    const fromMessage = await getMessageById(supabase, regenerateMessageId);
-    if (fromMessage?.createdAt) {
-      await deleteMessagesFrom(
-        supabase,
-        chatId,
-        profileId,
-        fromMessage.createdAt
-      );
-    }
-  }
+  await Promise.all([
+    (async () => {
+      if (!isRegenerate) {
+        if (isNewChat && currentApp) {
+          await createNewChat(supabase, {
+            id: chatId,
+            appId: currentApp.id,
+            profileId,
+            name: lastMessage.content,
+          });
+        }
+        await createNewMessage(supabase, {
+          chatId,
+          content: lastMessage.content,
+          profileId,
+          role: "user",
+          id: lastMessage.id,
+        });
+      } else if (regenerateMessageId) {
+        const fromMessage = await getMessageById(supabase, regenerateMessageId);
+        if (fromMessage?.createdAt) {
+          await deleteMessagesFrom(
+            supabase,
+            chatId,
+            profileId,
+            fromMessage.createdAt
+          );
+        }
+      }
+    })(),
+    reduceTokenUsage(tokenUsage, limitToken),
+  ]);
 
   const response = await openai.chat.completions.create({
     model,
     temperature,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     messages: messages.map((message: any) => pick(message, "content", "role")),
-    max_tokens: maxTokens,
+    max_tokens: limitToken,
     top_p: topP,
     frequency_penalty: frequencyPenalty,
     presence_penalty: presencePenalty,

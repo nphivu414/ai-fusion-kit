@@ -62,6 +62,12 @@ export async function POST(req: Request) {
             const subscriptionId = invoice.subscription;
             const customerId = invoice.customer;
             if (subscriptionId && customerId) {
+              await manageSubscriptionStatusChange(
+                subscriptionId as string,
+                customerId as string,
+                false, // createAction
+                true // renewalAction
+              );
             }
           }
           break;

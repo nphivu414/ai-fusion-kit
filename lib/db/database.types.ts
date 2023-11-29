@@ -274,6 +274,45 @@ export interface Database {
           },
         ];
       };
+      subscription_plans: {
+        Row: {
+          created_at: string;
+          id: string;
+          price_id: string | null;
+          product_id: string | null;
+          token_quota: number | null;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          price_id?: string | null;
+          product_id?: string | null;
+          token_quota?: number | null;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          price_id?: string | null;
+          product_id?: string | null;
+          token_quota?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "subscription_plans_price_id_fkey";
+            columns: ["price_id"];
+            isOneToOne: false;
+            referencedRelation: "prices";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "subscription_plans_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       subscriptions: {
         Row: {
           cancel_at: string | null;
@@ -348,8 +387,8 @@ export interface Database {
           created_at: string;
           date_used: string | null;
           id: string;
-          remaining_tokens: number | null;
-          tokens_used: number | null;
+          remaining_tokens: number;
+          tokens_used: number;
           user_id: string | null;
         };
         Insert: {
