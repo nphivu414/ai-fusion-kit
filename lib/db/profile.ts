@@ -2,8 +2,8 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { Logger } from "next-axiom";
 import { LogLevel } from "next-axiom/dist/logger";
 
-import { Database } from ".";
 import { getCurrentSession } from "../session";
+import { Database } from "./database.types";
 
 const log = new Logger({
   logLevel: LogLevel.debug,

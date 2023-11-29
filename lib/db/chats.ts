@@ -3,8 +3,9 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { Logger } from "next-axiom";
 import { LogLevel } from "next-axiom/dist/logger";
 
-import { Chat, Database, Insert, Update } from ".";
+import { Chat, Insert, Update } from ".";
 import { CACHE_KEYS, CACHE_TTL } from "../cache";
+import { Database } from "./database.types";
 
 type GetChatsParams = Pick<Chat, "appId" | "profileId">;
 

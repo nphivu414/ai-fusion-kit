@@ -84,6 +84,29 @@ export interface Database {
           },
         ];
       };
+      customers: {
+        Row: {
+          id: string;
+          stripe_customer_id: string | null;
+        };
+        Insert: {
+          id: string;
+          stripe_customer_id?: string | null;
+        };
+        Update: {
+          id?: string;
+          stripe_customer_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "customers_id_fkey";
+            columns: ["id"];
+            isOneToOne: true;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       messages: {
         Row: {
           chatId: string | null;
@@ -213,24 +236,30 @@ export interface Database {
       profiles: {
         Row: {
           avatar_url: string | null;
+          billing_address: Json | null;
           full_name: string | null;
           id: string;
+          payment_method: Json | null;
           updated_at: string | null;
           username: string | null;
           website: string | null;
         };
         Insert: {
           avatar_url?: string | null;
+          billing_address?: Json | null;
           full_name?: string | null;
           id: string;
+          payment_method?: Json | null;
           updated_at?: string | null;
           username?: string | null;
           website?: string | null;
         };
         Update: {
           avatar_url?: string | null;
+          billing_address?: Json | null;
           full_name?: string | null;
           id?: string;
+          payment_method?: Json | null;
           updated_at?: string | null;
           username?: string | null;
           website?: string | null;
@@ -238,29 +267,6 @@ export interface Database {
         Relationships: [
           {
             foreignKeyName: "profiles_id_fkey";
-            columns: ["id"];
-            isOneToOne: true;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      stripe_customers: {
-        Row: {
-          id: string;
-          stripe_customer_id: string | null;
-        };
-        Insert: {
-          id: string;
-          stripe_customer_id?: string | null;
-        };
-        Update: {
-          id?: string;
-          stripe_customer_id?: string | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "stripe_customers_id_fkey";
             columns: ["id"];
             isOneToOne: true;
             referencedRelation: "users";
@@ -330,6 +336,41 @@ export interface Database {
           },
           {
             foreignKeyName: "subscriptions_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      token_usage: {
+        Row: {
+          created_at: string;
+          date_used: string | null;
+          id: string;
+          remaining_tokens: number | null;
+          tokens_used: number | null;
+          user_id: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          date_used?: string | null;
+          id?: string;
+          remaining_tokens?: number | null;
+          tokens_used?: number | null;
+          user_id?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          date_used?: string | null;
+          id?: string;
+          remaining_tokens?: number | null;
+          tokens_used?: number | null;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "token_usage_user_id_fkey";
             columns: ["user_id"];
             isOneToOne: false;
             referencedRelation: "users";

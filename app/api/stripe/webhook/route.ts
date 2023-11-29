@@ -17,6 +17,7 @@ const relevantEvents = new Set([
   "customer.subscription.created",
   "customer.subscription.updated",
   "customer.subscription.deleted",
+  "invoice.payment_succeeded",
 ]);
 
 export async function POST(req: Request) {
@@ -53,6 +54,16 @@ export async function POST(req: Request) {
             subscription.customer as string,
             event.type === "customer.subscription.created"
           );
+          break;
+        case "invoice.payment_succeeded":
+          const invoice = event.data.object as Stripe.Invoice;
+          if (invoice.billing_reason === "subscription_cycle") {
+            // Handle subscription renewal...
+            const subscriptionId = invoice.subscription;
+            const customerId = invoice.customer;
+            if (subscriptionId && customerId) {
+            }
+          }
           break;
         case "checkout.session.completed":
           const checkoutSession = event.data.object as Stripe.Checkout.Session;
