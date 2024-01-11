@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Loader, User } from "lucide-react";
+import { CreditCard, Loader, User } from "lucide-react";
 
 import { getCurrentProfile } from "@/lib/db/profile";
 import { useProfileStore } from "@/lib/stores/profile";
@@ -102,6 +102,12 @@ export const AccountDropdownMenu = ({
             <Link href="/profile">
               <User className="mr-2 h-4 w-4" />
               <span>Profile</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/subscriptions">
+              <CreditCard className="mr-2 h-4 w-4" />
+              <span>Subscriptions</span>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
