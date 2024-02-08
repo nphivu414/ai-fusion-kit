@@ -97,7 +97,7 @@ export default function Pricing({
 
   if (products.length === 1)
     return (
-      <section>
+      <section className="bg-background">
         <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-24 lg:px-8">
           <div className="sm:align-center sm:flex sm:flex-col">
             <h1 className="text-4xl font-extrabold sm:text-center sm:text-6xl">
