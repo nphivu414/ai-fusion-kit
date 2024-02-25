@@ -25,7 +25,7 @@ export const AppSideBarItem = ({
                 <AvatarImage src={logoUrl} className="w-12" alt={name} />
               ) : null}
               <AvatarFallback>
-                <div className="h-12 w-12 bg-card-foreground" />
+                <div className="size-12 bg-card-foreground" />
               </AvatarFallback>
             </Avatar>
           </div>

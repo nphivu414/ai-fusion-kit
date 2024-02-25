@@ -116,7 +116,7 @@ export function UserSignupForm({ className, ...props }: UserSignupFormProps) {
             />
           </div>
           <Button disabled={isLoading}>
-            {isLoading && <Loader className="mr-2 h-4 w-4 animate-spin" />}
+            {isLoading && <Loader className="mr-2 size-4 animate-spin" />}
             Sign up
           </Button>
         </div>

@@ -25,7 +25,7 @@ export const Header = ({
         username={username}
         avatarUrl={avatarUrl}
         email={email}
-        className="h-24 w-24 border-2"
+        className="size-24 border-2"
       />
       <div className="mt-6">
         <div className="flex items-end">

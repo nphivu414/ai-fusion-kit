@@ -47,7 +47,7 @@ export const ChatHistoryItem = ({
         )}
       >
         <div className="flex h-full max-w-full flex-1 items-center">
-          <div className="flex h-full w-full justify-between">
+          <div className="flex size-full justify-between">
             <Link
               href={`/apps/chat/${chat.id}`}
               onClick={closeDrawer}

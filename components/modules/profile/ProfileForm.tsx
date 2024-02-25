@@ -105,9 +105,7 @@ export function ProfileForm({
             Cancel
           </Link>
           <Button className="w-full lg:w-auto" disabled={isPendingUpdate}>
-            {isPendingUpdate && (
-              <Loader className="mr-2 h-4 w-4 animate-spin" />
-            )}
+            {isPendingUpdate && <Loader className="mr-2 size-4 animate-spin" />}
             Save
           </Button>
         </div>

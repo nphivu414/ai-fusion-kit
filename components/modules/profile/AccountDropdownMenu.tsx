@@ -9,6 +9,7 @@ import { useProfileStore } from "@/lib/stores/profile";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/Button";
+import { UserAvatar } from "@/components/ui/common/UserAvatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +18,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
-import { UserAvatar } from "@/components/ui/common/UserAvatar";
 
 import LogoutButton from "../auth/LogoutButton";
 
@@ -100,7 +100,7 @@ export const AccountDropdownMenu = ({
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
             <Link href="/profile">
-              <User className="mr-2 h-4 w-4" />
+              <User className="mr-2 size-4" />
               <span>Profile</span>
             </Link>
           </DropdownMenuItem>

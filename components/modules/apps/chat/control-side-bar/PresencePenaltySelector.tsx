@@ -3,12 +3,12 @@
 import * as React from "react";
 import { useFormContext } from "react-hook-form";
 
+import { SliderField } from "@/components/ui/form/form-fields";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/HoverCard";
-import { SliderField } from "@/components/ui/form/form-fields";
 
 import { ChatParams } from "../types";
 
@@ -26,7 +26,7 @@ export function PresencePenaltySelector() {
             min={-2}
             max={2}
             step={0.1}
-            className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4"
+            className="[&_[role=slider]]:size-4"
             control={control}
             formState={formState}
             aria-label="Topic Relevance"

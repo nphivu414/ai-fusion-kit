@@ -9,7 +9,7 @@ export default function LogoutButton() {
   return (
     <form action="/api/auth/logout" method="post">
       <Button size="sm" variant="ghost" className="w-full justify-start">
-        <LogOut className="mr-2 h-4 w-4" />
+        <LogOut className="mr-2 size-4" />
         <span>Log out</span>
       </Button>
     </form>
