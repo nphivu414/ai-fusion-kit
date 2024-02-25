@@ -15,12 +15,12 @@ export default function Page() {
           <Separator />
           <div className="flex grow basis-0 justify-center pt-4 lg:overflow-y-auto lg:pb-0">
             <div className="flex w-full flex-col items-center justify-center">
-              <Loader className="h-8 w-8 animate-spin" />
+              <Loader className="size-8 animate-spin" />
             </div>
           </div>
         </div>
       </div>
-      <div className="h-0 w-0 lg:h-auto lg:max-h-[calc(100vh_-_60px)] lg:w-[450px] lg:border-x lg:p-4">
+      <div className="size-0 lg:h-auto lg:max-h-[calc(100vh_-_60px)] lg:w-[450px] lg:border-x lg:p-4">
         <Skeleton className="mt-2 h-4 w-[210px]" />
         <div className="mt-4 grid grid-cols-1 gap-2">
           <Skeleton className="h-2 w-[320px]" />

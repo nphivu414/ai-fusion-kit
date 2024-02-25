@@ -11,17 +11,17 @@ import { v4 as uuidv4 } from "uuid";
 import { Chat, Message as SupabaseMessage } from "@/lib/db";
 import { useEnterSubmit } from "@/hooks/useEnterSubmit";
 import { Button } from "@/components/ui/Button";
-import { Separator } from "@/components/ui/Separator";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/Sheet";
 import { ChatInput, ChatList } from "@/components/ui/chat";
 import { ChatScrollAnchor } from "@/components/ui/common/ChatScrollAnchor";
+import { Separator } from "@/components/ui/Separator";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/Sheet";
 import { toast } from "@/components/ui/use-toast";
 
-import { ChatHistoryDrawer } from "./ChatHistoryDrawer";
-import { Header } from "./Header";
 import { revalidateChatLayout } from "./action";
+import { ChatHistoryDrawer } from "./ChatHistoryDrawer";
 import { ControlSidebar } from "./control-side-bar";
 import { defaultSystemPrompt } from "./control-side-bar/data/models";
+import { Header } from "./Header";
 import { ChatParamSchema } from "./schema";
 import { ChatParams } from "./types";
 import { buildChatRequestParams } from "./utils";
@@ -234,7 +234,7 @@ export const ChatPanel = ({
             <SheetContent className="w-[400px] overflow-y-auto sm:w-[540px]">
               <div className="pt-4">{renderControlSidebar()}</div>
             </SheetContent>
-            <div className="h-0 w-0 overflow-x-hidden transition-[width] lg:h-auto lg:max-h-[calc(100vh_-_65px)] lg:w-[450px] lg:border-x">
+            <div className="size-0 overflow-x-hidden transition-[width] lg:h-auto lg:max-h-[calc(100vh_-_65px)] lg:w-[450px] lg:border-x">
               {renderControlSidebar()}
             </div>
           </FormProvider>

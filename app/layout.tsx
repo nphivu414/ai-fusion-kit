@@ -1,6 +1,7 @@
 import { AxiomWebVitals } from "next-axiom";
 
 import "./globals.css";
+
 import { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { GeistMono, GeistSans } from "geist/font";

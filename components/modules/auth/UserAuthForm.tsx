@@ -13,8 +13,8 @@ import { Button } from "@/components/ui/Button";
 import { InputField } from "@/components/ui/form/form-fields";
 import { useToast } from "@/components/ui/use-toast";
 
-import { SocialLoginOptions } from "./SocialLoginOptions";
 import { credentialAuthSchema } from "./schema";
+import { SocialLoginOptions } from "./SocialLoginOptions";
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>;
 
@@ -83,7 +83,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             {...fieldProps}
           />
           <Button disabled={isLoading} className="mt-2">
-            {isLoading && <Loader className="mr-2 h-4 w-4 animate-spin" />}
+            {isLoading && <Loader className="mr-2 size-4 animate-spin" />}
             Sign In
           </Button>
         </div>

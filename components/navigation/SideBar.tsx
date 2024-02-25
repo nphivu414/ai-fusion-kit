@@ -4,9 +4,9 @@ import Link from "next/link";
 import { siteConfig } from "@/config/site";
 
 import { ThemeToggle } from "../theme";
+import { AppLogo } from "../ui/common/AppLogo";
 import { CustomIcon } from "../ui/CustomIcon";
 import { Separator } from "../ui/Separator";
-import { AppLogo } from "../ui/common/AppLogo";
 
 export const Sidebar = () => {
   return (

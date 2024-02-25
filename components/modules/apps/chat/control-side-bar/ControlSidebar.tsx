@@ -15,14 +15,14 @@ import { toast } from "@/components/ui/use-toast";
 
 import { SystemPromptControl } from "../SystemPromptControl";
 import { ChatParams } from "../types";
+import { updateChatSettings } from "./action";
+import { models, types } from "./data/models";
 import { FrequencyPenaltySelector } from "./FrequencyPenaltySelector";
 import { MaxLengthSelector } from "./MaxLengthSelector";
 import { ModelSelector } from "./ModelSelector";
 import { PresencePenaltySelector } from "./PresencePenaltySelector";
 import { TemperatureSelector } from "./TemperatureSelector";
 import { TopPSelector } from "./TopPSelector";
-import { updateChatSettings } from "./action";
-import { models, types } from "./data/models";
 
 type ControlSidebarProps = Pick<UseChatHelpers, "setMessages" | "messages"> & {
   closeSidebarSheet?: () => void;

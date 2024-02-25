@@ -8,7 +8,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <div className="min-h-screen">
       <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
-        <div className="absolute hidden h-full w-full flex-col bg-muted p-4 text-white dark:block dark:border-r lg:relative lg:flex lg:p-10">
+        <div className="absolute hidden size-full flex-col bg-muted p-4 text-white dark:block dark:border-r lg:relative lg:flex lg:p-10">
           <div
             className="absolute inset-0 bg-ring bg-right-bottom brightness-50 lg:bg-center lg:brightness-100"
             style={{
