@@ -2,10 +2,10 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   theme: {
     container: {
@@ -16,8 +16,8 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ['var(--font-geist-sans)'],
-        mono: ['var(--font-geist-mono)'],
+        sans: ["var(--font-geist-sans)"],
+        mono: ["var(--font-geist-mono)"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -72,27 +72,18 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
-        "blink": {
+        blink: {
           "0%": { opacity: 0 },
           "50%": { opacity: 1 },
           "100%": { opacity: 0 },
-        }
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "blink": "blink 1s infinite",
+        blink: "blink 1s infinite",
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require('daisyui')],
-  daisyui: {
-    themes: [],
-    styled: true,
-    base: false,
-    utils: false,
-    rtl: false,
-    prefix: "",
-    logs: false,
-  }
-}
+  plugins: [require("tailwindcss-animate")],
+};

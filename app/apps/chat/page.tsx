@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { getAppBySlug } from "@/lib/db/apps";
 import { getChats } from "@/lib/db/chats";
-import { getCurrentSession } from "@/lib/session";
+import { getCurrentUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 import { ChatPanel } from "@/components/modules/apps/chat/ChatPanel";
 
@@ -18,14 +18,14 @@ export default async function NewChatPage() {
 
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const session = await getCurrentSession(supabase);
+  const user = await getCurrentUser(supabase);
   const currentApp = await getAppBySlug(supabase, "/apps/chat");
 
-  if (!currentApp || !session) {
+  if (!currentApp || !user) {
     return <div className="pt-4">No app found</div>;
   }
 
-  const currentProfileId = session.user.id;
+  const currentProfileId = user.id;
   const chats = await getChats(supabase, {
     appId: currentApp.id,
     profileId: currentProfileId,

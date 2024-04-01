@@ -3,7 +3,7 @@ import { Logger } from "next-axiom";
 import { LogLevel } from "next-axiom/dist/logger";
 
 import { Database } from ".";
-import { getCurrentSession } from "../session";
+import { getCurrentUser } from "../session";
 
 const log = new Logger({
   logLevel: LogLevel.debug,
@@ -15,8 +15,7 @@ const log = new Logger({
 export const getCurrentProfile = async (supabase: SupabaseClient<Database>) => {
   log.info(`${getCurrentProfile.name} called`);
 
-  const session = await getCurrentSession(supabase);
-  const user = session?.user;
+  const user = await getCurrentUser(supabase);
 
   if (!user) return null;
 

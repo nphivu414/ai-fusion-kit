@@ -6,7 +6,7 @@ import { Message } from "ai";
 import { getAppBySlug } from "@/lib/db/apps";
 import { getChatById, getChats } from "@/lib/db/chats";
 import { getMessages } from "@/lib/db/message";
-import { getCurrentSession } from "@/lib/session";
+import { getCurrentUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 import { ChatPanel } from "@/components/modules/apps/chat/ChatPanel";
 import { ChatParams } from "@/components/modules/apps/chat/types";
@@ -25,14 +25,14 @@ export default async function ChatPage({ params }: { params: { id: string } }) {
 
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const session = await getCurrentSession(supabase);
+  const user = await getCurrentUser(supabase);
   const currentApp = await getAppBySlug(supabase, "/apps/chat");
 
-  if (!currentApp || !session) {
+  if (!currentApp || !user) {
     return <div className="pt-4">No app found</div>;
   }
 
-  const currentProfileId = session.user.id;
+  const currentProfileId = user.id;
   const chats = await getChats(supabase, {
     appId: currentApp.id,
     profileId: currentProfileId,

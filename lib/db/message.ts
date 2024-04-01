@@ -1,10 +1,8 @@
-import { unstable_cache } from "next/cache";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { Logger } from "next-axiom";
 import { LogLevel } from "next-axiom/dist/logger";
 
 import { Database, Message } from ".";
-import { CACHE_KEYS, CACHE_TTL } from "../cache";
 
 export type CreateNewMessageParams = Pick<
   Message,
@@ -19,29 +17,26 @@ const log = new Logger({
   },
 });
 
-export const getMessages = unstable_cache(
-  async (supabase: SupabaseClient<Database>, params: GetMessagesParams) => {
-    log.info(`${getMessages.name} called`, { params });
-    const { data, error, status } = await supabase
-      .from("messages")
-      .select("*")
-      .eq("chatId", params.chatId)
-      .eq("profileId", params.profileId)
-      .order("createdAt", { ascending: true });
+export const getMessages = async (
+  supabase: SupabaseClient<Database>,
+  params: GetMessagesParams
+) => {
+  log.info(`${getMessages.name} called`, { params });
+  const { data, error, status } = await supabase
+    .from("messages")
+    .select("*")
+    .eq("chatId", params.chatId)
+    .eq("profileId", params.profileId)
+    .order("createdAt", { ascending: true });
 
-    if (error && status !== 406) {
-      log.error(getMessages.name, { params, error, status });
-      return null;
-    }
-
-    log.info(`${getMessages.name} fetched successfully`, { params, data });
-    return data;
-  },
-  [CACHE_KEYS.MESSAGES],
-  {
-    revalidate: CACHE_TTL,
+  if (error && status !== 406) {
+    log.error(getMessages.name, { params, error, status });
+    return null;
   }
-);
+
+  log.info(`${getMessages.name} fetched successfully`, { params, data });
+  return data;
+};
 
 export const getMessageById = async (
   supabase: SupabaseClient<Database>,

@@ -32,7 +32,7 @@ export const FeatureItems = () => {
           Next.js technology.
         </p>
       </div>
-      <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
+      <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-5xl md:grid-cols-3">
         <Card>
           <CardHeader>
             <svg viewBox="0 0 24 24" className="mb-2 size-12 fill-current">
