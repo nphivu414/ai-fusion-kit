@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { Chat, Update } from "@/lib/db";
 import { getAppBySlug } from "@/lib/db/apps";
 import { updateChat } from "@/lib/db/chats";
-import { getCurrentSession } from "@/lib/session";
+import { getCurrentUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 
 export const updateChatSettings = async (
@@ -14,14 +14,14 @@ export const updateChatSettings = async (
 ) => {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const session = await getCurrentSession(supabase);
+  const user = await getCurrentUser(supabase);
   const currentApp = await getAppBySlug(supabase, "/apps/chat");
 
-  if (!currentApp || !session) {
+  if (!currentApp || !user) {
     throw new Error("You must be logged in to create a chat");
   }
 
-  const currentProfileId = session.user.id;
+  const currentProfileId = user.id;
 
   try {
     await updateChat(supabase, {

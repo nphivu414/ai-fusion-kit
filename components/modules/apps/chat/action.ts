@@ -11,20 +11,20 @@ import {
   deleteChat as deleteChatDb,
   updateChat as updateChatDb,
 } from "@/lib/db/chats";
-import { getCurrentSession } from "@/lib/session";
+import { getCurrentUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 
 export const createNewChat = async () => {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const session = await getCurrentSession(supabase);
+  const user = await getCurrentUser(supabase);
   const currentApp = await getAppBySlug(supabase, "/apps/chat");
 
-  if (!currentApp || !session) {
+  if (!currentApp || !user) {
     throw new Error("You must be logged in to create a chat");
   }
 
-  const currentProfileId = session.user.id;
+  const currentProfileId = user.id;
 
   const newChats = await createNewChatDb(supabase, {
     appId: currentApp.id,

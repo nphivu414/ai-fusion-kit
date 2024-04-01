@@ -4,11 +4,12 @@ import "./globals.css";
 
 import { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/react";
-import { GeistMono, GeistSans } from "geist/font";
+import { GeistMono } from "geist/font/mono";
+import { GeistSans } from "geist/font/sans";
+import { ThemeProvider } from "next-themes";
 
 import { siteConfig } from "@/config/site";
 import { Toaster } from "@/components/ui/Toaster";
-import { ThemeProvider } from "@/components/theme/ThemeProvider";
 
 export const metadata: Metadata = {
   title: {

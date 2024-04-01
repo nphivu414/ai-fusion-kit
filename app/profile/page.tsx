@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 
 import { getCurrentProfile } from "@/lib/db/profile";
-import { getCurrentSession } from "@/lib/session";
+import { getCurrentUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 import { Header } from "@/components/modules/profile/Header";
 import { ProfileForm } from "@/components/modules/profile/ProfileForm";
@@ -15,7 +15,7 @@ export default async function Profile() {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
   const profile = await getCurrentProfile(supabase);
-  const session = await getCurrentSession(supabase);
+  const user = await getCurrentUser(supabase);
 
   if (!profile) {
     return null;
@@ -32,7 +32,7 @@ export default async function Profile() {
     <div className="container mx-auto sm:max-w-screen-sm">
       <Header
         avatarUrl={avatar_url}
-        email={session?.user.email}
+        email={user?.email}
         fullName={full_name}
         username={username}
         website={website}

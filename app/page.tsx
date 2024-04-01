@@ -22,7 +22,7 @@ export default async function Home() {
     <MainLayout>
       <div className="px-4 pt-16">
         <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-20">
-          <div className="container flex max-w-[64rem] flex-col items-center gap-6 text-center">
+          <div className="container flex max-w-5xl flex-col items-center gap-6 text-center">
             <h1 className="font-heading bg-gradient-to-r from-gray-900 to-gray-500 bg-clip-text text-3xl font-bold leading-[1.1] tracking-tighter text-transparent dark:from-white dark:to-gray-500 sm:text-5xl md:text-6xl">
               {siteConfig.name}
             </h1>

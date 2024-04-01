@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('./styles/custom.css');
  
 .drawer-toggle:checked ~ .drawer-side {
   backdrop-filter: blur(5px);

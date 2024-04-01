@@ -12,7 +12,7 @@ import {
   deleteMessagesFrom,
   getMessageById,
 } from "@/lib/db/message";
-import { getCurrentSession } from "@/lib/session";
+import { getCurrentUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -45,15 +45,15 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
     isNewChat,
   } = params;
 
-  const session = await getCurrentSession(supabase);
+  const user = await getCurrentUser(supabase);
   const currentApp = await getAppBySlug(supabase, "/apps/chat");
 
-  if (!session) {
+  if (!user) {
     return new Response("Unauthorized", { status: 401 });
   }
 
   const lastMessage = messages[messages.length - 1];
-  const profileId = session.user.id;
+  const profileId = user.id;
 
   if (!isRegenerate) {
     if (isNewChat && currentApp) {

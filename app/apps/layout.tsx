@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 
 import { getAppBySlug } from "@/lib/db/apps";
 import { getChats } from "@/lib/db/chats";
-import { getCurrentSession } from "@/lib/session";
+import { getCurrentUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 import { MainLayout } from "@/components/ui/common/MainLayout";
 import { ChatHistory } from "@/components/modules/apps/chat/ChatHistory";
@@ -14,14 +14,14 @@ interface AppLayoutProps {
 export default async function AppLayout({ children }: AppLayoutProps) {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const session = await getCurrentSession(supabase);
+  const user = await getCurrentUser(supabase);
   const currentApp = await getAppBySlug(supabase, "/apps/chat");
 
-  if (!currentApp || !session) {
+  if (!currentApp || !user) {
     return <div className="pt-4">No app found</div>;
   }
 
-  const currentProfileId = session.user.id;
+  const currentProfileId = user.id;
 
   const chats = await getChats(supabase, {
     appId: currentApp.id,
