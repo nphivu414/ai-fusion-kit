@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { siteConfig } from "@/config/site";
-import { getCurrentSession } from "@/lib/session";
+import { getCurrentUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 import { Heading3 } from "@/components/ui/typography";
 import { UserAuthForm } from "@/components/modules/auth/UserAuthForm";
@@ -19,9 +19,9 @@ export const dynamic = "force-dynamic";
 export default async function LoginPage() {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const session = await getCurrentSession(supabase);
+  const user = await getCurrentUser(supabase);
 
-  if (session) {
+  if (user) {
     redirect(`/apps/chat`);
   }
 

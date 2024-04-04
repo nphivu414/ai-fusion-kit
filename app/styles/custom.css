@@ -1,0 +1,246 @@
+/* Styles extracted from https://github.com/saadeghi/daisyui */
+
+.avatar {
+  position: relative;
+  display: inline-flex
+}
+
+.avatar>div {
+  display: block;
+  aspect-ratio: 1/1;
+  overflow: hidden
+}
+
+.avatar img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover
+}
+
+.avatar.placeholder>div {
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+
+.chat {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  column-gap: .75rem;
+  padding-top: .25rem;
+  padding-bottom: .25rem
+}
+
+.chat-image {
+  grid-row: span 2/span 2;
+  align-self: flex-end
+}
+
+.chat-header {
+  grid-row-start: 1;
+  font-size: .875rem;
+  line-height: 1.25rem
+}
+
+.chat-footer {
+  grid-row-start: 3;
+  font-size: .875rem;
+  line-height: 1.25rem
+}
+
+.chat-bubble {
+  position: relative;
+  display: block;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: .5rem 1rem;
+  max-width: 90%;
+  border-radius: var(--rounded-box,1rem);
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-n,oklch(var(--n)/var(--tw-bg-opacity)));
+  --tw-text-opacity: 1;
+  color: var(--fallback-nc,oklch(var(--nc)/var(--tw-text-opacity)))
+}
+
+.chat-bubble:before {
+  position: absolute;
+  bottom: 0;
+  height: .75rem;
+  width: .75rem;
+  background-color: inherit;
+  content: "";
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center
+}
+
+.chat-start {
+  place-items: start;
+  grid-template-columns: auto 1fr
+}
+
+.chat-start .chat-header,.chat-start .chat-footer {
+  grid-column-start: 2
+}
+
+.chat-start .chat-image {
+  grid-column-start: 1
+}
+
+.chat-start .chat-bubble {
+  grid-column-start: 2;
+  border-end-start-radius: 0
+}
+
+.chat-start .chat-bubble:before {
+  -webkit-mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMycgaGVpZ2h0PSczJyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxwYXRoIGZpbGw9J2JsYWNrJyBkPSdtIDAgMyBMIDMgMyBMIDMgMCBDIDMgMSAxIDMgMCAzJy8+PC9zdmc+);
+  mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMycgaGVpZ2h0PSczJyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxwYXRoIGZpbGw9J2JsYWNrJyBkPSdtIDAgMyBMIDMgMyBMIDMgMCBDIDMgMSAxIDMgMCAzJy8+PC9zdmc+);
+  inset-inline-start: -.749rem
+}
+
+[dir=rtl] .chat-start .chat-bubble:before {
+  -webkit-mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMycgaGVpZ2h0PSczJyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxwYXRoIGZpbGw9J2JsYWNrJyBkPSdtIDAgMyBMIDEgMyBMIDMgMyBDIDIgMyAwIDEgMCAwJy8+PC9zdmc+);
+  mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMycgaGVpZ2h0PSczJyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxwYXRoIGZpbGw9J2JsYWNrJyBkPSdtIDAgMyBMIDEgMyBMIDMgMyBDIDIgMyAwIDEgMCAwJy8+PC9zdmc+)
+}
+
+.chat-end {
+  place-items: end;
+  grid-template-columns: 1fr auto
+}
+
+.chat-end .chat-header,.chat-end .chat-footer {
+  grid-column-start: 1
+}
+
+.chat-end .chat-image {
+  grid-column-start: 2
+}
+
+.chat-end .chat-bubble {
+  grid-column-start: 1;
+  border-end-end-radius: 0
+}
+
+.chat-end .chat-bubble:before {
+  -webkit-mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMycgaGVpZ2h0PSczJyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxwYXRoIGZpbGw9J2JsYWNrJyBkPSdtIDAgMyBMIDEgMyBMIDMgMyBDIDIgMyAwIDEgMCAwJy8+PC9zdmc+);
+  mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMycgaGVpZ2h0PSczJyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxwYXRoIGZpbGw9J2JsYWNrJyBkPSdtIDAgMyBMIDEgMyBMIDMgMyBDIDIgMyAwIDEgMCAwJy8+PC9zdmc+);
+  inset-inline-start: 99.9%
+}
+
+[dir=rtl] .chat-end .chat-bubble:before {
+  -webkit-mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMycgaGVpZ2h0PSczJyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxwYXRoIGZpbGw9J2JsYWNrJyBkPSdtIDAgMyBMIDMgMyBMIDMgMCBDIDMgMSAxIDMgMCAzJy8+PC9zdmc+);
+  mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMycgaGVpZ2h0PSczJyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxwYXRoIGZpbGw9J2JsYWNrJyBkPSdtIDAgMyBMIDMgMyBMIDMgMCBDIDMgMSAxIDMgMCAzJy8+PC9zdmc+)
+}
+
+.drawer {
+  position: relative;
+  display: grid;
+  grid-auto-columns: max-content auto;
+  width: 100%
+}
+
+.drawer-content {
+  grid-column-start: 2;
+  grid-row-start: 1;
+  min-width: 0px
+}
+
+.drawer-side {
+  pointer-events: none;
+  position: fixed;
+  inset-inline-start: 0px;
+  top: 0;
+  grid-column-start: 1;
+  grid-row-start: 1;
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(1,minmax(0,1fr));
+  grid-template-rows: repeat(1,minmax(0,1fr));
+  align-items: flex-start;
+  justify-items: start;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  overscroll-behavior: contain;
+  height: 100vh;
+  height: 100dvh
+}
+
+.drawer-side>.drawer-overlay {
+  position: sticky;
+  top: 0;
+  place-self: stretch;
+  cursor: pointer;
+  background-color: transparent;
+  transition-property: color,background-color,border-color,text-decoration-color,fill,stroke;
+  transition-timing-function: cubic-bezier(.4,0,.2,1);
+  transition-timing-function: cubic-bezier(0,0,.2,1);
+  transition-duration: .2s
+}
+
+.drawer-side>* {
+  grid-column-start: 1;
+  grid-row-start: 1
+}
+
+.drawer-side>*:not(.drawer-overlay) {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(.4,0,.2,1);
+  transition-timing-function: cubic-bezier(0,0,.2,1);
+  transition-duration: .3s;
+  will-change: transform;
+  transform: translate(-100%)
+}
+
+[dir=rtl] .drawer-side>*:not(.drawer-overlay) {
+  transform: translate(100%)
+}
+
+.drawer-toggle {
+  position: fixed;
+  height: 0px;
+  width: 0px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  opacity: 0
+}
+
+.drawer-toggle:checked~.drawer-side {
+  pointer-events: auto;
+  visibility: visible;
+  overflow-y: auto
+}
+
+.drawer-toggle:checked~.drawer-side>*:not(.drawer-overlay) {
+  transform: translate(0)
+}
+
+.drawer-end {
+  grid-auto-columns: auto max-content
+}
+
+.drawer-end .drawer-toggle~.drawer-content {
+  grid-column-start: 1
+}
+
+.drawer-end .drawer-toggle~.drawer-side {
+  grid-column-start: 2;
+  justify-items: end
+}
+
+.drawer-end .drawer-toggle~.drawer-side>*:not(.drawer-overlay) {
+  transform: translate(100%)
+}
+
+[dir=rtl] .drawer-end .drawer-toggle~.drawer-side>*:not(.drawer-overlay) {
+  transform: translate(-100%)
+}
+
+.drawer-end .drawer-toggle:checked~.drawer-side>*:not(.drawer-overlay) {
+  transform: translate(0)
+}

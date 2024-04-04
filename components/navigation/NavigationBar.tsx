@@ -2,7 +2,7 @@ import React from "react";
 import { cookies } from "next/headers";
 import { Menu } from "lucide-react";
 
-import { getCurrentSession } from "@/lib/session";
+import { getCurrentUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 
@@ -15,7 +15,7 @@ import { NavigationMainMenu } from "./NavigationMainMenu";
 export const NavigationBar = async () => {
   const cookieStore = cookies();
   const supabase = await createClient(cookieStore);
-  const currentSession = await getCurrentSession(supabase);
+  const user = await getCurrentUser(supabase);
 
   return (
     <div className="fixed top-0 z-50 w-full bg-background shadow-md dark:border-b">
@@ -44,7 +44,7 @@ export const NavigationBar = async () => {
               <ThemeToggle />
             </div>
             <div>
-              <AccountDropdownMenu userEmail={currentSession?.user?.email} />
+              <AccountDropdownMenu userEmail={user?.email} />
             </div>
           </div>
         </div>

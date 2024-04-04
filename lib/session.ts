@@ -2,10 +2,10 @@ import { SupabaseClient } from "@supabase/supabase-js";
 
 import { Database } from "./db";
 
-export const getCurrentSession = async (supabase: SupabaseClient<Database>) => {
+export const getCurrentUser = async (supabase: SupabaseClient<Database>) => {
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  return session;
+  return user;
 };
