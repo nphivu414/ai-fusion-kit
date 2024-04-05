@@ -53,33 +53,25 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
   }
 
   const lastMessage = messages[messages.length - 1];
-  const profileId = user.id;
 
   if (!isRegenerate) {
     if (isNewChat && currentApp) {
       await createNewChat(supabase, {
         id: chatId,
-        appId: currentApp.id,
-        profileId,
+        app_id: currentApp.id,
         name: lastMessage.content,
       });
     }
     await createNewMessage(supabase, {
-      chatId,
+      chat_id: chatId,
       content: lastMessage.content,
-      profileId,
       role: "user",
       id: lastMessage.id,
     });
   } else if (regenerateMessageId) {
     const fromMessage = await getMessageById(supabase, regenerateMessageId);
-    if (fromMessage?.createdAt) {
-      await deleteMessagesFrom(
-        supabase,
-        chatId,
-        profileId,
-        fromMessage.createdAt
-      );
+    if (fromMessage?.created_at) {
+      await deleteMessagesFrom(supabase, chatId, fromMessage.created_at);
     }
   }
 
@@ -99,9 +91,8 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
   const stream = OpenAIStream(response, {
     onCompletion: async (completion: string) => {
       await createNewMessage(supabase, {
-        chatId,
+        chat_id: chatId,
         content: completion,
-        profileId,
         role: "assistant",
       });
     },
