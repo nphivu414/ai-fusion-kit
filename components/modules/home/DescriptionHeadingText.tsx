@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export function DescriptionHeadingText() {
   const text =
-    "A feature-rich, highly customizable AI Chatbot Template, empowered by Next.js.";
+    "A feature-rich, highly customizable AI Chatbot Template, powered by Next.js and Supabase.";
   const [displayedText, setDisplayedText] = React.useState("");
   const [i, setI] = React.useState(0);
 
@@ -34,7 +34,7 @@ export function DescriptionHeadingText() {
       >
         {displayedText
           ? displayedText
-          : "A feature-rich, highly customizable AI Chatbot Template, empowered by Next.js."}
+          : "A feature-rich, highly customizable AI Chatbot Template, empowered by Next.js x Supabase."}
       </motion.span>
       <motion.span
         className="ml-1 inline-flex h-[22px] w-[2px] animate-blink rounded-full bg-current align-sub opacity-75 delay-1000"
