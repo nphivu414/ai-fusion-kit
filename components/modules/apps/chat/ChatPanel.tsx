@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Message, useChat } from "ai/react";
 import { SendHorizonal, Settings } from "lucide-react";
-import { FormProvider, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 
 import { Chat, Message as SupabaseMessage } from "@/lib/db";
@@ -14,14 +14,15 @@ import { Button } from "@/components/ui/Button";
 import { ChatInput, ChatList } from "@/components/ui/chat";
 import { ChatScrollAnchor } from "@/components/ui/common/ChatScrollAnchor";
 import { Separator } from "@/components/ui/Separator";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/Sheet";
+import { Sheet, SheetTrigger } from "@/components/ui/Sheet";
 import { toast } from "@/components/ui/use-toast";
 
 import { revalidateChatLayout } from "./action";
 import { ChatHistoryDrawer } from "./ChatHistoryDrawer";
-import { ControlSidebar } from "./control-side-bar";
+import { ControlSidebarSheet } from "./control-side-bar/ControlSidebarSheet";
 import { defaultSystemPrompt } from "./control-side-bar/data/models";
 import { Header } from "./Header";
+import { MobileDrawerControl } from "./MobileDrawerControls";
 import { ChatParamSchema } from "./schema";
 import { ChatParams } from "./types";
 import { buildChatRequestParams } from "./utils";
@@ -36,7 +37,7 @@ const defaultValues: ChatParams = {
   presencePenalty: [0],
 };
 
-type ChatPanelProps = {
+export type ChatPanelProps = {
   chatId: Chat["id"];
   initialMessages: Message[];
   chats: Chat[] | null;
@@ -165,20 +166,9 @@ export const ChatPanel = ({
     setInput("");
   };
 
-  const closeSidebarSheet = () => {
+  const closeSidebarSheet = React.useCallback(() => {
     setSidebarSheetOpen(false);
-  };
-
-  const renderControlSidebar = () => {
-    return (
-      <ControlSidebar
-        setMessages={setMessages}
-        messages={messages}
-        closeSidebarSheet={closeSidebarSheet}
-        isNewChat={isNewChat}
-      />
-    );
-  };
+  }, []);
 
   return (
     <Sheet open={sidebarSheetOpen} onOpenChange={setSidebarSheetOpen}>
@@ -210,16 +200,7 @@ export const ChatPanel = ({
                     onKeyDown={onKeyDown}
                     onChange={handleOnChange}
                   />
-                  <div className="absolute bottom-0 left-0 flex w-1/2 px-2 pb-2 lg:hidden">
-                    <ChatHistoryDrawer data={chats} />
-                  </div>
-                  <div className="absolute bottom-0 left-12 flex w-1/2 justify-start px-2 pb-2 lg:hidden">
-                    <SheetTrigger asChild>
-                      <Button size="sm" variant="ghost">
-                        <Settings />
-                      </Button>
-                    </SheetTrigger>
-                  </div>
+                  <MobileDrawerControl chats={chats} />
                   <div className="absolute bottom-0 right-0 flex w-1/2 justify-end px-2 pb-2">
                     <Button size="sm" type="submit" disabled={isLoading}>
                       Send
@@ -230,14 +211,13 @@ export const ChatPanel = ({
               </div>
             </div>
           </div>
-          <FormProvider {...formReturn}>
-            <SheetContent className="w-[400px] overflow-y-auto sm:w-[540px]">
-              <div className="pt-4">{renderControlSidebar()}</div>
-            </SheetContent>
-            <div className="size-0 overflow-x-hidden transition-[width] lg:h-auto lg:max-h-[calc(100vh_-_65px)] lg:w-[450px] lg:border-x">
-              {renderControlSidebar()}
-            </div>
-          </FormProvider>
+          <ControlSidebarSheet
+            closeSidebarSheet={closeSidebarSheet}
+            formReturn={formReturn}
+            isNewChat={isNewChat}
+            messages={messages}
+            setMessages={setMessages}
+          />
         </div>
       </div>
     </Sheet>
