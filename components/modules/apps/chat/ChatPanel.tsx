@@ -4,7 +4,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Message, useChat } from "ai/react";
-import { SendHorizonal, Settings } from "lucide-react";
+import { SendHorizonal } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 
@@ -14,11 +14,10 @@ import { Button } from "@/components/ui/Button";
 import { ChatInput, ChatList } from "@/components/ui/chat";
 import { ChatScrollAnchor } from "@/components/ui/common/ChatScrollAnchor";
 import { Separator } from "@/components/ui/Separator";
-import { Sheet, SheetTrigger } from "@/components/ui/Sheet";
+import { Sheet } from "@/components/ui/Sheet";
 import { toast } from "@/components/ui/use-toast";
 
 import { revalidateChatLayout } from "./action";
-import { ChatHistoryDrawer } from "./ChatHistoryDrawer";
 import { ControlSidebarSheet } from "./control-side-bar/ControlSidebarSheet";
 import { defaultSystemPrompt } from "./control-side-bar/data/models";
 import { Header } from "./Header";
