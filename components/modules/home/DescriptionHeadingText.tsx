@@ -25,7 +25,7 @@ export function DescriptionHeadingText() {
   }, [i]);
 
   return (
-    <div>
+    <div className="px-4">
       <motion.span
         className="h-16 max-w-2xl leading-normal text-muted-foreground sm:text-xl sm:leading-8"
         initial={{ opacity: 0 }}
