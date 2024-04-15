@@ -1,33 +1,37 @@
-import * as React from 'react'
+import * as React from "react";
 
 export function useAtBottom(offset = 0, element?: HTMLElement) {
-  const [isAtBottom, setIsAtBottom] = React.useState(false)
+  const [isAtBottom, setIsAtBottom] = React.useState(false);
 
   React.useEffect(() => {
     const handleScroll = () => {
-      let isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - offset
+      let isAtBottom =
+        window.innerHeight + window.scrollY >=
+        document.body.offsetHeight - offset;
       if (element) {
-        isAtBottom = element.scrollTop + element.offsetHeight >= element.scrollHeight - offset
+        isAtBottom =
+          element.scrollTop + element.offsetHeight >=
+          element.scrollHeight - offset;
       }
-      setIsAtBottom(isAtBottom)
-    }
+      setIsAtBottom(isAtBottom);
+    };
 
     if (!element) {
-      window.addEventListener('scroll', handleScroll)
+      window.addEventListener("scroll", handleScroll);
     } else {
-      element.addEventListener('scroll', handleScroll)
+      element.addEventListener("scroll", handleScroll);
     }
-    
-    handleScroll()
+
+    handleScroll();
 
     return () => {
       if (!element) {
-        window.removeEventListener('scroll', handleScroll)
-      }else {
-        element.removeEventListener('scroll', handleScroll)
+        window.removeEventListener("scroll", handleScroll);
+      } else {
+        element.removeEventListener("scroll", handleScroll);
       }
-    }
-  }, [element, offset])
+    };
+  }, [element, offset]);
 
-  return isAtBottom
+  return isAtBottom;
 }

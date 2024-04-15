@@ -32,16 +32,9 @@ export default async function ChatPage({ params }: { params: { id: string } }) {
     return <div className="pt-4">No app found</div>;
   }
 
-  const currentProfileId = user.id;
-  const chats = await getChats(supabase, {
-    appId: currentApp.id,
-    profileId: currentProfileId,
-  });
+  const chats = await getChats(supabase, currentApp.id);
 
-  const dbMessages = await getMessages(supabase, {
-    chatId,
-    profileId: currentProfileId,
-  });
+  const dbMessages = await getMessages(supabase, chatId);
 
   const chatDetails = await getChatById(supabase, chatId);
   const chatParams = chatDetails?.settings as ChatParams | undefined;

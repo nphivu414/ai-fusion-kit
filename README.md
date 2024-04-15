@@ -24,6 +24,7 @@
  - [Vercel AI SDK](https://github.com/vercel/ai)
  - [TailwindCSS](https://tailwindcss.com/)
  - [Shadcn UI](https://ui.shadcn.com/)
+ - [Aceternity UI](https://ui.aceternity.com/)
  - [Next.js AI Chatbot](https://github.com/vercel-labs/ai-chatbot)
 
   
@@ -37,49 +38,25 @@
    ```sh
    yarn install
    ```
-3. Setup your supabase project
-   - You'll first need a Supabase project which can be made via the [Supabase dashboard](https://database.new/)
-   - Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new)
-      ```sql
-        create table profiles (
-          id uuid default uuid_generate_v4() primary key,
-          updated_at timestamp default now(),
-          username text,
-          full_name text,
-          avatar_url text,
-          website text
-        );
-
-        create table apps (
-          id uuid default uuid_generate_v4() primary key,
-          name text not null,
-          description text,
-          createdAt timestamp default now(),
-          updatedAt timestamp default now(),
-          slug text not null,
-          logoUrl text
-        );
-
-        create table chats (
-          id uuid default uuid_generate_v4() primary key,
-          name text,
-          createdAt timestamp default now(),
-          updatedAt timestamp default now(),
-          profileId uuid references profiles (id),
-          appId uuid references apps (id),
-          settings json
-        );
-
-        create table messages (
-          id uuid default uuid_generate_v4() primary key,
-          role public.message_role,
-          content text,
-          createdAt timestamp default now(),
-          updatedAt timestamp default now(),
-          profileId uuid references profiles (id),
-          chatId uuid references chats (id)
-        );
+3. Setup Supabase local development
+   - Install [Docker](https://www.docker.com/get-started/)
+   - The start command uses Docker to start the Supabase services. This command may take a while to run if this is the first time using the CLI.
+      ```sh
+      supabase start
       ```
+    - Once all of the Supabase services are running, you'll see output containing your local Supabase credentials. It should look like this, with urls and keys that you'll use in your local project:
+    ```sh
+      Started supabase local development setup.
+
+              API URL: http://localhost:54321
+                DB URL: postgresql://postgres:postgres@localhost:54322/postgres
+            Studio URL: http://localhost:54323
+          Inbucket URL: http://localhost:54324
+              anon key: eyJh......
+      service_role key: eyJh......
+    ```
+    - The API URL will be used as the `NEXT_PUBLIC_SUPABASE_URL` in `.env.local`
+    - For more information about how to use Supabase on your local development machine: https://supabase.com/docs/guides/cli/local-development
 
 4. Get an account from OpenAI and generate your own API key
 

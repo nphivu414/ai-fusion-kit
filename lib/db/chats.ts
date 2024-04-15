@@ -1,12 +1,8 @@
-import { unstable_cache } from "next/cache";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { Logger } from "next-axiom";
 import { LogLevel } from "next-axiom/dist/logger";
 
-import { Chat, Database, Insert, Update } from ".";
-import { CACHE_KEYS, CACHE_TTL } from "../cache";
-
-type GetChatsParams = Pick<Chat, "appId" | "profileId">;
+import { Chat, Database, TablesInsert, TablesUpdate } from ".";
 
 const log = new Logger({
   logLevel: LogLevel.debug,
@@ -15,33 +11,29 @@ const log = new Logger({
   },
 });
 
-export const getChats = unstable_cache(
-  async (supabase: SupabaseClient<Database>, params: GetChatsParams) => {
-    log.info(`${getChats.name} called`, params);
-    const { data, error, status } = await supabase
-      .from("chats")
-      .select("*")
-      .eq("appId", params.appId)
-      .eq("profileId", params.profileId)
-      .order("createdAt", { ascending: false });
+export const getChats = async (
+  supabase: SupabaseClient<Database>,
+  appId: Chat["app_id"]
+) => {
+  log.info(`${getChats.name} called`, { appId });
+  const { data, error, status } = await supabase
+    .from("chats")
+    .select("*")
+    .eq("app_id", appId)
+    .order("created_at", { ascending: false });
 
-    if (error && status !== 406) {
-      log.error(getChats.name, { error, status });
-      return null;
-    }
-
-    log.info(`${getChats.name} fetched successfully`, { data });
-    return data;
-  },
-  [CACHE_KEYS.CHATS],
-  {
-    revalidate: CACHE_TTL,
+  if (error && status !== 406) {
+    log.error(getChats.name, { error, status });
+    return null;
   }
-);
+
+  log.info(`${getChats.name} fetched successfully`, { data });
+  return data;
+};
 
 export const getChatById = async (
   supabase: SupabaseClient<Database>,
-  id: string
+  id: Chat["id"]
 ) => {
   log.info(`${getChatById.name} called`, { id });
   const { data, error, status } = await supabase
@@ -61,7 +53,7 @@ export const getChatById = async (
 
 export const createNewChat = async (
   supabase: SupabaseClient<Database>,
-  params: Insert<"chats">
+  params: TablesInsert<"chats">
 ) => {
   log.info(`${createNewChat.name} called`, params);
   const { data, error, status } = await supabase
@@ -80,7 +72,7 @@ export const createNewChat = async (
 
 export const deleteChat = async (
   supabase: SupabaseClient<Database>,
-  id: string
+  id: Chat["id"]
 ) => {
   log.info(`${deleteChat.name} called`, { id });
   const { data, error } = await supabase.from("chats").delete().eq("id", id);
@@ -96,7 +88,7 @@ export const deleteChat = async (
 
 export const updateChat = async (
   supabase: SupabaseClient<Database>,
-  params: Update<"chats">
+  params: TablesUpdate<"chats">
 ) => {
   log.info(`${updateChat.name} called`, params);
   const { id, ...rest } = params;

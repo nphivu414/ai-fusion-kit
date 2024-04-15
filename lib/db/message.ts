@@ -2,14 +2,13 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { Logger } from "next-axiom";
 import { LogLevel } from "next-axiom/dist/logger";
 
-import { Database, Message } from ".";
+import { Chat, Database, Message } from ".";
 
 export type CreateNewMessageParams = Pick<
   Message,
-  "chatId" | "content" | "profileId" | "role"
+  "chat_id" | "content" | "role"
 > &
   Partial<Pick<Message, "id">>;
-type GetMessagesParams = Pick<Message, "chatId" | "profileId">;
 const log = new Logger({
   logLevel: LogLevel.debug,
   args: {
@@ -19,22 +18,21 @@ const log = new Logger({
 
 export const getMessages = async (
   supabase: SupabaseClient<Database>,
-  params: GetMessagesParams
+  chatId: Chat["id"]
 ) => {
-  log.info(`${getMessages.name} called`, { params });
+  log.info(`${getMessages.name} called`, { chatId });
   const { data, error, status } = await supabase
     .from("messages")
     .select("*")
-    .eq("chatId", params.chatId)
-    .eq("profileId", params.profileId)
-    .order("createdAt", { ascending: true });
+    .eq("chat_id", chatId)
+    .order("created_at", { ascending: true });
 
   if (error && status !== 406) {
-    log.error(getMessages.name, { params, error, status });
+    log.error(getMessages.name, { chatId, error, status });
     return null;
   }
 
-  log.info(`${getMessages.name} fetched successfully`, { params, data });
+  log.info(`${getMessages.name} fetched successfully`, { chatId, data });
   return data;
 };
 
@@ -79,19 +77,17 @@ export const createNewMessage = async (
 
 export const deleteMessagesFrom = async (
   supabase: SupabaseClient<Database>,
-  chatId: Message["chatId"],
-  profileId: Message["profileId"],
+  chatId: NonNullable<Message["chat_id"]>,
   from: string
 ) => {
   log.info(`${deleteMessagesFrom.name} called`, {
-    params: { chatId, profileId, from },
+    params: { chatId, from },
   });
   const { data, error } = await supabase
     .from("messages")
     .delete()
-    .eq("chatId", chatId)
-    .eq("profileId", profileId)
-    .gt("createdAt", from);
+    .eq("chat_id", chatId)
+    .gt("created_at", from);
 
   if (error) {
     log.error(deleteMessagesFrom.name, { error });

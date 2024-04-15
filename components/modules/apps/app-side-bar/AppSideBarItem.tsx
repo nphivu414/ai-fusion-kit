@@ -6,14 +6,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 
 type AppSideBarItemProps = Pick<
   App,
-  "name" | "slug" | "description" | "logoUrl"
+  "name" | "slug" | "description" | "logo_url"
 >;
 
 export const AppSideBarItem = ({
   name,
   slug,
   description,
-  logoUrl,
+  logo_url: logoUrl,
 }: AppSideBarItemProps) => {
   return (
     <li className="px-2 py-1 lg:min-w-[319px]">
