@@ -1,6 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { Message } from "ai";
 
 import { getAppBySlug } from "@/lib/db/apps";
@@ -37,6 +38,9 @@ export default async function ChatPage({ params }: { params: { id: string } }) {
   const dbMessages = await getMessages(supabase, chatId);
 
   const chatDetails = await getChatById(supabase, chatId);
+  if (!chatDetails) {
+    redirect("/apps/chat");
+  }
   const chatParams = chatDetails?.settings as ChatParams | undefined;
 
   const initialChatMessages: Message[] = dbMessages?.length

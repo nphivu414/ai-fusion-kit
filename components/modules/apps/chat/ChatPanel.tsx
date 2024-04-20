@@ -1,14 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Message, useChat } from "ai/react";
 import { SendHorizonal } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4, validate } from "uuid";
 
 import { Chat, Message as SupabaseMessage } from "@/lib/db";
+import { createClient } from "@/lib/supabase/client";
 import { useEnterSubmit } from "@/hooks/useEnterSubmit";
 import { Button } from "@/components/ui/Button";
 import { ChatInput, ChatList } from "@/components/ui/chat";
@@ -55,6 +56,8 @@ export const ChatPanel = ({
   const [sidebarSheetOpen, setSidebarSheetOpen] = React.useState(false);
   const { formRef, onKeyDown } = useEnterSubmit();
   const router = useRouter();
+  const supabaseClient = createClient();
+  const messageListRef = useRef<Message[]>([]);
 
   const {
     messages,
@@ -79,6 +82,40 @@ export const ChatPanel = ({
       }
     },
   });
+
+  messageListRef.current = messages;
+
+  useEffect(() => {
+    supabaseClient
+      .channel(`chat:${chatId}`)
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "messages" },
+        (payload) => {
+          console.log(payload, chatId);
+          if (payload.new.chat_id !== chatId) {
+            return;
+          }
+          const newMessageId = payload.new.id;
+          setMessages([
+            ...messageListRef.current.filter(
+              (message) => message.id !== newMessageId && validate(message.id)
+            ),
+            {
+              id: payload.new.id,
+              content: payload.new.content,
+              role: payload.new.role,
+            },
+          ]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabaseClient.channel(`chat:${chatId}`).unsubscribe();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatId, supabaseClient]);
 
   const formReturn = useForm<ChatParams>({
     defaultValues: chatParams || defaultValues,
