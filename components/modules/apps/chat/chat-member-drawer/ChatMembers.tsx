@@ -45,9 +45,9 @@ export const ChatMembers = ({ data, closeDrawer }: ChatMembersProps) => {
       </div>
       <Separator className="sticky top-16" />
       <ul className="mt-2 lg:px-2">
-        {data?.length ? null : (
+        {/* {data?.length ? null : (
           <p className="text-sm text-muted-foreground">No data</p>
-        )}
+        )} */}
         {/* {data?.map((member) => {
           return <ChatMemberItem key={member.id} />;
         })} */}
