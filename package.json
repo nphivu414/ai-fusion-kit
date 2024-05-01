@@ -58,6 +58,7 @@
     "react-hook-form": "^7.48.2",
     "react-intersection-observer": "^9.5.2",
     "react-markdown": "^8.0.7",
+    "react-resizable-panels": "^2.0.19",
     "react-syntax-highlighter": "^15.5.0",
     "react-textarea-autosize": "^8.5.3",
     "remark-gfm": "^3.0.1",
