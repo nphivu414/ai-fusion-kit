@@ -15,9 +15,6 @@ import { Separator } from "@/components/ui/Separator";
 import { AddMembersForm } from "./AddMembersForm";
 import { ChatMemberItem } from "./ChatMemberItem";
 
-// import { ChatMembersItem } from "./ChatMembersItem";
-// import { NewChatButton } from "./NewChatButton";
-
 type ChatMembersProps = {
   data: Chat[] | null;
   closeDrawer?: () => void;

@@ -10,7 +10,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/Resizable";
-import { ChatMembers } from "@/components/modules/apps/chat/chat-member-drawer/ChatMembers";
+import { ChatMembers } from "@/components/modules/apps/chat/chat-members/ChatMembers";
 import { ChatHistory } from "@/components/modules/apps/chat/ChatHistory";
 
 interface AppLayoutProps {

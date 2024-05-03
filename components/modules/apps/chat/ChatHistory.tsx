@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { usePathname } from "next/navigation";
 
 import { Chat } from "@/lib/db";
+import { useChatIdFromPathName } from "@/hooks/useChatIdFromPathName";
 import { Separator } from "@/components/ui/Separator";
 
 import { ChatHistoryItem } from "./ChatHistoryItem";
@@ -15,8 +15,8 @@ type ChatHistoryProps = {
 };
 
 export const ChatHistory = ({ data, closeDrawer }: ChatHistoryProps) => {
-  const pathname = usePathname();
-  const chatId = pathname.split("/").pop();
+  const chatId = useChatIdFromPathName();
+  console.log("🚀 ~ ChatHistory ~ chatId:", chatId);
 
   return (
     <aside className="max-h-full overflow-auto pb-4">
