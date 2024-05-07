@@ -6,6 +6,7 @@ import { AxiomRequest, withAxiom } from "next-axiom";
 import OpenAI from "openai";
 
 import { getAppBySlug } from "@/lib/db/apps";
+import { createNewChatMember } from "@/lib/db/chat-members";
 import { createNewChat } from "@/lib/db/chats";
 import {
   createNewMessage,
@@ -60,6 +61,10 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
         id: chatId,
         app_id: currentApp.id,
         name: lastMessage.content,
+      });
+      await createNewChatMember(supabase, {
+        chat_id: chatId,
+        member_id: user.id,
       });
     }
     await createNewMessage(supabase, {

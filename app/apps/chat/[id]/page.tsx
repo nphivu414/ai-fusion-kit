@@ -4,7 +4,12 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Message } from "ai";
 
+import {
+  CHAT_MEMBER_SIDEBAR_LAYOUT_COOKIE,
+  DEFAULT_CHAT_MEMBER_SIDEBAR_LAYOUT,
+} from "@/lib/contants";
 import { getAppBySlug } from "@/lib/db/apps";
+import { getChatMembers } from "@/lib/db/chat-members";
 import { getChatById, getChats } from "@/lib/db/chats";
 import { getMessages } from "@/lib/db/message";
 import { getCurrentUser } from "@/lib/session";
@@ -61,12 +66,23 @@ export default async function ChatPage({ params }: { params: { id: string } }) {
     });
   }
 
+  const chatMembers = await getChatMembers(supabase, chatId);
+
+  const memberSidebarLayout = cookies().get(CHAT_MEMBER_SIDEBAR_LAYOUT_COOKIE);
+
+  let defaultMemberSidebarLayout = DEFAULT_CHAT_MEMBER_SIDEBAR_LAYOUT;
+  if (memberSidebarLayout) {
+    defaultMemberSidebarLayout = JSON.parse(memberSidebarLayout.value);
+  }
+
   return (
     <ChatPanel
       chatId={chatId}
       chats={chats}
       initialMessages={initialChatMessages}
       chatParams={chatParams}
+      chatMembers={chatMembers}
+      defaultMemberSidebarLayout={defaultMemberSidebarLayout}
     />
   );
 }

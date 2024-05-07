@@ -19,8 +19,8 @@ export const ChatHistory = ({ data, closeDrawer }: ChatHistoryProps) => {
   console.log("🚀 ~ ChatHistory ~ chatId:", chatId);
 
   return (
-    <aside className="max-h-full overflow-auto pb-4">
-      <div className="sticky top-0 flex h-16 items-center justify-between bg-card lg:px-4">
+    <aside className="pb-4">
+      <div className="sticky top-0 flex h-16 items-center justify-between bg-background lg:px-4">
         <p className="lg:text-md text-lg font-bold lg:font-normal lg:text-muted-foreground">
           Chat history
         </p>

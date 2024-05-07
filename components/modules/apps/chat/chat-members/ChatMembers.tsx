@@ -3,7 +3,8 @@
 import React from "react";
 import { Plus } from "lucide-react";
 
-import { Chat } from "@/lib/db";
+import { ChatMemberProfile } from "@/lib/db";
+import { useProfileStore } from "@/lib/stores/profile";
 import { Button } from "@/components/ui/Button";
 import {
   Popover,
@@ -16,11 +17,22 @@ import { AddMembersForm } from "./AddMembersForm";
 import { ChatMemberItem } from "./ChatMemberItem";
 
 type ChatMembersProps = {
-  data: Chat[] | null;
+  data: ChatMemberProfile[] | null;
   closeDrawer?: () => void;
 };
 
 export const ChatMembers = ({ data, closeDrawer }: ChatMembersProps) => {
+  const [addMemberPopoverOpen, setAddMemberPopoverOpen] = React.useState(false);
+  const currentProfile = useProfileStore((state) => state.profile);
+
+  const handleAddMemberPopoverOpen = (isOpen: boolean) => {
+    setAddMemberPopoverOpen(isOpen);
+  };
+
+  const closeAddMemberPopover = () => {
+    setAddMemberPopoverOpen(false);
+  };
+
   return (
     <aside className="max-h-full overflow-auto pb-4">
       <div className="sticky top-0 z-10 flex h-16 items-center justify-between bg-card lg:px-4">
@@ -28,45 +40,43 @@ export const ChatMembers = ({ data, closeDrawer }: ChatMembersProps) => {
           Chat members
         </p>
         <div>
-          <Popover>
+          <Popover
+            open={addMemberPopoverOpen}
+            onOpenChange={handleAddMemberPopoverOpen}
+          >
             <PopoverTrigger asChild>
               <Button variant="outline" size="sm">
                 <Plus size={16} />
               </Button>
             </PopoverTrigger>
             <PopoverContent>
-              <AddMembersForm />
+              <AddMembersForm onCloseAddMemberPopover={closeAddMemberPopover} />
             </PopoverContent>
           </Popover>
         </div>
       </div>
       <Separator className="sticky top-16" />
       <ul className="mt-2 lg:px-2">
-        {/* {data?.length ? null : (
+        {data?.length ? null : (
           <p className="text-sm text-muted-foreground">No data</p>
-        )} */}
-        {/* {data?.map((member) => {
-          return <ChatMemberItem key={member.id} />;
-        })} */}
-        <ChatMemberItem />
-        <Separator />
-        <ChatMemberItem />
-        <Separator />
-        <ChatMemberItem />
-        <Separator />
-        <ChatMemberItem />
-        <Separator />
-        <ChatMemberItem />
-        <Separator />
-        <ChatMemberItem />
-        <Separator />
-        <ChatMemberItem />
-        <Separator />
-        <ChatMemberItem />
-        <Separator />
-        <ChatMemberItem />
-        <Separator />
-        <ChatMemberItem />
+        )}
+        {data?.map((member) => {
+          const { profiles, id } = member;
+          if (!profiles) return null;
+          const removeable =
+            currentProfile && currentProfile.id !== profiles.id ? true : false;
+          return (
+            <React.Fragment key={id}>
+              <ChatMemberItem
+                id={id}
+                username={profiles.username || ""}
+                avatarUrl={profiles.avatar_url}
+                removeable={removeable}
+              />
+              <Separator />
+            </React.Fragment>
+          );
+        })}
       </ul>
     </aside>
   );

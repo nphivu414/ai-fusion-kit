@@ -8,7 +8,7 @@ import { SendHorizonal } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4, validate } from "uuid";
 
-import { Chat, Message as SupabaseMessage } from "@/lib/db";
+import { Chat, ChatMemberProfile, Message as SupabaseMessage } from "@/lib/db";
 import { createClient } from "@/lib/supabase/client";
 import { useEnterSubmit } from "@/hooks/useEnterSubmit";
 import { Button } from "@/components/ui/Button";
@@ -43,6 +43,8 @@ export type ChatPanelProps = {
   chats: Chat[] | null;
   chatParams?: ChatParams;
   isNewChat?: boolean;
+  chatMembers: ChatMemberProfile[] | null;
+  defaultMemberSidebarLayout: number[];
 };
 
 export const ChatPanel = ({
@@ -51,6 +53,8 @@ export const ChatPanel = ({
   initialMessages,
   chatParams,
   isNewChat,
+  chatMembers,
+  defaultMemberSidebarLayout,
 }: ChatPanelProps) => {
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
   const [sidebarSheetOpen, setSidebarSheetOpen] = React.useState(false);
@@ -253,6 +257,8 @@ export const ChatPanel = ({
             isNewChat={isNewChat}
             messages={messages}
             setMessages={setMessages}
+            chatMembers={chatMembers}
+            defaultMemberSidebarLayout={defaultMemberSidebarLayout}
           />
         </div>
       </div>

@@ -1,30 +1,49 @@
-import Image from "next/image";
-import Link from "next/link";
-import { MoreVerticalIcon } from "lucide-react";
+import React from "react";
+import { Trash2 } from "lucide-react";
 
+import { useChatIdFromPathName } from "@/hooks/useChatIdFromPathName";
 import { Button } from "@/components/ui/Button";
 import { UserAvatar } from "@/components/ui/common/UserAvatar";
+import { useToast } from "@/components/ui/use-toast";
 
-export const ChatMemberItem = () => {
+import { deleteMember } from "./action";
+import { DeleteMemberAction } from "./DeleteMemberAction";
+
+type ChatMemberItemProps = {
+  id: string;
+  username: string;
+  avatarUrl: string | null;
+  fullname?: string;
+  removeable?: boolean;
+};
+
+export const ChatMemberItem = ({
+  id,
+  fullname,
+  username,
+  avatarUrl,
+  removeable = false,
+}: ChatMemberItemProps) => {
+  const chatId = useChatIdFromPathName();
+
   return (
-    <Link
-      className="flex items-center gap-3 rounded-md p-2 text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
-      href="#"
-    >
+    <div className="flex items-center gap-3 rounded-md p-2 text-sm">
       <UserAvatar
         className="z-0"
-        username="James Smith"
-        avatarUrl=""
+        username={username}
+        avatarUrl={avatarUrl}
         email=""
       />
       <div className="flex-1">
-        <p>James Smith</p>
-        <p className="text-gray-500 dark:text-gray-400">Offline</p>
+        <p>{fullname || username}</p>
       </div>
-      <Button size="sm" variant="ghost">
-        <MoreVerticalIcon className="size-4" />
-        <span className="sr-only">More options</span>
-      </Button>
-    </Link>
+      {removeable && (
+        <DeleteMemberAction
+          chatId={chatId}
+          memberId={id}
+          memberUsername={username}
+        />
+      )}
+    </div>
   );
 };

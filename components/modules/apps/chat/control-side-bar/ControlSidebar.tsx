@@ -68,7 +68,7 @@ export const ControlSidebar = ({
       <SheetHeader className="lg:px-4 lg:pt-4">
         <SheetTitle className="text-left">Settings</SheetTitle>
         <SheetDescription className="text-left">
-          {`Combining these parameters allows you to fine-tune the AI's output to suit different use cases, from creative writing to generating code snippets or answering questions.`}
+          {`Combining these parameters allows you to fine-tune the AI's output to suit different use cases.`}
         </SheetDescription>
       </SheetHeader>
       <Separator className="my-4" />

@@ -2,7 +2,7 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { Logger } from "next-axiom";
 import { LogLevel } from "next-axiom/dist/logger";
 
-import { ChatMember, Database, TablesInsert } from ".";
+import { ChatMember, ChatMemberProfile, Database, TablesInsert } from ".";
 
 const log = new Logger({
   logLevel: LogLevel.debug,
@@ -38,9 +38,9 @@ export const getChatMembers = async (
   log.info(`${getChatMembers.name} called`, { chatId });
   const { data, error, status } = await supabase
     .from("chat_members")
-    .select("*")
+    .select(`id,profiles (*)`)
     .eq("chat_id", chatId)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: true });
 
   if (error && status !== 406) {
     log.error(getChatMembers.name, { error, status });
@@ -48,5 +48,26 @@ export const getChatMembers = async (
   }
 
   log.info(`${getChatMembers.name} fetched successfully`, { data });
+  return data satisfies ChatMemberProfile[] | null;
+};
+
+export const deleteChatMember = async (
+  supabase: SupabaseClient<Database>,
+  id: ChatMember["id"]
+) => {
+  log.info(`${deleteChatMember.name} called`, { id });
+
+  const { data, error } = await supabase
+    .from("chat_members")
+    .delete()
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    log.error(deleteChatMember.name, { error });
+    throw error;
+  }
+
+  log.info(`${deleteChatMember.name} deleted successfully`, { data });
   return data;
 };

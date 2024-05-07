@@ -48,7 +48,7 @@ export const getProfileByUsername = async (
     .single();
 
   if (error) {
-    log.error(getProfileByUsername.name, { error, status });
+    log.error(getProfileByUsername.name, { error });
     return null;
   }
 
