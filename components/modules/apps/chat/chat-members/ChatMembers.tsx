@@ -13,15 +13,17 @@ import {
 } from "@/components/ui/Popover";
 import { Separator } from "@/components/ui/Separator";
 
+import { ChatPanelProps } from "../ChatPanel";
 import { AddMembersForm } from "./AddMembersForm";
 import { ChatMemberItem } from "./ChatMemberItem";
 
 type ChatMembersProps = {
   data: ChatMemberProfile[] | null;
+  isChatHost: ChatPanelProps["isChatHost"];
   closeDrawer?: () => void;
 };
 
-export const ChatMembers = ({ data, closeDrawer }: ChatMembersProps) => {
+export const ChatMembers = ({ data, isChatHost }: ChatMembersProps) => {
   const [addMemberPopoverOpen, setAddMemberPopoverOpen] = React.useState(false);
   const currentProfile = useProfileStore((state) => state.profile);
 
@@ -63,8 +65,13 @@ export const ChatMembers = ({ data, closeDrawer }: ChatMembersProps) => {
         {data?.map((member) => {
           const { profiles, id } = member;
           if (!profiles) return null;
-          const removeable =
+          let removeable = false;
+          const isMemberChat =
             currentProfile && currentProfile.id !== profiles.id ? true : false;
+
+          if (isChatHost && isMemberChat) {
+            removeable = true;
+          }
           return (
             <React.Fragment key={id}>
               <ChatMemberItem

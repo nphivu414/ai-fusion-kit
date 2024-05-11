@@ -1,12 +1,8 @@
 import React from "react";
-import { Trash2 } from "lucide-react";
 
 import { useChatIdFromPathName } from "@/hooks/useChatIdFromPathName";
-import { Button } from "@/components/ui/Button";
 import { UserAvatar } from "@/components/ui/common/UserAvatar";
-import { useToast } from "@/components/ui/use-toast";
 
-import { deleteMember } from "./action";
 import { DeleteMemberAction } from "./DeleteMemberAction";
 
 type ChatMemberItemProps = {

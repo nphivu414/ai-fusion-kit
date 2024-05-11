@@ -44,6 +44,7 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
     isRegenerate,
     regenerateMessageId,
     isNewChat,
+    enableChatAssistant = true,
   } = params;
 
   const user = await getCurrentUser(supabase);
@@ -78,6 +79,10 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
     if (fromMessage?.created_at) {
       await deleteMessagesFrom(supabase, chatId, fromMessage.created_at);
     }
+  }
+
+  if (!enableChatAssistant) {
+    return new Response(null);
   }
 
   const response = await openai.chat.completions.create({

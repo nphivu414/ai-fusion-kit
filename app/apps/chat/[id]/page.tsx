@@ -47,6 +47,7 @@ export default async function ChatPage({ params }: { params: { id: string } }) {
     redirect("/apps/chat");
   }
   const chatParams = chatDetails?.settings as ChatParams | undefined;
+  const isChatHost = chatDetails?.profile_id === user.id;
 
   const initialChatMessages: Message[] = dbMessages?.length
     ? dbMessages.map((message) => {
@@ -81,6 +82,7 @@ export default async function ChatPage({ params }: { params: { id: string } }) {
       chats={chats}
       initialMessages={initialChatMessages}
       chatParams={chatParams}
+      isChatHost={isChatHost}
       chatMembers={chatMembers}
       defaultMemberSidebarLayout={defaultMemberSidebarLayout}
     />

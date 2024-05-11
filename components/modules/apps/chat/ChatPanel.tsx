@@ -8,6 +8,7 @@ import { SendHorizonal } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4, validate } from "uuid";
 
+import { containsChatBotTrigger } from "@/lib/chat-input";
 import { Chat, ChatMemberProfile, Message as SupabaseMessage } from "@/lib/db";
 import { createClient } from "@/lib/supabase/client";
 import { useEnterSubmit } from "@/hooks/useEnterSubmit";
@@ -43,6 +44,7 @@ export type ChatPanelProps = {
   chats: Chat[] | null;
   chatParams?: ChatParams;
   isNewChat?: boolean;
+  isChatHost?: boolean;
   chatMembers: ChatMemberProfile[] | null;
   defaultMemberSidebarLayout: number[];
 };
@@ -53,6 +55,7 @@ export const ChatPanel = ({
   initialMessages,
   chatParams,
   isNewChat,
+  isChatHost,
   chatMembers,
   defaultMemberSidebarLayout,
 }: ChatPanelProps) => {
@@ -199,6 +202,7 @@ export const ChatPanel = ({
             ...getChatRequestParams(),
             chatId,
             isNewChat,
+            enableChatAssistant: containsChatBotTrigger(input),
           },
         },
       }
@@ -258,6 +262,7 @@ export const ChatPanel = ({
             messages={messages}
             setMessages={setMessages}
             chatMembers={chatMembers}
+            isChatHost={isChatHost}
             defaultMemberSidebarLayout={defaultMemberSidebarLayout}
           />
         </div>

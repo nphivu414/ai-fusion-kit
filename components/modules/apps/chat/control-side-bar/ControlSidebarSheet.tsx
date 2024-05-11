@@ -22,6 +22,7 @@ type ControlSidebarSheetProps = {
   chatMembers: ChatMemberProfile[] | null;
   closeSidebarSheet: () => void;
   isNewChat: ChatPanelProps["isNewChat"];
+  isChatHost: ChatPanelProps["isChatHost"];
   formReturn: Omit<FormProviderProps<ChatParams>, "children">;
   defaultMemberSidebarLayout: number[];
 };
@@ -32,6 +33,7 @@ export const ControlSidebarSheet = React.memo(function ControlSidebarSheet({
   chatMembers,
   closeSidebarSheet,
   isNewChat,
+  isChatHost,
   formReturn,
   defaultMemberSidebarLayout,
 }: ControlSidebarSheetProps) {
@@ -71,7 +73,7 @@ export const ControlSidebarSheet = React.memo(function ControlSidebarSheet({
               minSize={8}
               maxSize={50}
             >
-              <ChatMembers data={chatMembers} />
+              <ChatMembers data={chatMembers} isChatHost={isChatHost} />
             </ResizablePanel>
           </ResizablePanelGroup>
         )}
