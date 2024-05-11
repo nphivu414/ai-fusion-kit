@@ -10,6 +10,7 @@ import { v4 as uuidv4, validate } from "uuid";
 
 import { containsChatBotTrigger } from "@/lib/chat-input";
 import { Chat, ChatMemberProfile, Message as SupabaseMessage } from "@/lib/db";
+import { useProfileStore } from "@/lib/stores/profile";
 import { createClient } from "@/lib/supabase/client";
 import { useEnterSubmit } from "@/hooks/useEnterSubmit";
 import { Button } from "@/components/ui/Button";
@@ -59,6 +60,7 @@ export const ChatPanel = ({
   chatMembers,
   defaultMemberSidebarLayout,
 }: ChatPanelProps) => {
+  const profile = useProfileStore((state) => state.profile);
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
   const [sidebarSheetOpen, setSidebarSheetOpen] = React.useState(false);
   const { formRef, onKeyDown } = useEnterSubmit();
@@ -99,7 +101,6 @@ export const ChatPanel = ({
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "messages" },
         (payload) => {
-          console.log(payload, chatId);
           if (payload.new.chat_id !== chatId) {
             return;
           }
@@ -112,6 +113,10 @@ export const ChatPanel = ({
               id: payload.new.id,
               content: payload.new.content,
               role: payload.new.role,
+              data: {
+                profile_id: payload.new.profile_id,
+                chat_id: payload.new.chat_id,
+              },
             },
           ]);
         }
@@ -195,6 +200,10 @@ export const ChatPanel = ({
         content: input,
         role: "user",
         id: uuidv4(),
+        data: {
+          profile_id: profile?.id || "",
+          chat_id: chatId,
+        },
       },
       {
         options: {
@@ -231,6 +240,7 @@ export const ChatPanel = ({
                   isLoading={isLoading}
                   stop={stop}
                   reload={handleReloadMessages}
+                  chatMembers={chatMembers}
                 />
                 <ChatScrollAnchor
                   trackVisibility={isLoading}

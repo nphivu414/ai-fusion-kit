@@ -10,3 +10,4 @@ export type ChatMemberProfile = {
   id: ChatMember["id"];
   profiles: Profile | null;
 };
+export type MessageAdditionalData = Pick<Message, "profile_id" | "chat_id">;

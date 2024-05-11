@@ -55,6 +55,10 @@ export default async function ChatPage({ params }: { params: { id: string } }) {
           id: message.id,
           role: message.role || "system",
           content: message.content || "",
+          data: {
+            profile_id: message.profile_id,
+            chat_id: message.chat_id,
+          },
         };
       })
     : [];

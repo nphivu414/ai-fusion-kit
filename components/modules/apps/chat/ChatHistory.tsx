@@ -16,7 +16,6 @@ type ChatHistoryProps = {
 
 export const ChatHistory = ({ data, closeDrawer }: ChatHistoryProps) => {
   const chatId = useChatIdFromPathName();
-  console.log("🚀 ~ ChatHistory ~ chatId:", chatId);
 
   return (
     <aside className="pb-4">

@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { Copy, RefreshCcw, StopCircle } from "lucide-react";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -9,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { badgeVariants } from "@/components/ui/Badge";
 import { CodeBlock } from "@/components/modules/apps/chat/CodeBlock";
 
-import { Avatar, AvatarFallback, AvatarImage } from "../Avatar";
+import { UserAvatar } from "../common/UserAvatar";
 import { MemoizedReactMarkdown } from "./Markdown";
 
 type ChatBubbleProps = {
@@ -103,20 +102,9 @@ export const ChatBubble = ({
 
   return (
     <div className={chatClass}>
-      {avatar ? (
-        <div className="avatar chat-image">
-          <div className="w-10 rounded-full">
-            <Image src={avatar} alt="avatar" width={40} height={40} />
-          </div>
-        </div>
-      ) : (
-        <div className="avatar chat-image">
-          <Avatar className="w-10">
-            <AvatarImage src="" />
-            <AvatarFallback>VN</AvatarFallback>
-          </Avatar>
-        </div>
-      )}
+      <div className="avatar chat-image">
+        <UserAvatar username={name} avatarUrl={avatar} />
+      </div>
       <div className="chat-header mb-2 text-muted-foreground">
         {name}
         {time ? <time className="text-xs opacity-50">{time}</time> : null}

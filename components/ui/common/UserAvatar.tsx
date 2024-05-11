@@ -7,8 +7,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "../Avatar";
 
 type UserAvatarProps = {
   username: Profile["username"];
-  avatarUrl: Profile["avatar_url"];
-  email: User["email"];
+  avatarUrl?: Profile["avatar_url"];
+  email?: User["email"];
 } & AvatarProps;
 
 export const UserAvatar = ({
@@ -18,11 +18,11 @@ export const UserAvatar = ({
   ...rest
 }: UserAvatarProps) => {
   const nameLabel = username || email || "";
-  const firstLetter = nameLabel.charAt(0).toUpperCase();
+  const fallback = nameLabel.slice(0, 1).toUpperCase();
   return (
     <Avatar {...rest}>
       {avatarUrl ? <AvatarImage src={avatarUrl} /> : null}
-      <AvatarFallback>{firstLetter}</AvatarFallback>
+      <AvatarFallback>{fallback}</AvatarFallback>
     </Avatar>
   );
 };
