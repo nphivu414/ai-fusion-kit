@@ -1,24 +1,28 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Message, useChat } from "ai/react";
 import { SendHorizonal } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { v4 as uuidv4, validate } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import { containsChatBotTrigger } from "@/lib/chat-input";
 import { Chat, ChatMemberProfile, Message as SupabaseMessage } from "@/lib/db";
 import { useProfileStore } from "@/lib/stores/profile";
 import { createClient } from "@/lib/supabase/client";
 import { useEnterSubmit } from "@/hooks/useEnterSubmit";
+import {
+  RealtimeChatMemberStatus,
+  useSubscribeChatMessages,
+} from "@/hooks/useSubscribeChatMessages";
 import { Button } from "@/components/ui/Button";
 import { ChatInput, ChatList } from "@/components/ui/chat";
 import { ChatScrollAnchor } from "@/components/ui/common/ChatScrollAnchor";
 import { Separator } from "@/components/ui/Separator";
 import { Sheet } from "@/components/ui/Sheet";
-import { toast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 import { revalidateChatLayout } from "./action";
 import { ControlSidebarSheet } from "./control-side-bar/ControlSidebarSheet";
@@ -60,13 +64,17 @@ export const ChatPanel = ({
   chatMembers,
   defaultMemberSidebarLayout,
 }: ChatPanelProps) => {
+  const supabaseClient = createClient();
+  const { toast } = useToast();
   const profile = useProfileStore((state) => state.profile);
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
   const [sidebarSheetOpen, setSidebarSheetOpen] = React.useState(false);
   const { formRef, onKeyDown } = useEnterSubmit();
   const router = useRouter();
-  const supabaseClient = createClient();
-  const messageListRef = useRef<Message[]>([]);
+  const [chatMemberWithStatus, setChatMemberWithStatus] = React.useState<
+    ChatMemberProfile[] | null
+  >(chatMembers);
+  const [showAssistantTyping, setShowAssistantTyping] = React.useState(false);
 
   const {
     messages,
@@ -92,42 +100,74 @@ export const ChatPanel = ({
     },
   });
 
-  messageListRef.current = messages;
+  React.useEffect(() => {
+    const subscription = supabaseClient.channel(
+      `chat:assistant-streamming:${chatId}`
+    );
 
-  useEffect(() => {
-    supabaseClient
-      .channel(`chat:${chatId}`)
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "messages" },
-        (payload) => {
-          if (payload.new.chat_id !== chatId) {
-            return;
-          }
-          const newMessageId = payload.new.id;
-          setMessages([
-            ...messageListRef.current.filter(
-              (message) => message.id !== newMessageId && validate(message.id)
-            ),
-            {
-              id: payload.new.id,
-              content: payload.new.content,
-              role: payload.new.role,
-              data: {
-                profile_id: payload.new.profile_id,
-                chat_id: payload.new.chat_id,
-              },
-            },
-          ]);
+    subscription
+      .subscribe((status) => {
+        if (status !== "SUBSCRIBED") {
+          return null;
         }
-      )
-      .subscribe();
 
-    return () => {
-      supabaseClient.channel(`chat:${chatId}`).unsubscribe();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chatId, supabaseClient]);
+        // Send a message once the client is subscribed
+        subscription.send({
+          type: "broadcast",
+          event: "ai-streamming",
+          payload: { isStreamming: isLoading },
+        });
+      })
+      .on("broadcast", { event: "ai-streamming" }, (payload) => {
+        console.log(
+          "🚀 ~ React.useEffect ~ payload:",
+          payload.payload.isStreamming
+        );
+
+        if (payload.payload.isStreamming) {
+          setShowAssistantTyping(true);
+        } else {
+          setShowAssistantTyping(false);
+        }
+      });
+  }, [chatId, isLoading, messages, setMessages, supabaseClient, toast]);
+
+  const handleChatMemberPresense = React.useCallback(
+    (newState: RealtimeChatMemberStatus) => {
+      if (!chatMembers?.length) {
+        return;
+      }
+
+      const onlineMemberProfileIds = Object.values(newState).map(
+        (value) => value[0].userId
+      );
+      const updatedChatMembers: ChatMemberProfile[] = chatMembers.map(
+        (member) => ({
+          ...member,
+          status: onlineMemberProfileIds.includes(member.profiles?.id || "")
+            ? "online"
+            : "offline",
+        })
+      );
+      setChatMemberWithStatus(updatedChatMembers);
+    },
+    [chatMembers]
+  );
+
+  const handleNewMessageInsert = React.useCallback(
+    (newMessages: Message[]) => {
+      setMessages(newMessages);
+    },
+    [setMessages]
+  );
+
+  useSubscribeChatMessages({
+    initialMessages: messages,
+    chatId,
+    currentUserId: profile?.id,
+    newMessageInsertCallback: handleNewMessageInsert,
+    chatMemberPresenceCallback: handleChatMemberPresense,
+  });
 
   const formReturn = useForm<ChatParams>({
     defaultValues: chatParams || defaultValues,
@@ -149,7 +189,7 @@ export const ChatPanel = ({
         variant: "destructive",
       });
     }
-  }, [error]);
+  }, [error, toast]);
 
   React.useEffect(() => {
     if (!messages.length) {
@@ -240,7 +280,8 @@ export const ChatPanel = ({
                   isLoading={isLoading}
                   stop={stop}
                   reload={handleReloadMessages}
-                  chatMembers={chatMembers}
+                  chatMembers={chatMemberWithStatus}
+                  showAssistantTyping={showAssistantTyping}
                 />
                 <ChatScrollAnchor
                   trackVisibility={isLoading}
@@ -271,7 +312,7 @@ export const ChatPanel = ({
             isNewChat={isNewChat}
             messages={messages}
             setMessages={setMessages}
-            chatMembers={chatMembers}
+            chatMembers={chatMemberWithStatus}
             isChatHost={isChatHost}
             defaultMemberSidebarLayout={defaultMemberSidebarLayout}
           />

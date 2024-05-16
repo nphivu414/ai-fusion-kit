@@ -8,6 +8,7 @@ export type ChatMember = Tables<"chat_members">;
 export type Message = Tables<"messages">;
 export type ChatMemberProfile = {
   id: ChatMember["id"];
+  status?: "online" | "offline";
   profiles: Profile | null;
 };
 export type MessageAdditionalData = Pick<Message, "profile_id" | "chat_id">;

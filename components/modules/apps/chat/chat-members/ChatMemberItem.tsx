@@ -11,6 +11,7 @@ type ChatMemberItemProps = {
   avatarUrl: string | null;
   fullname?: string;
   removeable?: boolean;
+  isOnline?: boolean;
 };
 
 export const ChatMemberItem = ({
@@ -19,16 +20,18 @@ export const ChatMemberItem = ({
   username,
   avatarUrl,
   removeable = false,
+  isOnline,
 }: ChatMemberItemProps) => {
   const chatId = useChatIdFromPathName();
 
   return (
     <div className="flex items-center gap-3 rounded-md p-2 text-sm">
       <UserAvatar
-        className="z-0"
+        className="z-0 overflow-visible"
         username={username}
         avatarUrl={avatarUrl}
         email=""
+        isOnline={isOnline}
       />
       <div className="flex-1">
         <p>{fullname || username}</p>

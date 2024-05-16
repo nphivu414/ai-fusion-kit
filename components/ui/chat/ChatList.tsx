@@ -16,6 +16,7 @@ type ChatListProps = {
   stop: () => void;
   reload: (id: SupabaseMessage["id"]) => void;
   chatMembers: ChatPanelProps["chatMembers"];
+  showAssistantTyping?: boolean;
 };
 
 export const ChatList = ({
@@ -24,6 +25,7 @@ export const ChatList = ({
   isLoading,
   stop,
   reload,
+  showAssistantTyping,
 }: ChatListProps) => {
   const { isCopied, copyToClipboard } = useCopyToClipboard({});
   const hasConversation =
@@ -86,6 +88,19 @@ export const ChatList = ({
               />
             );
           })}
+          {showAssistantTyping && (
+            <ChatBubble
+              id="typing"
+              name="AI Assistant"
+              content="Typing..."
+              avatar={GPTAvatar.src}
+              direction="start"
+              isLoading={true}
+              isLast={false}
+              onCopy={() => {}}
+              onRegenerate={() => {}}
+            />
+          )}
         </>
       ) : (
         <div className="flex h-full flex-col items-center justify-center">

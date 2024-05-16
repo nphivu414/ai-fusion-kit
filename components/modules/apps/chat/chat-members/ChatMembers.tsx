@@ -79,6 +79,7 @@ export const ChatMembers = ({ data, isChatHost }: ChatMembersProps) => {
                 username={profiles.username || ""}
                 avatarUrl={profiles.avatar_url}
                 removeable={removeable}
+                isOnline={member.status === "online"}
               />
               <Separator />
             </React.Fragment>
