@@ -4,7 +4,6 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Message, useChat } from "ai/react";
-import { SendHorizonal } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 
@@ -12,23 +11,21 @@ import { containsChatBotTrigger } from "@/lib/chat-input";
 import { Chat, ChatMemberProfile, Message as SupabaseMessage } from "@/lib/db";
 import { useProfileStore } from "@/lib/stores/profile";
 import { createClient } from "@/lib/supabase/client";
-import { useEnterSubmit } from "@/hooks/useEnterSubmit";
 import {
   RealtimeChatMemberStatus,
   useSubscribeChatMessages,
 } from "@/hooks/useSubscribeChatMessages";
-import { Button } from "@/components/ui/Button";
-import { ChatInput, ChatList } from "@/components/ui/chat";
+import { ChatList } from "@/components/ui/chat";
 import { ChatScrollAnchor } from "@/components/ui/common/ChatScrollAnchor";
 import { Separator } from "@/components/ui/Separator";
 import { Sheet } from "@/components/ui/Sheet";
 import { useToast } from "@/components/ui/use-toast";
 
 import { revalidateChatLayout } from "./action";
+import { ChatForm } from "./ChatForm";
 import { ControlSidebarSheet } from "./control-side-bar/ControlSidebarSheet";
 import { defaultSystemPrompt } from "./control-side-bar/data/models";
 import { Header } from "./Header";
-import { MobileDrawerControl } from "./MobileDrawerControls";
 import { ChatParamSchema } from "./schema";
 import { ChatParams } from "./types";
 import { buildChatRequestParams } from "./utils";
@@ -69,7 +66,6 @@ export const ChatPanel = ({
   const profile = useProfileStore((state) => state.profile);
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
   const [sidebarSheetOpen, setSidebarSheetOpen] = React.useState(false);
-  const { formRef, onKeyDown } = useEnterSubmit();
   const router = useRouter();
   const [chatMemberWithStatus, setChatMemberWithStatus] = React.useState<
     ChatMemberProfile[] | null
@@ -288,22 +284,13 @@ export const ChatPanel = ({
                   parentElement={scrollAreaRef?.current}
                 />
               </div>
-              <div className="fixed bottom-0 left-0 w-full bg-background p-4 lg:relative lg:mt-2 lg:bg-transparent lg:py-0">
-                <form onSubmit={onSubmit} className="relative" ref={formRef}>
-                  <ChatInput
-                    value={input}
-                    onKeyDown={onKeyDown}
-                    onChange={handleOnChange}
-                  />
-                  <MobileDrawerControl chats={chats} />
-                  <div className="absolute bottom-0 right-0 flex w-1/2 justify-end px-2 pb-2">
-                    <Button size="sm" type="submit" disabled={isLoading}>
-                      Send
-                      <SendHorizonal size={14} className="ml-1" />
-                    </Button>
-                  </div>
-                </form>
-              </div>
+              <ChatForm
+                chatInput={input}
+                chats={chats}
+                onInputChange={handleOnChange}
+                isChatStreamming={isLoading}
+                onSubmit={onSubmit}
+              />
             </div>
           </div>
           <ControlSidebarSheet
