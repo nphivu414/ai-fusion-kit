@@ -46,6 +46,7 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
     isNewChat,
     enableChatAssistant = true,
   } = params;
+  console.log("🚀 ~ POST ~ enableChatAssistant:", enableChatAssistant);
 
   const user = await getCurrentUser(supabase);
   const currentApp = await getAppBySlug(supabase, "/apps/chat");

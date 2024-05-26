@@ -58,6 +58,7 @@
     "react-hook-form": "^7.48.2",
     "react-intersection-observer": "^9.5.2",
     "react-markdown": "^8.0.7",
+    "react-mentions": "^4.4.10",
     "react-resizable-panels": "^2.0.19",
     "react-syntax-highlighter": "^15.5.0",
     "react-textarea-autosize": "^8.5.3",
@@ -77,6 +78,7 @@
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
     "@types/lodash": "^4.17.0",
+    "@types/react-mentions": "^4.1.13",
     "@types/react-syntax-highlighter": "^15.5.7",
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
