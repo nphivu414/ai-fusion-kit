@@ -1,39 +1,26 @@
 export const defaultStyle = {
   control: {
-    backgroundColor: "#fff",
-    fontSize: 14,
-    fontWeight: "normal",
+    // backgroundColor: "#fff",
+    // fontSize: 14,
+    // fontWeight: "normal",
+    wordBreak: "break-word",
   },
 
   "&multiLine": {
-    control: {
-      fontFamily: "monospace",
-      minHeight: 63,
-    },
+    // control: {
+    //   fontFamily: "monospace",
+    //   minHeight: 63,
+    // },
     highlighter: {
       padding: 9,
       border: "1px solid transparent",
+      color: "hsl(var(--primary))",
     },
     input: {
       padding: 9,
-      border: "1px solid silver",
+      border: "1px solid hsl(var(--primary))",
     },
   },
-
-  "&singleLine": {
-    display: "inline-block",
-    width: 180,
-
-    highlighter: {
-      padding: 1,
-      border: "2px inset transparent",
-    },
-    input: {
-      padding: 1,
-      border: "2px inset",
-    },
-  },
-
   suggestions: {
     list: {
       backgroundColor: "white",

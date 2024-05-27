@@ -3,7 +3,8 @@
 import React from "react";
 import { Mention, MentionsInput } from "react-mentions";
 
-import { TextArea } from "@/components/ui/TextArea";
+import { cn } from "@/lib/utils";
+import { TextArea, textAreaVariants } from "@/components/ui/TextArea";
 
 import { defaultStyle } from "./mention-input-default-style";
 
@@ -12,15 +13,15 @@ type ChatTextAreaProps = React.ComponentPropsWithRef<typeof TextArea>;
 const data = [
   {
     id: "assistant",
-    display: "assistant",
+    display: "Assistant",
   },
   {
     id: "vu",
-    display: "vu",
+    display: "Vu",
   },
 ];
 
-export const ChatInput = ({ value, onChange }: ChatTextAreaProps) => {
+export const ChatInput = ({ value, onChange, ref }: ChatTextAreaProps) => {
   return (
     // <TextArea
     //   placeholder="Ask me anything"
@@ -31,8 +32,8 @@ export const ChatInput = ({ value, onChange }: ChatTextAreaProps) => {
     //   {...props}
     // />
     <MentionsInput
+      ref={ref}
       value={value}
-      onchange
       onChange={(e) => {
         onChange?.({
           target: {
@@ -41,6 +42,10 @@ export const ChatInput = ({ value, onChange }: ChatTextAreaProps) => {
         });
       }}
       style={defaultStyle}
+      className={cn(
+        textAreaVariants,
+        "min-h-32 max-w-full [&_textarea]:border [&_textarea]:p-2"
+      )}
       placeholder={"Mention people using '@'"}
       a11ySuggestionsListLabel={"Suggested mentions"}
     >
@@ -59,10 +64,9 @@ export const ChatInput = ({ value, onChange }: ChatTextAreaProps) => {
             {highlightedDisplay as any}
           </div>
         )}
-        // onAdd={onAdd}
-        style={{
-          backgroundColor: "#cee4e5",
-        }}
+        // style={{
+        //   backgroundColor: "#cee4e5",
+        // }}
       />
     </MentionsInput>
   );
