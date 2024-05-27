@@ -7,10 +7,6 @@ export const defaultStyle = {
   },
 
   "&multiLine": {
-    // control: {
-    //   fontFamily: "monospace",
-    //   minHeight: 63,
-    // },
     highlighter: {
       padding: 9,
       border: "1px solid transparent",
