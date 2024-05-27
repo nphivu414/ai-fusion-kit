@@ -23,15 +23,15 @@ export const defaultStyle = {
   },
   suggestions: {
     list: {
-      backgroundColor: "white",
-      border: "1px solid rgba(0,0,0,0.15)",
-      fontSize: 14,
+      backgroundColor: "hsl(var(--background))",
+      border: "1px solid hsl(var(--border))",
+      // fontSize: 14,
     },
     item: {
-      padding: "5px 15px",
-      borderBottom: "1px solid rgba(0,0,0,0.15)",
+      padding: "4px 16px",
+      borderBottom: "1px solid hsl(var(--border))",
       "&focused": {
-        backgroundColor: "#cee4e5",
+        backgroundColor: "hsl(var(--card))",
       },
     },
   },

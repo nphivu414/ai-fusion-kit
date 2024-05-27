@@ -1,14 +1,14 @@
 "use client";
 
 import React from "react";
-import { Mention, MentionsInput } from "react-mentions";
+import { Mention, MentionsInput, MentionsInputProps } from "react-mentions";
 
 import { cn } from "@/lib/utils";
-import { TextArea, textAreaVariants } from "@/components/ui/TextArea";
+import { textAreaVariants } from "@/components/ui/TextArea";
 
 import { defaultStyle } from "./mention-input-default-style";
 
-type ChatTextAreaProps = React.ComponentPropsWithRef<typeof TextArea>;
+type ChatTextAreaProps = Omit<MentionsInputProps, "children">;
 
 const data = [
   {
@@ -21,26 +21,9 @@ const data = [
   },
 ];
 
-export const ChatInput = ({ value, onChange, ref }: ChatTextAreaProps) => {
+export const ChatInput = (props: ChatTextAreaProps) => {
   return (
-    // <TextArea
-    //   placeholder="Ask me anything"
-    //   containerClassName="max-w-full"
-    //   className="pb-14"
-    //   minRows={2}
-    //   ref={props.ref}
-    //   {...props}
-    // />
     <MentionsInput
-      ref={ref}
-      value={value}
-      onChange={(e) => {
-        onChange?.({
-          target: {
-            value: e.target.value,
-          },
-        });
-      }}
       style={defaultStyle}
       className={cn(
         textAreaVariants,
@@ -48,11 +31,13 @@ export const ChatInput = ({ value, onChange, ref }: ChatTextAreaProps) => {
       )}
       placeholder={"Mention people using '@'"}
       a11ySuggestionsListLabel={"Suggested mentions"}
+      {...props}
     >
       <Mention
         markup="@[__display__](user:__id__)"
         trigger="@"
         data={data}
+        appendSpaceOnAdd
         renderSuggestion={(
           suggestion,
           search,
@@ -64,9 +49,7 @@ export const ChatInput = ({ value, onChange, ref }: ChatTextAreaProps) => {
             {highlightedDisplay as any}
           </div>
         )}
-        // style={{
-        //   backgroundColor: "#cee4e5",
-        // }}
+        className="bg-primary/40"
       />
     </MentionsInput>
   );
