@@ -8,13 +8,17 @@ export const defaultStyle = {
 
   "&multiLine": {
     highlighter: {
-      padding: 9,
+      padding: 8,
       border: "1px solid transparent",
       color: "hsl(var(--primary))",
     },
     input: {
-      padding: 9,
-      border: "1px solid hsl(var(--primary))",
+      padding: 8,
+      border: "1px solid hsl(var(--border))",
+      borderRadius: "calc(var(--radius) - 2px)",
+      "&:focus-visible": {
+        borderColor: "red",
+      },
     },
   },
   suggestions: {

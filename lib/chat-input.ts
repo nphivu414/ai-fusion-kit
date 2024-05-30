@@ -5,3 +5,8 @@ export const containsChatBotTrigger = (input: string) => {
   const pattern = new RegExp(`@\\[(${whitelistPattern})\\]\\(user:\\1\\)`, "i");
   return pattern.test(input);
 };
+
+export const getRawValueFromMentionInput = (input: string) => {
+  const pattern = /@\[(.*?)\]\(user:(.*?)\)/i;
+  return input.replace(pattern, "@$1");
+};

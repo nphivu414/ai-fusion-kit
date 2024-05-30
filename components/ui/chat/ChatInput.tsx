@@ -1,27 +1,23 @@
 "use client";
 
 import React from "react";
-import { Mention, MentionsInput, MentionsInputProps } from "react-mentions";
+import {
+  Mention,
+  MentionsInput,
+  MentionsInputProps,
+  SuggestionDataItem,
+} from "react-mentions";
 
 import { cn } from "@/lib/utils";
 import { textAreaVariants } from "@/components/ui/TextArea";
 
 import { defaultStyle } from "./mention-input-default-style";
 
-type ChatTextAreaProps = Omit<MentionsInputProps, "children">;
+type ChatTextAreaProps = Omit<MentionsInputProps, "children"> & {
+  mentionData: SuggestionDataItem[];
+};
 
-const data = [
-  {
-    id: "assistant",
-    display: "Assistant",
-  },
-  {
-    id: "vu",
-    display: "Vu",
-  },
-];
-
-export const ChatInput = (props: ChatTextAreaProps) => {
+export const ChatInput = ({ mentionData, ...rest }: ChatTextAreaProps) => {
   return (
     <MentionsInput
       style={defaultStyle}
@@ -31,12 +27,12 @@ export const ChatInput = (props: ChatTextAreaProps) => {
       )}
       placeholder={"Mention people using '@'"}
       a11ySuggestionsListLabel={"Suggested mentions"}
-      {...props}
+      {...rest}
     >
       <Mention
         markup="@[__display__](user:__id__)"
         trigger="@"
-        data={data}
+        data={mentionData}
         appendSpaceOnAdd
         renderSuggestion={(
           suggestion,
@@ -46,7 +42,7 @@ export const ChatInput = (props: ChatTextAreaProps) => {
           focused
         ) => (
           <div className={`user ${focused ? "focused" : ""}`}>
-            {highlightedDisplay as any}
+            {highlightedDisplay}
           </div>
         )}
         className="bg-primary/40"

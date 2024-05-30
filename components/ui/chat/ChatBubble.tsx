@@ -11,7 +11,7 @@ import { CodeBlock } from "@/components/modules/apps/chat/CodeBlock";
 import { UserAvatar } from "../common/UserAvatar";
 import { MemoizedReactMarkdown } from "./Markdown";
 
-type ChatBubbleProps = {
+export type ChatBubbleProps = {
   id: Message["id"];
   prevId?: Message["id"];
   direction?: "start" | "end";

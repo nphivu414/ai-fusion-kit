@@ -54,8 +54,15 @@ export const ControlSidebarSheet = React.memo(function ControlSidebarSheet({
 
   return (
     <FormProvider {...formReturn}>
-      <SheetContent className="w-[400px] overflow-y-auto sm:w-[540px]">
-        <div className="pt-4">{renderControlSidebar()}</div>
+      <SheetContent className="w-[400px] overflow-y-auto px-0 sm:w-[540px]">
+        <div className="pt-4">
+          <div className="px-4">{renderControlSidebar()}</div>
+          {!isNewChat && (
+            <div className="mt-6">
+              <ChatMembers data={chatMembers} isChatHost={isChatHost} />
+            </div>
+          )}
+        </div>
       </SheetContent>
       <div className="size-0 overflow-x-hidden transition-[width] lg:h-auto lg:max-h-[calc(100vh_-_65px)] lg:w-[450px] lg:border-x">
         {isNewChat ? (

@@ -2,13 +2,15 @@ import React from "react";
 import GPTAvatar from "@/public/chat-gpt.jpeg";
 import { Message } from "ai/react";
 
+import { getRawValueFromMentionInput } from "@/lib/chat-input";
 import { MessageAdditionalData, Message as SupabaseMessage } from "@/lib/db";
+import { useProfileStore } from "@/lib/stores/profile";
 import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 import { Heading5 } from "@/components/ui/typography";
 import { toast } from "@/components/ui/use-toast";
 import { ChatPanelProps } from "@/components/modules/apps/chat/ChatPanel";
 
-import { ChatBubble } from "./ChatBubble";
+import { ChatBubble, ChatBubbleProps } from "./ChatBubble";
 
 type ChatListProps = {
   data: Message[];
@@ -27,6 +29,7 @@ export const ChatList = ({
   reload,
   showAssistantTyping,
 }: ChatListProps) => {
+  const currentProfile = useProfileStore((state) => state.profile);
   const { isCopied, copyToClipboard } = useCopyToClipboard({});
   const hasConversation =
     data.filter((message) => message.role !== "system").length > 0;
@@ -38,6 +41,14 @@ export const ChatList = ({
       });
     }
   }, [isCopied]);
+
+  const handleOnCopy = React.useCallback(
+    (message: string) => {
+      const rawMessage = getRawValueFromMentionInput(message);
+      copyToClipboard(rawMessage);
+    },
+    [copyToClipboard]
+  );
 
   return (
     <>
@@ -65,7 +76,15 @@ export const ChatList = ({
                 : memberUsername || "Unknown User";
             const avatar =
               m.role === "assistant" ? GPTAvatar.src : memberAvatar || "";
-            const direction = m.role === "assistant" ? "start" : "end";
+
+            let direction: ChatBubbleProps["direction"] = "start";
+            if (
+              messageAdditionalData?.profile_id === currentProfile?.id &&
+              m.role === "user"
+            ) {
+              direction = "end";
+            }
+
             const isLast = index === data.length - 1;
             return (
               <ChatBubble
@@ -82,7 +101,7 @@ export const ChatList = ({
                 direction={direction}
                 isLoading={isLoading}
                 isLast={isLast}
-                onCopy={copyToClipboard}
+                onCopy={handleOnCopy}
                 onRegenerate={reload}
                 onStopGenerating={stop}
               />

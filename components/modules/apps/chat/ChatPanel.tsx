@@ -290,6 +290,7 @@ export const ChatPanel = ({
                 onInputChange={handleOnChange}
                 isChatStreamming={isLoading}
                 onSubmit={onSubmit}
+                chatMembers={chatMemberWithStatus}
               />
             </div>
           </div>
