@@ -115,11 +115,6 @@ export const ChatPanel = ({
         });
       })
       .on("broadcast", { event: "ai-streamming" }, (payload) => {
-        console.log(
-          "🚀 ~ React.useEffect ~ payload:",
-          payload.payload.isStreamming
-        );
-
         if (payload.payload.isStreamming) {
           setShowAssistantTyping(true);
         } else {
