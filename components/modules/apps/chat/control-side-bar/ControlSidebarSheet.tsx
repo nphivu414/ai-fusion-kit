@@ -2,7 +2,11 @@ import React from "react";
 import { Message, UseChatHelpers } from "ai/react";
 import { FormProvider, FormProviderProps } from "react-hook-form";
 
-import { CHAT_MEMBER_SIDEBAR_LAYOUT_COOKIE } from "@/lib/contants";
+import {
+  CHAT_MEMBER_SIDEBAR_LAYOUT_COOKIE,
+  MAX_CHAT_MEMBER_SIDEBAR_SIZE,
+  MIN_CHAT_MEMBER_SIDEBAR_SIZE,
+} from "@/lib/contants";
 import { ChatMemberProfile } from "@/lib/db";
 import {
   ResizableHandle,
@@ -77,8 +81,8 @@ export const ControlSidebarSheet = React.memo(function ControlSidebarSheet({
             <ResizableHandle withHandle />
             <ResizablePanel
               defaultSize={defaultMemberSidebarLayout[1]}
-              minSize={8}
-              maxSize={50}
+              minSize={MIN_CHAT_MEMBER_SIDEBAR_SIZE}
+              maxSize={MAX_CHAT_MEMBER_SIDEBAR_SIZE}
             >
               <ChatMembers data={chatMembers} isChatHost={isChatHost} />
             </ResizablePanel>

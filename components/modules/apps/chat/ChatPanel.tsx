@@ -269,7 +269,7 @@ export const ChatPanel = ({
               <Separator />
               <div
                 ref={scrollAreaRef}
-                className="mx-auto flex w-full max-w-screen-2xl grow basis-0 flex-col overflow-visible px-4 pb-[110px] lg:overflow-y-auto lg:pb-0"
+                className="mx-auto flex w-full max-w-screen-2xl grow basis-0 flex-col overflow-visible px-4 pb-[130px] lg:overflow-y-auto lg:pb-0"
               >
                 <ChatList
                   data={messages}
