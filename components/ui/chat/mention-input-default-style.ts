@@ -1,9 +1,8 @@
 export const defaultStyle = {
   control: {
-    // backgroundColor: "#fff",
-    // fontSize: 14,
-    // fontWeight: "normal",
     wordBreak: "break-word",
+    // maxHeight: 150,
+    overflowY: "hidden",
   },
 
   "&multiLine": {
@@ -16,6 +15,8 @@ export const defaultStyle = {
       padding: 8,
       border: "1px solid hsl(var(--border))",
       borderRadius: "calc(var(--radius) - 2px)",
+      // maxHeight: 150,
+      overflowY: "auto",
       "&:focus-visible": {
         borderColor: "red",
       },
@@ -25,7 +26,6 @@ export const defaultStyle = {
     list: {
       backgroundColor: "hsl(var(--background))",
       border: "1px solid hsl(var(--border))",
-      // fontSize: 14,
     },
     item: {
       padding: "4px 16px",

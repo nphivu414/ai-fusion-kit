@@ -12,6 +12,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/Popover";
 import { Separator } from "@/components/ui/Separator";
+import { Paragraph } from "@/components/ui/typography";
 
 import { ChatPanelProps } from "../ChatPanel";
 import { AddMembersForm } from "./AddMembersForm";
@@ -60,7 +61,9 @@ export const ChatMembers = ({ data, isChatHost }: ChatMembersProps) => {
       <Separator className="sticky top-16" />
       <ul className="mt-2 lg:px-2">
         {data?.length ? null : (
-          <p className="text-sm text-muted-foreground">No data</p>
+          <Paragraph className="text-center text-sm text-muted-foreground">
+            No members in this chat.
+          </Paragraph>
         )}
         {data?.map((member) => {
           const { profiles, id } = member;
