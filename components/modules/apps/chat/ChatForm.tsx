@@ -66,7 +66,7 @@ export const ChatForm = ({
           mentionData={mentionData}
         />
         <MobileDrawerControl chats={chats} />
-        <div className="absolute bottom-0 right-0 flex w-1/2 justify-end px-2 pb-2">
+        <div className="absolute bottom-[2px] right-1 flex w-1/2 justify-end bg-background px-2 pb-2">
           <Button size="sm" type="submit" disabled={isChatStreamming}>
             Send
             <SendHorizonal size={14} className="ml-1" />

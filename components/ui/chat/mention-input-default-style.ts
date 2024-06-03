@@ -1,10 +1,11 @@
+import { MAX_CHAT_INPUT_HEIGHT } from "@/lib/contants";
+
 export const defaultStyle = {
   control: {
     wordBreak: "break-word",
-    // maxHeight: 150,
+    maxHeight: MAX_CHAT_INPUT_HEIGHT,
     overflowY: "hidden",
   },
-
   "&multiLine": {
     highlighter: {
       padding: 8,
@@ -15,11 +16,10 @@ export const defaultStyle = {
       padding: 8,
       border: "1px solid hsl(var(--border))",
       borderRadius: "calc(var(--radius) - 2px)",
-      // maxHeight: 150,
+      maxHeight: MAX_CHAT_INPUT_HEIGHT,
       overflowY: "auto",
-      "&:focus-visible": {
-        borderColor: "red",
-      },
+      paddingBottom: 48,
+      outlineColor: "hsl(var(--primary))",
     },
   },
   suggestions: {

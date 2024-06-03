@@ -34,11 +34,14 @@ export const ChatInput = ({ mentionData, ...rest }: ChatTextAreaProps) => {
         trigger="@"
         data={mentionData}
         appendSpaceOnAdd
-        renderSuggestion={(suggestion, highlightedDisplay, focused) => (
-          <div
-            key={suggestion.id}
-            className={`user ${focused ? "focused" : ""}`}
-          >
+        renderSuggestion={(
+          suggestion,
+          search,
+          highlightedDisplay,
+          index,
+          focused
+        ) => (
+          <div className={`user ${focused ? "focused" : ""}`}>
             {highlightedDisplay}
           </div>
         )}

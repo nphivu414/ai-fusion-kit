@@ -16,10 +16,10 @@ export const MobileDrawerControl = React.memo(function MobileDrawerControl({
 }: MobileDrawerControlProps) {
   return (
     <>
-      <div className="absolute bottom-0 left-0 flex w-1/2 px-2 pb-2 lg:hidden">
+      <div className="absolute bottom-[2px] left-1 flex w-1/2 bg-background px-2 pb-2 lg:hidden">
         <ChatHistoryDrawer data={chats} />
       </div>
-      <div className="absolute bottom-0 left-12 flex w-1/2 justify-start px-2 pb-2 lg:hidden">
+      <div className="absolute bottom-[2px] left-16 flex w-1/2 justify-start bg-background px-2 pb-2 lg:hidden">
         <SheetTrigger asChild>
           <Button size="sm" variant="ghost">
             <Settings />
