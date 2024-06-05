@@ -28,10 +28,11 @@ export const defaultStyle = {
       border: "1px solid hsl(var(--border))",
     },
     item: {
+      color: "hsl(var(--foreground))",
       padding: "4px 16px",
       borderBottom: "1px solid hsl(var(--border))",
       "&focused": {
-        backgroundColor: "hsl(var(--card))",
+        backgroundColor: "hsl(var(--muted))",
       },
     },
   },

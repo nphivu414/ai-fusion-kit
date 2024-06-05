@@ -82,7 +82,13 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
   }
 
   if (!enableChatAssistant) {
-    return new Response(null);
+    return new Response(null, {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "should-redirect-to-new-chat": "true",
+      },
+    });
   }
 
   log.debug("Start stream text");
