@@ -88,6 +88,12 @@ export const ChatPanel = ({
     api: "/api/chat",
     initialMessages,
     sendExtraMessageFields: true,
+    onResponse: async (response) => {
+      if (response?.headers.get("should-redirect-to-new-chat") === "true") {
+        await revalidateChatLayout();
+        router.replace(`/apps/chat/${chatId}`);
+      }
+    },
     onFinish: async () => {
       if (isNewChat) {
         await revalidateChatLayout();
