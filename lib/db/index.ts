@@ -10,5 +10,8 @@ export type ChatMemberProfile = {
   id: ChatMember["id"];
   status?: "online" | "offline";
   profiles: Profile | null;
+  created_at: ChatMember["created_at"];
 };
-export type MessageAdditionalData = Pick<Message, "profile_id" | "chat_id">;
+export type MessageAdditionalData = Pick<Message, "profile_id" | "chat_id"> & {
+  chatBubleDirection: "start" | "end";
+};

@@ -3,7 +3,11 @@ import GPTAvatar from "@/public/chat-gpt.jpeg";
 import { Message } from "ai/react";
 
 import { getRawValueFromMentionInput } from "@/lib/chat-input";
-import { MessageAdditionalData, Message as SupabaseMessage } from "@/lib/db";
+import {
+  ChatMemberProfile,
+  MessageAdditionalData,
+  Message as SupabaseMessage,
+} from "@/lib/db";
 import { useProfileStore } from "@/lib/stores/profile";
 import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 import { Heading5 } from "@/components/ui/typography";
@@ -33,6 +37,21 @@ export const ChatList = ({
   const { isCopied, copyToClipboard } = useCopyToClipboard({});
   const hasConversation =
     data.filter((message) => message.role !== "system").length > 0;
+
+  const chatMemberMap = React.useMemo(() => {
+    return chatMembers?.reduce(
+      (acc, member) => {
+        if (!member.profiles) return acc;
+        acc[member.profiles.id] = {
+          ...member,
+          profiles: member.profiles,
+          created_at: member.created_at,
+        };
+        return acc;
+      },
+      {} as Record<string, ChatMemberProfile>
+    );
+  }, [chatMembers]);
 
   React.useEffect(() => {
     if (isCopied) {
@@ -77,12 +96,14 @@ export const ChatList = ({
             const avatar =
               m.role === "assistant" ? GPTAvatar.src : memberAvatar || "";
 
-            let direction: ChatBubbleProps["direction"] = "start";
+            let direction: ChatBubbleProps["direction"];
             if (
               messageAdditionalData?.profile_id === currentProfile?.id &&
               m.role === "user"
             ) {
               direction = "end";
+            } else if (m.role === "assistant") {
+              direction = "start";
             }
 
             const isLast = index === data.length - 1;
@@ -98,9 +119,12 @@ export const ChatList = ({
                 name={name}
                 content={m.content}
                 avatar={avatar}
-                direction={direction}
+                direction={
+                  direction || messageAdditionalData?.chatBubleDirection
+                }
                 isLoading={isLoading}
                 isLast={isLast}
+                chatMemberMap={chatMemberMap}
                 onCopy={handleOnCopy}
                 onRegenerate={reload}
                 onStopGenerating={stop}

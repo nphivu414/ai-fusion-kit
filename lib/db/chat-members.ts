@@ -38,7 +38,7 @@ export const getChatMembers = async (
   log.info(`${getChatMembers.name} called`, { chatId });
   const { data, error, status } = await supabase
     .from("chat_members")
-    .select(`id,profiles (*)`)
+    .select(`id, created_at,profiles (*)`)
     .eq("chat_id", chatId)
     .order("created_at", { ascending: true });
 

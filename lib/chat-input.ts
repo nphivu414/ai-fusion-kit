@@ -10,3 +10,13 @@ export const getRawValueFromMentionInput = (input: string) => {
   const pattern = /@\[(.*?)\]\(user:(.*?)\)/i;
   return input.replace(pattern, "@$1");
 };
+
+export const isTaggedUserPattern = (
+  input: string | number | true | (string | number)[]
+) => {
+  if (typeof input !== "string") {
+    return false;
+  }
+  const pattern = /user:\w+/;
+  return pattern.test(input);
+};
