@@ -1,5 +1,6 @@
 import React from "react";
-import { CalendarDays, Copy, RefreshCcw, StopCircle } from "lucide-react";
+import GPTAvatar from "@/public/chat-gpt.jpeg";
+import { Copy, RefreshCcw, StopCircle } from "lucide-react";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 
@@ -9,9 +10,8 @@ import { cn } from "@/lib/utils";
 import { badgeVariants } from "@/components/ui/Badge";
 import { CodeBlock } from "@/components/modules/apps/chat/CodeBlock";
 
-import { Button } from "../Button";
 import { UserAvatar } from "../common/UserAvatar";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "../HoverCard";
+import { ChatProfileHoverCard } from "./ChatProfileHoverCard";
 import { MemoizedReactMarkdown } from "./Markdown";
 
 export type ChatBubbleProps = {
@@ -132,9 +132,22 @@ export const ChatBubble = ({
               }
 
               const userName = properties?.href?.toString()?.split(":")[1];
-              const profile = userName && chatMemberMap?.[userName]?.profiles;
+              let profile = userName && chatMemberMap?.[userName]?.profiles;
               const profileCreatedAt =
                 userName && chatMemberMap?.[userName]?.created_at;
+
+              if (userName === "assistant") {
+                profile = {
+                  username: "Assistant",
+                  full_name: "GPT AI Assistant",
+                  avatar_url: GPTAvatar.src,
+                  billing_address: "",
+                  id: "assistant",
+                  payment_method: "",
+                  updated_at: "",
+                  website: "",
+                };
+              }
 
               if (!profile) {
                 return (
@@ -145,42 +158,13 @@ export const ChatBubble = ({
               }
 
               return (
-                <HoverCard>
-                  <HoverCardTrigger asChild>
-                    <Button
-                      variant="link"
-                      size="sm"
-                      className={cn("p-0 text-foreground", {
-                        "text-white": direction === "end",
-                      })}
-                    >
-                      {children}
-                    </Button>
-                  </HoverCardTrigger>
-                  <HoverCardContent className="max-w-60">
-                    <div className="flex justify-between space-x-4">
-                      <UserAvatar
-                        username={profile.username}
-                        avatarUrl={profile.avatar_url}
-                      />
-                      <div className="space-y-1">
-                        <h4 className="text-sm font-semibold">{children}</h4>
-                        {profile.full_name ? (
-                          <p className="text-sm">{profile.full_name}</p>
-                        ) : null}
-                        {profileCreatedAt ? (
-                          <div className="flex items-center pt-2">
-                            <CalendarDays className="mr-2 size-4 opacity-70" />{" "}
-                            <span className="text-xs text-muted-foreground">
-                              Joined on{" "}
-                              {new Date(profileCreatedAt).toLocaleDateString()}
-                            </span>
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
-                  </HoverCardContent>
-                </HoverCard>
+                <ChatProfileHoverCard
+                  profile={profile}
+                  direction={direction}
+                  joinedDate={profileCreatedAt}
+                >
+                  {children}
+                </ChatProfileHoverCard>
               );
             },
             code({ inline, className, children, ...props }) {

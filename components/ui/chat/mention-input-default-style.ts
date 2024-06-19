@@ -28,6 +28,7 @@ export const defaultStyle = {
       border: "1px solid hsl(var(--border))",
     },
     item: {
+      backgroundColor: "hsl(var(--background))",
       color: "hsl(var(--foreground))",
       padding: "4px 16px",
       borderBottom: "1px solid hsl(var(--border))",
