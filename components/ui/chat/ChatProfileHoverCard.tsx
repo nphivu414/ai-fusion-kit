@@ -14,7 +14,7 @@ type ProfileHoverCardProps = {
   direction?: ChatBubbleProps["direction"];
   profile: Profile;
   joinedDate?: string;
-  children: React.ReactNode & React.ReactNode[];
+  children: React.ReactNode;
 };
 
 export const ChatProfileHoverCard = React.memo(function ChatProfileHoverCard({

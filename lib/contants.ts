@@ -1,3 +1,7 @@
+import GPTAvatar from "@/public/chat-gpt.jpeg";
+
+import { Profile } from "./db";
+
 export const APP_SLUGS = {
   CHAT: "/apps/chat",
 };
@@ -12,3 +16,13 @@ export const CHAT_BOT_TRIGGER_WHITE_LIST = ["assistant"];
 export const MENTION_MARKUP = "@[__display__](user:__id__)";
 export const MENTION_TRIGGER = "@";
 export const MAX_CHAT_INPUT_HEIGHT = 210;
+export const AI_ASSISTANT_PROFILE: Profile = {
+  id: "assistant",
+  username: "Assissant",
+  avatar_url: GPTAvatar.src,
+  full_name: "Bot",
+  billing_address: null,
+  payment_method: null,
+  updated_at: null,
+  website: "https://openai.com",
+};

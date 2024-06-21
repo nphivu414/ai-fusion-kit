@@ -1,10 +1,10 @@
 import React from "react";
-import GPTAvatar from "@/public/chat-gpt.jpeg";
 import { Copy, RefreshCcw, StopCircle } from "lucide-react";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 
 import { isTaggedUserPattern } from "@/lib/chat-input";
+import { AI_ASSISTANT_PROFILE } from "@/lib/contants";
 import { ChatMemberProfile, Message } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import { badgeVariants } from "@/components/ui/Badge";
@@ -132,29 +132,25 @@ export const ChatBubble = ({
               }
 
               const userName = properties?.href?.toString()?.split(":")[1];
-              let profile = userName && chatMemberMap?.[userName]?.profiles;
-              const profileCreatedAt =
-                userName && chatMemberMap?.[userName]?.created_at;
 
-              if (userName === "assistant") {
-                profile = {
-                  id: "assistant",
-                  username: "Assissant",
-                  avatar_url: GPTAvatar.src,
-                  full_name: "Bot",
-                  billing_address: null,
-                  payment_method: null,
-                  updated_at: null,
-                  website: "https://openai.com",
-                };
-              }
-
-              if (!profile) {
+              if (!userName) {
                 return (
                   <a className="cursor-pointer text-gray-300 underline">
                     {children}
                   </a>
                 );
+              }
+
+              let profile = userName && chatMemberMap?.[userName]?.profiles;
+              const profileCreatedAt =
+                userName && chatMemberMap?.[userName]?.created_at;
+
+              if (userName === "assistant") {
+                profile = AI_ASSISTANT_PROFILE;
+              }
+
+              if (!profile) {
+                return <span>{children}</span>;
               }
 
               return (

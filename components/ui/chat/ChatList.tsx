@@ -3,6 +3,7 @@ import GPTAvatar from "@/public/chat-gpt.jpeg";
 import { Message } from "ai/react";
 
 import { getRawValueFromMentionInput } from "@/lib/chat-input";
+import { AI_ASSISTANT_PROFILE } from "@/lib/contants";
 import {
   ChatMemberProfile,
   MessageAdditionalData,
@@ -15,6 +16,7 @@ import { toast } from "@/components/ui/use-toast";
 import { ChatPanelProps } from "@/components/modules/apps/chat/ChatPanel";
 
 import { ChatBubble, ChatBubbleProps } from "./ChatBubble";
+import { ChatProfileHoverCard } from "./ChatProfileHoverCard";
 
 type ChatListProps = {
   data: Message[];
@@ -150,8 +152,14 @@ export const ChatList = ({
           <div className="text-center lg:max-w-[65%]">
             <Heading5 className="lg:text-3xl">Unleash Your Creativity</Heading5>
             <p className="mt-2 text-sm text-muted-foreground">
-              Chat with your AI assistant to generate new ideas and get
-              inspired.
+              Chat with your{" "}
+              <ChatProfileHoverCard
+                profile={AI_ASSISTANT_PROFILE}
+                direction="start"
+              >
+                @Assistant
+              </ChatProfileHoverCard>{" "}
+              to generate new ideas and get inspired.
             </p>
           </div>
         </div>

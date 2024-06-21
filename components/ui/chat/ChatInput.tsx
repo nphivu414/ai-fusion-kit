@@ -25,7 +25,7 @@ export const ChatInput = ({ mentionData, ...rest }: ChatTextAreaProps) => {
         textAreaVariants,
         "min-h-32 max-w-full [&_textarea]:border [&_textarea]:p-2"
       )}
-      placeholder={"Mention people using '@'"}
+      placeholder={"Chat with AI Assistant and mention people using '@'"}
       a11ySuggestionsListLabel={"Suggested mentions"}
       {...rest}
     >
