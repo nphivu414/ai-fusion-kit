@@ -39,9 +39,7 @@ export const ChatMembers = ({ data, isChatHost }: ChatMembersProps) => {
   return (
     <aside className="max-h-full overflow-auto pb-4">
       <div className="sticky top-0 z-10 flex h-16 items-center justify-between bg-card px-4">
-        <p className="lg:text-md text-lg font-bold lg:font-normal lg:text-muted-foreground">
-          Chat members
-        </p>
+        <p className="text-muted-foreground">Chat members</p>
         <div>
           <Popover
             open={addMemberPopoverOpen}
