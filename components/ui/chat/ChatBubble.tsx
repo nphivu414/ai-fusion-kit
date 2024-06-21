@@ -138,14 +138,14 @@ export const ChatBubble = ({
 
               if (userName === "assistant") {
                 profile = {
-                  username: "Assistant",
-                  full_name: "GPT AI Assistant",
-                  avatar_url: GPTAvatar.src,
-                  billing_address: "",
                   id: "assistant",
-                  payment_method: "",
-                  updated_at: "",
-                  website: "",
+                  username: "Assissant",
+                  avatar_url: GPTAvatar.src,
+                  full_name: "Bot",
+                  billing_address: null,
+                  payment_method: null,
+                  updated_at: null,
+                  website: "https://openai.com",
                 };
               }
 

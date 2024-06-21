@@ -36,7 +36,7 @@ export const ChatProfileHoverCard = React.memo(function ChatProfileHoverCard({
           {children}
         </Button>
       </HoverCardTrigger>
-      <HoverCardContent className="w-50 max-w-60">
+      <HoverCardContent className="w-50 max-w-80">
         <div className="flex justify-between space-x-4">
           <UserAvatar
             username={profile.username}
