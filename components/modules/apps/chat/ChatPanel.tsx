@@ -10,7 +10,6 @@ import { v4 as uuidv4 } from "uuid";
 import { containsChatBotTrigger } from "@/lib/chat-input";
 import { Chat, ChatMemberProfile, Message as SupabaseMessage } from "@/lib/db";
 import { useProfileStore } from "@/lib/stores/profile";
-import { createClient } from "@/lib/supabase/client";
 import {
   RealtimeChatMemberStatus,
   useSubscribeChatMessages,
@@ -61,7 +60,6 @@ export const ChatPanel = ({
   chatMembers,
   defaultMemberSidebarLayout,
 }: ChatPanelProps) => {
-  const supabaseClient = createClient();
   const { toast } = useToast();
   const profile = useProfileStore((state) => state.profile);
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
@@ -70,7 +68,6 @@ export const ChatPanel = ({
   const [chatMemberWithStatus, setChatMemberWithStatus] = React.useState<
     ChatMemberProfile[] | null
   >(chatMembers);
-  const [showAssistantTyping, setShowAssistantTyping] = React.useState(false);
 
   const {
     messages,
@@ -101,33 +98,6 @@ export const ChatPanel = ({
       }
     },
   });
-
-  React.useEffect(() => {
-    const subscription = supabaseClient.channel(
-      `chat:assistant-streamming:${chatId}`
-    );
-
-    subscription
-      .subscribe((status) => {
-        if (status !== "SUBSCRIBED") {
-          return null;
-        }
-
-        // Send a message once the client is subscribed
-        subscription.send({
-          type: "broadcast",
-          event: "ai-streamming",
-          payload: { isStreamming: isLoading },
-        });
-      })
-      .on("broadcast", { event: "ai-streamming" }, (payload) => {
-        if (payload.payload.isStreamming) {
-          setShowAssistantTyping(true);
-        } else {
-          setShowAssistantTyping(false);
-        }
-      });
-  }, [chatId, isLoading, messages, setMessages, supabaseClient, toast]);
 
   const handleChatMemberPresense = React.useCallback(
     (newState: RealtimeChatMemberStatus) => {
@@ -278,7 +248,6 @@ export const ChatPanel = ({
                   stop={stop}
                   reload={handleReloadMessages}
                   chatMembers={chatMemberWithStatus}
-                  showAssistantTyping={showAssistantTyping}
                 />
                 <ChatScrollAnchor
                   trackVisibility={isLoading}

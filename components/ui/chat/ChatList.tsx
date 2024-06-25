@@ -24,7 +24,6 @@ type ChatListProps = {
   stop: () => void;
   reload: (id: SupabaseMessage["id"]) => void;
   chatMembers: ChatPanelProps["chatMembers"];
-  showAssistantTyping?: boolean;
 };
 
 export const ChatList = ({
@@ -33,7 +32,6 @@ export const ChatList = ({
   isLoading,
   stop,
   reload,
-  showAssistantTyping,
 }: ChatListProps) => {
   const currentProfile = useProfileStore((state) => state.profile);
   const { isCopied, copyToClipboard } = useCopyToClipboard({});
@@ -104,6 +102,8 @@ export const ChatList = ({
               m.role === "user"
             ) {
               direction = "end";
+            } else if (messageAdditionalData?.profile_id && m.role === "user") {
+              direction = "start";
             } else if (m.role === "assistant") {
               direction = "start";
             }
@@ -133,19 +133,6 @@ export const ChatList = ({
               />
             );
           })}
-          {showAssistantTyping && (
-            <ChatBubble
-              id="typing"
-              name="AI Assistant"
-              content="Typing..."
-              avatar={GPTAvatar.src}
-              direction="start"
-              isLoading={true}
-              isLast={false}
-              onCopy={() => {}}
-              onRegenerate={() => {}}
-            />
-          )}
         </>
       ) : (
         <div className="flex h-full flex-col items-center justify-center">
