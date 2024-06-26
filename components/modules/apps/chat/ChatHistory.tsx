@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import { usePathname } from "next/navigation";
 
 import { Chat } from "@/lib/db";
+import { useChatIdFromPathName } from "@/hooks/useChatIdFromPathName";
 import { Separator } from "@/components/ui/Separator";
+import { Paragraph } from "@/components/ui/typography";
 
 import { ChatHistoryItem } from "./ChatHistoryItem";
 import { NewChatButton } from "./NewChatButton";
@@ -15,8 +16,7 @@ type ChatHistoryProps = {
 };
 
 export const ChatHistory = ({ data, closeDrawer }: ChatHistoryProps) => {
-  const pathname = usePathname();
-  const chatId = pathname.split("/").pop();
+  const chatId = useChatIdFromPathName();
 
   return (
     <aside className="pb-4">
@@ -31,7 +31,9 @@ export const ChatHistory = ({ data, closeDrawer }: ChatHistoryProps) => {
       <Separator className="sticky top-16" />
       <ul className="mt-2 lg:px-2">
         {data?.length ? null : (
-          <p className="text-sm text-muted-foreground">No data</p>
+          <Paragraph className="text-center text-sm text-muted-foreground">
+            No chats found
+          </Paragraph>
         )}
         {data?.map((chat) => {
           return (

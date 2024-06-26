@@ -4,24 +4,27 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Message, useChat } from "ai/react";
-import { SendHorizonal } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 
-import { Chat, Message as SupabaseMessage } from "@/lib/db";
-import { useEnterSubmit } from "@/hooks/useEnterSubmit";
-import { Button } from "@/components/ui/Button";
-import { ChatInput, ChatList } from "@/components/ui/chat";
+import { containsChatBotTrigger } from "@/lib/chat-input";
+import { Chat, ChatMemberProfile, Message as SupabaseMessage } from "@/lib/db";
+import { useProfileStore } from "@/lib/stores/profile";
+import {
+  RealtimeChatMemberStatus,
+  useSubscribeChatMessages,
+} from "@/hooks/useSubscribeChatMessages";
+import { ChatList } from "@/components/ui/chat";
 import { ChatScrollAnchor } from "@/components/ui/common/ChatScrollAnchor";
 import { Separator } from "@/components/ui/Separator";
 import { Sheet } from "@/components/ui/Sheet";
-import { toast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 import { revalidateChatLayout } from "./action";
+import { ChatForm } from "./ChatForm";
 import { ControlSidebarSheet } from "./control-side-bar/ControlSidebarSheet";
 import { defaultSystemPrompt } from "./control-side-bar/data/models";
 import { Header } from "./Header";
-import { MobileDrawerControl } from "./MobileDrawerControls";
 import { ChatParamSchema } from "./schema";
 import { ChatParams } from "./types";
 import { buildChatRequestParams } from "./utils";
@@ -42,6 +45,9 @@ export type ChatPanelProps = {
   chats: Chat[] | null;
   chatParams?: ChatParams;
   isNewChat?: boolean;
+  isChatHost?: boolean;
+  chatMembers: ChatMemberProfile[] | null;
+  defaultMemberSidebarLayout: number[];
 };
 
 export const ChatPanel = ({
@@ -50,11 +56,18 @@ export const ChatPanel = ({
   initialMessages,
   chatParams,
   isNewChat,
+  isChatHost,
+  chatMembers,
+  defaultMemberSidebarLayout,
 }: ChatPanelProps) => {
+  const { toast } = useToast();
+  const profile = useProfileStore((state) => state.profile);
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
   const [sidebarSheetOpen, setSidebarSheetOpen] = React.useState(false);
-  const { formRef, onKeyDown } = useEnterSubmit();
   const router = useRouter();
+  const [chatMemberWithStatus, setChatMemberWithStatus] = React.useState<
+    ChatMemberProfile[] | null
+  >(chatMembers);
 
   const {
     messages,
@@ -72,6 +85,12 @@ export const ChatPanel = ({
     api: "/api/chat",
     initialMessages,
     sendExtraMessageFields: true,
+    onResponse: async (response) => {
+      if (response?.headers.get("should-redirect-to-new-chat") === "true") {
+        await revalidateChatLayout();
+        router.replace(`/apps/chat/${chatId}`);
+      }
+    },
     onFinish: async () => {
       if (isNewChat) {
         await revalidateChatLayout();
@@ -80,16 +99,53 @@ export const ChatPanel = ({
     },
   });
 
+  const handleChatMemberPresense = React.useCallback(
+    (newState: RealtimeChatMemberStatus) => {
+      if (!chatMembers?.length) {
+        return;
+      }
+
+      const onlineMemberProfileIds = Object.values(newState).map(
+        (value) => value[0].userId
+      );
+      const updatedChatMembers: ChatMemberProfile[] = chatMembers.map(
+        (member) => ({
+          ...member,
+          status: onlineMemberProfileIds.includes(member.profiles?.id || "")
+            ? "online"
+            : "offline",
+        })
+      );
+      setChatMemberWithStatus(updatedChatMembers);
+    },
+    [chatMembers]
+  );
+
+  const handleNewMessageInsert = React.useCallback(
+    (newMessages: Message[]) => {
+      setMessages(newMessages);
+    },
+    [setMessages]
+  );
+
+  useSubscribeChatMessages({
+    initialMessages: messages,
+    chatId,
+    currentUserId: profile?.id,
+    newMessageInsertCallback: handleNewMessageInsert,
+    chatMemberPresenceCallback: handleChatMemberPresense,
+  });
+
   const formReturn = useForm<ChatParams>({
     defaultValues: chatParams || defaultValues,
     mode: "onChange",
     resolver: zodResolver(ChatParamSchema),
   });
 
-  const getChatRequestParams = () => {
+  const chatRequestParams = React.useMemo(() => {
     const formValues = formReturn.getValues();
     return buildChatRequestParams(formValues);
-  };
+  }, [formReturn]);
 
   React.useEffect(() => {
     if (error) {
@@ -100,7 +156,7 @@ export const ChatPanel = ({
         variant: "destructive",
       });
     }
-  }, [error]);
+  }, [error, toast]);
 
   React.useEffect(() => {
     if (!messages.length) {
@@ -127,18 +183,21 @@ export const ChatPanel = ({
     handleInputChange(e);
   };
 
-  const handleReloadMessages = (id: SupabaseMessage["id"]) => {
-    reload({
-      options: {
-        body: {
-          ...getChatRequestParams(),
-          chatId,
-          isRegenerate: true,
-          regenerateMessageId: id,
+  const handleReloadMessages = React.useCallback(
+    (id: SupabaseMessage["id"]) => {
+      reload({
+        options: {
+          body: {
+            ...chatRequestParams,
+            chatId,
+            isRegenerate: true,
+            regenerateMessageId: id,
+          },
         },
-      },
-    });
-  };
+      });
+    },
+    [chatId, chatRequestParams]
+  );
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -151,13 +210,18 @@ export const ChatPanel = ({
         content: input,
         role: "user",
         id: uuidv4(),
+        data: {
+          profile_id: profile?.id || "",
+          chat_id: chatId,
+        },
       },
       {
         options: {
           body: {
-            ...getChatRequestParams(),
+            ...chatRequestParams,
             chatId,
             isNewChat,
+            enableChatAssistant: containsChatBotTrigger(input),
           },
         },
       }
@@ -179,35 +243,28 @@ export const ChatPanel = ({
               <Separator />
               <div
                 ref={scrollAreaRef}
-                className="mx-auto flex w-full max-w-screen-2xl grow basis-0 flex-col overflow-visible px-4 pb-[110px] lg:overflow-y-auto lg:pb-0"
+                className="mx-auto flex w-full max-w-screen-2xl grow basis-0 flex-col overflow-visible px-4 pb-[130px] lg:overflow-y-auto lg:pb-0"
               >
                 <ChatList
                   data={messages}
                   isLoading={isLoading}
                   stop={stop}
                   reload={handleReloadMessages}
+                  chatMembers={chatMemberWithStatus}
                 />
                 <ChatScrollAnchor
                   trackVisibility={isLoading}
                   parentElement={scrollAreaRef?.current}
                 />
               </div>
-              <div className="fixed bottom-0 left-0 w-full bg-background p-4 lg:relative lg:mt-2 lg:bg-transparent lg:py-0">
-                <form onSubmit={onSubmit} className="relative" ref={formRef}>
-                  <ChatInput
-                    value={input}
-                    onKeyDown={onKeyDown}
-                    onChange={handleOnChange}
-                  />
-                  <MobileDrawerControl chats={chats} />
-                  <div className="absolute bottom-0 right-0 flex w-1/2 justify-end px-2 pb-2">
-                    <Button size="sm" type="submit" disabled={isLoading}>
-                      Send
-                      <SendHorizonal size={14} className="ml-1" />
-                    </Button>
-                  </div>
-                </form>
-              </div>
+              <ChatForm
+                chatInput={input}
+                chats={chats}
+                onInputChange={handleOnChange}
+                isChatStreamming={isLoading}
+                onSubmit={onSubmit}
+                chatMembers={chatMemberWithStatus}
+              />
             </div>
           </div>
           <ControlSidebarSheet
@@ -216,6 +273,9 @@ export const ChatPanel = ({
             isNewChat={isNewChat}
             messages={messages}
             setMessages={setMessages}
+            chatMembers={chatMemberWithStatus}
+            isChatHost={isChatHost}
+            defaultMemberSidebarLayout={defaultMemberSidebarLayout}
           />
         </div>
       </div>

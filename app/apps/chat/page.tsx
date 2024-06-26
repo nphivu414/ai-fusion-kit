@@ -28,6 +28,13 @@ export default async function NewChatPage() {
   const chats = await getChats(supabase, currentApp.id);
 
   return (
-    <ChatPanel chatId={chatId} initialMessages={[]} chats={chats} isNewChat />
+    <ChatPanel
+      chatId={chatId}
+      initialMessages={[]}
+      chats={chats}
+      isNewChat
+      chatMembers={null}
+      defaultMemberSidebarLayout={[]}
+    />
   );
 }

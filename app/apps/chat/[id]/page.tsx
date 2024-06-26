@@ -1,9 +1,15 @@
 import React from "react";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { Message } from "ai";
 
+import {
+  CHAT_MEMBER_SIDEBAR_LAYOUT_COOKIE,
+  DEFAULT_CHAT_MEMBER_SIDEBAR_LAYOUT,
+} from "@/lib/contants";
 import { getAppBySlug } from "@/lib/db/apps";
+import { getChatMembers } from "@/lib/db/chat-members";
 import { getChatById, getChats } from "@/lib/db/chats";
 import { getMessages } from "@/lib/db/message";
 import { getCurrentUser } from "@/lib/session";
@@ -37,7 +43,11 @@ export default async function ChatPage({ params }: { params: { id: string } }) {
   const dbMessages = await getMessages(supabase, chatId);
 
   const chatDetails = await getChatById(supabase, chatId);
+  if (!chatDetails) {
+    redirect("/apps/chat");
+  }
   const chatParams = chatDetails?.settings as ChatParams | undefined;
+  const isChatHost = chatDetails?.profile_id === user.id;
 
   const initialChatMessages: Message[] = dbMessages?.length
     ? dbMessages.map((message) => {
@@ -45,6 +55,14 @@ export default async function ChatPage({ params }: { params: { id: string } }) {
           id: message.id,
           role: message.role || "system",
           content: message.content || "",
+          data: {
+            profile_id: message.profile_id,
+            chat_id: message.chat_id,
+            chatBubleDirection:
+              message.role === "user" && message.profile_id === user.id
+                ? "end"
+                : "start",
+          },
         };
       })
     : [];
@@ -57,12 +75,24 @@ export default async function ChatPage({ params }: { params: { id: string } }) {
     });
   }
 
+  const chatMembers = await getChatMembers(supabase, chatId);
+
+  const memberSidebarLayout = cookies().get(CHAT_MEMBER_SIDEBAR_LAYOUT_COOKIE);
+
+  let defaultMemberSidebarLayout = DEFAULT_CHAT_MEMBER_SIDEBAR_LAYOUT;
+  if (memberSidebarLayout) {
+    defaultMemberSidebarLayout = JSON.parse(memberSidebarLayout.value);
+  }
+
   return (
     <ChatPanel
       chatId={chatId}
       chats={chats}
       initialMessages={initialChatMessages}
       chatParams={chatParams}
+      isChatHost={isChatHost}
+      chatMembers={chatMembers}
+      defaultMemberSidebarLayout={defaultMemberSidebarLayout}
     />
   );
 }

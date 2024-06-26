@@ -3,6 +3,7 @@ import { Logger } from "next-axiom";
 import { LogLevel } from "next-axiom/dist/logger";
 
 import { Chat, Database, TablesInsert, TablesUpdate } from ".";
+import { getRawValueFromMentionInput } from "../chat-input";
 
 const log = new Logger({
   logLevel: LogLevel.debug,
@@ -27,8 +28,17 @@ export const getChats = async (
     return null;
   }
 
-  log.info(`${getChats.name} fetched successfully`, { data });
-  return data;
+  const formattedChat = data
+    ? data.map((chat) => {
+        return {
+          ...chat,
+          name: getRawValueFromMentionInput(chat?.name || ""),
+        };
+      })
+    : null;
+
+  log.info(`${getChats.name} fetched successfully`, { data: formattedChat });
+  return formattedChat;
 };
 
 export const getChatById = async (
