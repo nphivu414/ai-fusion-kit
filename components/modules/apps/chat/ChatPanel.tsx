@@ -142,10 +142,10 @@ export const ChatPanel = ({
     resolver: zodResolver(ChatParamSchema),
   });
 
-  const getChatRequestParams = () => {
+  const chatRequestParams = React.useMemo(() => {
     const formValues = formReturn.getValues();
     return buildChatRequestParams(formValues);
-  };
+  }, [formReturn]);
 
   React.useEffect(() => {
     if (error) {
@@ -183,18 +183,21 @@ export const ChatPanel = ({
     handleInputChange(e);
   };
 
-  const handleReloadMessages = (id: SupabaseMessage["id"]) => {
-    reload({
-      options: {
-        body: {
-          ...getChatRequestParams(),
-          chatId,
-          isRegenerate: true,
-          regenerateMessageId: id,
+  const handleReloadMessages = React.useCallback(
+    (id: SupabaseMessage["id"]) => {
+      reload({
+        options: {
+          body: {
+            ...chatRequestParams,
+            chatId,
+            isRegenerate: true,
+            regenerateMessageId: id,
+          },
         },
-      },
-    });
-  };
+      });
+    },
+    [chatId, chatRequestParams]
+  );
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -215,7 +218,7 @@ export const ChatPanel = ({
       {
         options: {
           body: {
-            ...getChatRequestParams(),
+            ...chatRequestParams,
             chatId,
             isNewChat,
             enableChatAssistant: containsChatBotTrigger(input),

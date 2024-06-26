@@ -83,7 +83,9 @@ export const ChatList = ({
             const member = chatMembers?.find(
               (member) => member.profiles?.id === messageProfileId
             )?.profiles;
-            const memberUsername = member?.username;
+            const memberUsername = !chatMembers
+              ? currentProfile?.username
+              : member?.username;
             const memberAvatar = member?.avatar_url;
 
             if (m.role === "system") {

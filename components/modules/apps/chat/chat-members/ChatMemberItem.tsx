@@ -27,7 +27,7 @@ export const ChatMemberItem = ({
   return (
     <div className="flex items-center gap-3 rounded-md p-2 text-sm">
       <UserAvatar
-        className="z-0 overflow-visible"
+        className="z-0"
         username={username}
         avatarUrl={avatarUrl}
         email=""

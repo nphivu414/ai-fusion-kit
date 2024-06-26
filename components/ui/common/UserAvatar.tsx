@@ -23,11 +23,15 @@ export const UserAvatar = ({
   const nameLabel = username || email || "";
   const fallback = nameLabel.slice(0, 1).toUpperCase();
   return (
-    <Avatar {...rest}>
+    <div className="relative">
+      <Avatar {...rest}>
+        {avatarUrl ? <AvatarImage src={avatarUrl} /> : null}
+        <AvatarFallback>{fallback}</AvatarFallback>
+      </Avatar>
       {isOnline !== undefined && (
         <span
           className={cn(
-            "borde absolute -right-1 -top-0 flex size-4 rounded-full",
+            "absolute -right-1 -top-0 flex size-4 rounded-full border",
             {
               "bg-green-500": isOnline,
               "bg-gray-400": !isOnline,
@@ -35,8 +39,6 @@ export const UserAvatar = ({
           )}
         />
       )}
-      {avatarUrl ? <AvatarImage src={avatarUrl} /> : null}
-      <AvatarFallback>{fallback}</AvatarFallback>
-    </Avatar>
+    </div>
   );
 };

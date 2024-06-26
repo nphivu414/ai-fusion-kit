@@ -31,7 +31,7 @@ export type ChatBubbleProps = {
   onStopGenerating?: () => void;
 };
 
-export const ChatBubble = ({
+export const ChatBubble = React.memo(function ChatBubble({
   prevId,
   content,
   name,
@@ -45,7 +45,7 @@ export const ChatBubble = ({
   onCopy,
   onRegenerate,
   onStopGenerating,
-}: ChatBubbleProps) => {
+}: ChatBubbleProps) {
   const chatClass = cn(`chat-${direction} chat mb-4`, {
     "place-items-start grid-cols-[auto_1fr]": direction === "start",
     "place-items-end grid-cols-[1fr_auto]": direction === "end",
@@ -206,4 +206,4 @@ export const ChatBubble = ({
       </div>
     </div>
   );
-};
+});
