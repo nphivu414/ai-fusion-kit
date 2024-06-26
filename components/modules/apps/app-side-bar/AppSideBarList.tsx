@@ -14,14 +14,14 @@ export const AppSideBarList = ({ apps }: AppSideBarListProps) => {
   return (
     <ul>
       {apps.map((app) => {
-        const { id, name, description, slug, logoUrl } = app;
+        const { id, name, description, slug, logo_url } = app;
         return (
           <AppSideBarItem
             key={id}
             name={name}
             description={description}
             slug={slug}
-            logoUrl={logoUrl}
+            logo_url={logo_url}
           />
         );
       })}

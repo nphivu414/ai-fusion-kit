@@ -34,3 +34,25 @@ export const getCurrentProfile = async (supabase: SupabaseClient<Database>) => {
 
   return data;
 };
+
+export const getProfileByUsername = async (
+  supabase: SupabaseClient<Database>,
+  username: string
+) => {
+  log.info(`${getProfileByUsername.name} called`, { username });
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .select(`*`)
+    .eq("username", username)
+    .single();
+
+  if (error) {
+    log.error(getProfileByUsername.name, { error });
+    return null;
+  }
+
+  log.info(`${getProfileByUsername.name} fetched successfully`, { data });
+
+  return data;
+};

@@ -1,18 +1,20 @@
 import React from "react";
-import Image from "next/image";
 import { Copy, RefreshCcw, StopCircle } from "lucide-react";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 
-import { Message } from "@/lib/db";
+import { isTaggedUserPattern } from "@/lib/chat-input";
+import { AI_ASSISTANT_PROFILE } from "@/lib/contants";
+import { ChatMemberProfile, Message } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import { badgeVariants } from "@/components/ui/Badge";
 import { CodeBlock } from "@/components/modules/apps/chat/CodeBlock";
 
-import { Avatar, AvatarFallback, AvatarImage } from "../Avatar";
+import { UserAvatar } from "../common/UserAvatar";
+import { ChatProfileHoverCard } from "./ChatProfileHoverCard";
 import { MemoizedReactMarkdown } from "./Markdown";
 
-type ChatBubbleProps = {
+export type ChatBubbleProps = {
   id: Message["id"];
   prevId?: Message["id"];
   direction?: "start" | "end";
@@ -23,12 +25,13 @@ type ChatBubbleProps = {
   content: string;
   isLoading: boolean;
   isLast: boolean;
+  chatMemberMap?: Record<string, ChatMemberProfile>;
   onCopy: (message: string) => void;
   onRegenerate: (id: Message["id"]) => void;
   onStopGenerating?: () => void;
 };
 
-export const ChatBubble = ({
+export const ChatBubble = React.memo(function ChatBubble({
   prevId,
   content,
   name,
@@ -38,10 +41,11 @@ export const ChatBubble = ({
   time,
   isLoading,
   isLast,
+  chatMemberMap,
   onCopy,
   onRegenerate,
   onStopGenerating,
-}: ChatBubbleProps) => {
+}: ChatBubbleProps) {
   const chatClass = cn(`chat-${direction} chat mb-4`, {
     "place-items-start grid-cols-[auto_1fr]": direction === "start",
     "place-items-end grid-cols-[1fr_auto]": direction === "end",
@@ -103,20 +107,9 @@ export const ChatBubble = ({
 
   return (
     <div className={chatClass}>
-      {avatar ? (
-        <div className="avatar chat-image">
-          <div className="w-10 rounded-full">
-            <Image src={avatar} alt="avatar" width={40} height={40} />
-          </div>
-        </div>
-      ) : (
-        <div className="avatar chat-image">
-          <Avatar className="w-10">
-            <AvatarImage src="" />
-            <AvatarFallback>VN</AvatarFallback>
-          </Avatar>
-        </div>
-      )}
+      <div className="avatar chat-image">
+        <UserAvatar username={name} avatarUrl={avatar} />
+      </div>
       <div className="chat-header mb-2 text-muted-foreground">
         {name}
         {time ? <time className="text-xs opacity-50">{time}</time> : null}
@@ -128,6 +121,47 @@ export const ChatBubble = ({
           components={{
             p({ children }) {
               return <p className="mb-2 last:mb-0">{children}</p>;
+            },
+            a({ children, node: { properties } }) {
+              if (!isTaggedUserPattern(properties?.href || "")) {
+                return (
+                  <a className="cursor-pointer text-gray-300 underline">
+                    {children}
+                  </a>
+                );
+              }
+
+              const userName = properties?.href?.toString()?.split(":")[1];
+
+              if (!userName) {
+                return (
+                  <a className="cursor-pointer text-gray-300 underline">
+                    {children}
+                  </a>
+                );
+              }
+
+              let profile = userName && chatMemberMap?.[userName]?.profiles;
+              const profileCreatedAt =
+                userName && chatMemberMap?.[userName]?.created_at;
+
+              if (userName === "assistant") {
+                profile = AI_ASSISTANT_PROFILE;
+              }
+
+              if (!profile) {
+                return <span>{children}</span>;
+              }
+
+              return (
+                <ChatProfileHoverCard
+                  profile={profile}
+                  direction={direction}
+                  joinedDate={profileCreatedAt}
+                >
+                  {children}
+                </ChatProfileHoverCard>
+              );
             },
             code({ inline, className, children, ...props }) {
               if (children.length) {
@@ -172,4 +206,4 @@ export const ChatBubble = ({
       </div>
     </div>
   );
-};
+});

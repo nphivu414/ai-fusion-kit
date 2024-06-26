@@ -21,18 +21,13 @@ export default async function AppLayout({ children }: AppLayoutProps) {
     return <div className="pt-4">No app found</div>;
   }
 
-  const currentProfileId = user.id;
-
-  const chats = await getChats(supabase, {
-    appId: currentApp.id,
-    profileId: currentProfileId,
-  });
+  const chats = await getChats(supabase, currentApp.id);
 
   return (
     <MainLayout>
       <div className="flex h-screen flex-1 flex-row pt-16">
         <div className="flex flex-1 flex-row">
-          <div className="flex flex-1 flex-col overflow-y-auto">
+          <div className="flex flex-1 flex-col overflow-y-hidden">
             <div className="relative flex flex-1 bg-background">
               <div className="flex size-0 flex-col justify-between overflow-x-hidden transition-[width] lg:h-auto lg:max-h-[calc(100vh_-_65px)] lg:w-[300px] lg:border-r">
                 <ChatHistory data={chats} />

@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 
-import { Chat, Update } from "@/lib/db";
+import { Chat, TablesUpdate } from "@/lib/db";
 import { getAppBySlug } from "@/lib/db/apps";
 import { updateChat } from "@/lib/db/chats";
 import { getCurrentUser } from "@/lib/session";
@@ -10,7 +10,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export const updateChatSettings = async (
   id: Chat["id"],
-  params: Update<"chats">["settings"]
+  params: TablesUpdate<"chats">["settings"]
 ) => {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
@@ -27,8 +27,8 @@ export const updateChatSettings = async (
     await updateChat(supabase, {
       id: id,
       settings: params,
-      profileId: currentProfileId,
-      appId: currentApp.id,
+      profile_id: currentProfileId,
+      app_id: currentApp.id,
     });
   } catch (error) {
     throw new Error("Failed to save chat settings");
