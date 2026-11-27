@@ -63,6 +63,8 @@
 5. Rename `.env.example` to `.env.local` and populate with your values
   > Note: You should not commit your `.env` file or it will expose secrets that will allow others to control access to your various OpenAI and authentication provider accounts.
     
+Pull requests that modify the Supabase migrations run [RattleCheck](.github/workflows/rattlecheck.yml). It compares the proposed SQL with the base branch and identifies new high or critical permission findings before you apply a migration. It reads committed SQL and needs no database credentials.
+
 ## Run Locally
 
 1. Go to the project directory
